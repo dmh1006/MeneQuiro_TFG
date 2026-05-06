@@ -44,6 +44,15 @@ INDISPONIBILIDADES: Dict[str, Set[date]] = {
     persona: set() for persona in PERSONAS
 }
 
+DIAS_ES = {
+    0: "Lunes",
+    1: "Martes",
+    2: "Miércoles",
+    3: "Jueves",
+    4: "Viernes",
+    5: "Sábado",
+    6: "Domingo",
+}
 
 # ============================================================
 # ESTRUCTURAS
@@ -511,7 +520,7 @@ def construir_dataframe_planificacion(
         personas = asignaciones[dia]
         filas.append({
             "fecha": dia,
-            "dia_semana": dia.strftime("%A"),
+            "dia_semana": DIAS_ES[fecha.weekday()],
             "tipo_dia": tipo_dia(dia, festivos),
             "persona_1": personas[0],
             "persona_2": personas[1],
