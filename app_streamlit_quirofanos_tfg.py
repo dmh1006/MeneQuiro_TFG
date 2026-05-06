@@ -8,6 +8,9 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 import streamlit.components.v1 as components
+import os
+import tempfile
+from datetime import date
 
 from Proyecto.planificador_tfg import (
     agenda_dia,
@@ -283,6 +286,54 @@ def to_excel_bytes(df: pd.DataFrame, sheet_name: str = "agenda") -> bytes:
         df.to_excel(writer, index=False, sheet_name=sheet_name)
     return output.getvalue()
 
+# ----------------------------------------------------------
+# FUNCIONES AUXILIARES DEL PLANIFICADOR DE GUARDIAS
+# ----------------------------------------------------------
+
+def parsear_festivos(texto_festivos: str) -> set[date]:
+    festivos = set()
+
+    for linea in texto_festivos.splitlines():
+        linea = linea.strip()
+        if not linea:
+            continue
+
+        try:
+            festivos.add(pd.to_datetime(linea, dayfirst=True).date())
+        except Exception:
+            st.warning(f"No se ha podido interpretar el festivo: {linea}")
+
+    return festivos
+
+
+def exportar_guardias_excel_bytes(df_plan: pd.DataFrame, df_resumen: pd.DataFrame) -> bytes:
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx")
+    tmp.close()
+
+    try:
+        exportar_excel(df_plan, df_resumen, tmp.name)
+
+        with open(tmp.name, "rb") as f:
+            contenido = f.read()
+
+    finally:
+        if os.path.exists(tmp.name):
+            os.remove(tmp.name)
+
+    return contenido
+
+
+def colorear_guardias(row):
+    colores = {
+        "laborable": "background-color: #EAF2F8",
+        "viernes": "background-color: #D4E6F1",
+        "sabado": "background-color: #FCF3CF",
+        "domingo": "background-color: #FADBD8",
+        "festivo": "background-color: #F5CBA7",
+    }
+
+    return [colores.get(row["tipo_dia"], "") for _ in row]
+
 
 # ----------------------------------------------------------
 # APP
@@ -336,12 +387,13 @@ def main() -> None:
     c5.metric("Duración media (min)", kpis["duracion_media_min"])
     c6.metric("Urgencias (%)", kpis["pct_urgencias"])
 
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "Planificación diaria",
-        "Análisis histórico",
-        "Ocupación mensual",
-        "Exportación",
-    ])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "Planificación diaria",
+    "Análisis histórico",
+    "Ocupación mensual",
+    "Exportación",
+    "Planificador de guardias",
+])
 
     with tab1:
         left, right = st.columns([1.1, 0.9])
@@ -581,6 +633,140 @@ def main() -> None:
             )
 
         st.info("Exportación para la planificación del equipo de quirofano")
+
+    with tab5:
+        st.subheader("Planificador anual de guardias de quirófano")
+
+        col_g1, col_g2 = st.columns([0.7, 1.3])
+
+        with col_g1:
+            anio_guardias = st.number_input(
+                "Año de planificación",
+                min_value=2025,
+                max_value=2035,
+                value=2026,
+                step=1,
+            )
+
+            personas_texto = st.text_area(
+                "Miembros del equipo",
+                value="\n".join(PERSONAS),
+                height=260,
+                help="Introduce un nombre por línea.",
+            )
+
+        with col_g2:
+            festivos_texto = st.text_area(
+                "Festivos",
+                value="\n".join(sorted([f.strftime("%d/%m/%Y") for f in FESTIVOS])),
+                height=260,
+                help="Introduce un festivo por línea. Formato recomendado: dd/mm/aaaa.",
+            )
+
+        personas_guardias = [
+            p.strip()
+            for p in personas_texto.splitlines()
+            if p.strip()
+        ]
+
+        festivos_guardias = parsear_festivos(festivos_texto)
+
+        indisponibilidades_guardias = {
+            persona: set()
+            for persona in personas_guardias
+        }
+
+        if st.button("Generar planificación de guardias", type="primary"):
+            try:
+                asignaciones, stats = generar_planificacion(
+                    anio=int(anio_guardias),
+                    personas=personas_guardias,
+                    festivos=festivos_guardias,
+                    indisponibilidades=indisponibilidades_guardias,
+                )
+
+                df_plan_guardias = construir_dataframe_planificacion(
+                    asignaciones,
+                    festivos_guardias,
+                )
+
+                df_resumen_guardias = construir_dataframe_resumen(stats)
+
+                st.session_state["df_plan_guardias"] = df_plan_guardias
+                st.session_state["df_resumen_guardias"] = df_resumen_guardias
+                st.session_state["excel_guardias"] = exportar_guardias_excel_bytes(
+                    df_plan_guardias,
+                    df_resumen_guardias,
+                )
+
+                st.success("Planificación de guardias generada correctamente.")
+
+            except Exception as e:
+                st.error(f"No se ha podido generar la planificación: {e}")
+
+        if "df_plan_guardias" in st.session_state:
+            df_plan_guardias = st.session_state["df_plan_guardias"]
+            df_resumen_guardias = st.session_state["df_resumen_guardias"]
+
+            st.markdown("---")
+
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Días planificados", len(df_plan_guardias))
+            c2.metric("Personas", len(personas_guardias))
+            c3.metric("Guardias totales", len(df_plan_guardias) * 2)
+            c4.metric("Festivos", df_plan_guardias["es_festivo"].eq("Sí").sum())
+
+            meses_disponibles = sorted(pd.to_datetime(df_plan_guardias["fecha"]).dt.month.unique())
+
+            mes_sel = st.selectbox(
+                "Mes a visualizar",
+                options=meses_disponibles,
+                format_func=lambda m: {
+                    1: "Enero",
+                    2: "Febrero",
+                    3: "Marzo",
+                    4: "Abril",
+                    5: "Mayo",
+                    6: "Junio",
+                    7: "Julio",
+                    8: "Agosto",
+                    9: "Septiembre",
+                    10: "Octubre",
+                    11: "Noviembre",
+                    12: "Diciembre",
+            }.get(m, str(m)),
+            )
+
+            df_mes = df_plan_guardias[
+                pd.to_datetime(df_plan_guardias["fecha"]).dt.month == mes_sel
+            ].copy()
+
+            df_mes["fecha"] = pd.to_datetime(df_mes["fecha"]).dt.strftime("%d/%m/%Y")
+
+            st.subheader("Visualizador mensual de guardias")
+
+            st.dataframe(
+                df_mes.style.apply(colorear_guardias, axis=1),
+                use_container_width=True,
+                hide_index=True,
+            )
+
+            st.subheader("Resumen por persona")
+
+            st.dataframe(
+                df_resumen_guardias,
+                use_container_width=True,
+                hide_index=True,
+            )
+
+            st.download_button(
+                "Descargar planificación de guardias en Excel",
+                data=st.session_state["excel_guardias"],
+                file_name=f"planificacion_guardias_quirofano_{int(anio_guardias)}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+
+        
 
 # ----------------------------------------------------------
 # RENDER DE VISUALIZACIÓN
