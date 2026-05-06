@@ -1,0 +1,1 @@
+streamlit run app_streamlit_quirofanos_tfg.py

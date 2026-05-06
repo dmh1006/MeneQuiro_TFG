@@ -26,6 +26,15 @@ from Proyecto.planificador_tfg import (
     uso_quirofanos,
 )
 
+from Proyecto.planificador_guardias import (
+    PERSONAS,
+    FESTIVOS,
+    generar_planificacion,
+    construir_dataframe_planificacion,
+    construir_dataframe_resumen,
+    exportar_excel,
+)
+
 st.set_page_config(
     page_title="Planificación de quirófanos · TFG",
     page_icon="🏥",
