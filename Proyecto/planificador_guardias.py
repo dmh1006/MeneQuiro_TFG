@@ -520,7 +520,7 @@ def construir_dataframe_planificacion(
         personas = asignaciones[dia]
         filas.append({
             "fecha": dia,
-            "dia_semana": DIAS_ES[fecha.weekday()],
+            "dia_semana": DIAS_ES[dia.weekday()],
             "tipo_dia": tipo_dia(dia, festivos),
             "persona_1": personas[0],
             "persona_2": personas[1],

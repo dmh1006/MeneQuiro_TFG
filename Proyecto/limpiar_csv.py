@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-RUTA_EXCEL = BASE_DIR / "Data" / "Qº FEBRERO.xls"
+RUTA_EXCEL = BASE_DIR / "Data" / "2025.xls"
 RUTA_SALIDA_CSV = BASE_DIR / "Data" / "quirofano_febrero_limpio.csv"
 
 
