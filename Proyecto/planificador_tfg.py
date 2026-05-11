@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
-DATA_PATH = BASE_DIR / "quirofano_febrero_limpio.csv"
+DATA_PATH = BASE_DIR / "quirofano_2025_limpio.csv"
 
 
 # ==========================================================
@@ -27,11 +27,11 @@ def cargar_datos():
     root_dir = base_dir.parent
 
     rutas_posibles = [
-        base_dir / "quirofano_febrero_limpio.csv",
-        root_dir / "quirofano_febrero_limpio.csv",
-        base_dir / "Data" / "quirofano_febrero_limpio.csv",
-        root_dir / "Data" / "quirofano_febrero_limpio.csv",
-        root_dir / "Proyecto" / "quirofano_febrero_limpio.csv",
+        base_dir / "quirofano_2025_limpio.csv",
+        root_dir / "quirofano_2025_limpio.csv",
+        base_dir / "Data" / "quirofano_2025_limpio.csv",
+        root_dir / "Data" / "quirofano_2025_limpio.csv",
+        root_dir / "Proyecto" / "quirofano_2025_limpio.csv",
     ]
 
     data_path = None

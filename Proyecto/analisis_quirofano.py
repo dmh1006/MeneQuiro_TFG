@@ -3,7 +3,7 @@ import pandas as pd
 from typing import Optional, List
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_PATH = BASE_DIR / "Data" / "quirofano_febrero_limpio.csv"
+DATA_PATH = BASE_DIR / "Data" / "quirofano_2025_limpio.csv"
 
 
 def cargar_datos() -> pd.DataFrame:
