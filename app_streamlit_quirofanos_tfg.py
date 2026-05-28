@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import io
 from pathlib import Path
-import plotly.express as px
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -399,7 +399,7 @@ def main() -> None:
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Planificación diaria",
     "Análisis histórico",
-    "Ocupación mensual",
+    "Dashboard quirúrgico",
     "Exportación",
     "Planificador de guardias",
 ])
@@ -640,7 +640,7 @@ def main() -> None:
             qx_top = resumen_qx.sort_values("cirugias", ascending=False).iloc[0]["quirofano"]
             st.metric("Quirófano más usado", qx_top)
 
-        import plotly.express as px
+        
 
         fig_ocupacion = px.bar(
             resumen_qx.sort_values("ocupacion_media_dia_%", ascending=False),
