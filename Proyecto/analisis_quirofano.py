@@ -245,6 +245,7 @@ def obtener_grupo_procedimiento(procedimiento_limpio: str) -> str:
 def preparar_dataset_funcional(df: pd.DataFrame) -> pd.DataFrame:
     df_real = filtrar_cirugias_reales(df)
     df_real["procedimiento_base"] = df_real["procedimiento"].apply(normalizar_procedimiento)
+    df_real["grupo_procedimiento"] = df_real["procedimiento_base"].apply(obtener_grupo_procedimiento)
     return df_real
 
 
@@ -252,11 +253,15 @@ def construir_catalogo_quirurgico(df_real: pd.DataFrame) -> pd.DataFrame:
     catalogo = (
         df_real.groupby("procedimiento_base")
         .agg(
+            grupo_procedimiento=("grupo_procedimiento", "first"),
             n_casos=("procedimiento_base", "count"),
             duracion_media_min=("duracion_min", "mean"),
             duracion_mediana_min=("duracion_min", "median"),
             desviacion_min=("duracion_min", "std"),
-            quirofanos_habituales=("quirofano", lambda x: ", ".join(sorted(set(x.astype(str)))))
+            quirofanos_habituales=(
+                "quirofano",
+                lambda x: ", ".join(sorted(set(x.dropna().astype(str))))
+            ),
         )
         .sort_values("n_casos", ascending=False)
         .round(2)
@@ -266,6 +271,7 @@ def construir_catalogo_quirurgico(df_real: pd.DataFrame) -> pd.DataFrame:
     # Estimación operativa simple
     catalogo["prep_min"] = 15
     catalogo["post_min"] = 10
+
     catalogo["buffer_variabilidad_min"] = (
         catalogo["desviacion_min"].fillna(0) * 0.5
     ).round(0)

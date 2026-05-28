@@ -352,56 +352,39 @@ def colorear_guardias(row):
 # ----------------------------------------------------------
 
 def agrupar_procedimiento(nombre):
-    nombre = str(nombre).upper().strip()
+    t = str(nombre).upper().strip()
 
-    grupos = {
-        "APENDICECTOMIA": [
-            "APENDIC",
-            "APENDI",
-            "APENDICE",
-            "APENDITE",
-        ],
-        "COLECISTECTOMIA": [
-            "COLECIST",
-            "VESICULA",
-        ],
-        "HERNIA": [
-            "HERNIA",
-            "INGUINAL",
-            "UMBILICAL",
-            "EVENTRACION",
-        ],
-        "HEMORROIDES": [
-            "HEMORROID",
-            "HEMORRO",
-        ],
-        "TIROIDES": [
-            "TIROID",
-        ],
-        "COLON": [
-            "COLON",
-            "COLECTOM",
-        ],
-        "MAMA": [
-            "MAMA",
-            "MASTECT",
-        ],
-        "BIOPSIA": [
-            "BIOPSIA",
-        ],
-        "FISTULA": [
-            "FISTULA",
-        ],
-        "ABSCESO": [
-            "ABSCESO",
-        ],
-    }
+    if "CIERRE" in t:
+        return "CIERRE"
 
-    for grupo, claves in grupos.items():
-        if any(clave in nombre for clave in claves):
-            return grupo
+    if "APEND" in t:
+        return "APENDICECTOMIA"
 
-    return nombre.split(",")[0][:35]
+    if "COLECIST" in t or "VESICULA" in t:
+        return "COLECISTECTOMIA"
+
+    if "HERNIA" in t or "INGUINAL" in t or "UMBILICAL" in t:
+        return "HERNIA"
+
+    if "BIOPSIA" in t:
+        return "BIOPSIA"
+
+    if "TIROID" in t:
+        return "TIROIDES"
+
+    if "COLON" in t or "COLECTOM" in t or "RECTO" in t:
+        return "COLON Y RECTO"
+
+    if "HEMORROID" in t or "FISTULA ANAL" in t or "FISURA ANAL" in t:
+        return "PROCTOLOGIA"
+
+    if "ABSCESO" in t:
+        return "ABSCESO"
+
+    if "PARED ABDOMINAL" in t or "EVENTRACION" in t:
+        return "PARED ABDOMINAL"
+
+    return "OTROS PROCEDIMIENTOS"
 
 # ----------------------------------------------------------
 # APP
@@ -410,6 +393,7 @@ def agrupar_procedimiento(nombre):
 def main() -> None:
     inicializar_estado()
     _, df_real, catalogo = cargar_base()
+    catalogo["grupo_procedimiento"] = catalogo["procedimiento_base"].apply(agrupar_procedimiento)
 
     st.title("🏥 Planificador quirúrgico inteligente")
     st.caption("Prototipo funcional orientado a TFG: análisis histórico, propuesta de huecos y simulación de agenda.")
@@ -423,17 +407,26 @@ def main() -> None:
             min_value=fechas_disponibles[0],
             max_value=fechas_disponibles[-1],
         )
-        catalogo["grupo_procedimiento"] = (
-            catalogo["procedimiento_base"]
-            .apply(agrupar_procedimiento)
-        )
 
-        grupos_procedimiento = sorted(
-            catalogo["grupo_procedimiento"]
-            .dropna()
-            .unique()
-            .tolist()
-        )
+
+        orden_grupos = [
+            "APENDICECTOMIA",
+            "COLECISTECTOMIA",
+            "HERNIA",
+            "CIERRE",
+            "BIOPSIA",
+            "TIROIDES",
+            "COLON Y RECTO",
+            "PROCTOLOGIA",
+            "ABSCESO",
+            "PARED ABDOMINAL",
+            "OTROS PROCEDIMIENTOS",
+        ]
+
+        grupos_procedimiento = [
+            g for g in orden_grupos
+            if g in catalogo["grupo_procedimiento"].unique()
+        ]
 
         grupo_sel = st.selectbox(
             "Grupo de procedimiento",
