@@ -24,7 +24,6 @@ PERSONAS = [
 ]
 
 # Festivos a tener en cuenta (ejemplo).
-# CAMBIA esta lista por los festivos reales que os importen.
 FESTIVOS = {
     date(2026, 1, 1),
     date(2026, 1, 6),

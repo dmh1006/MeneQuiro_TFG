@@ -1,0 +1,3 @@
+desplegable seleccion inicio
+editar operaciones simuladas y realizadas
+interfaz estadisticas

@@ -589,11 +589,32 @@ def main() -> None:
         st.plotly_chart(fig_gap, use_container_width=True)
 
     with tab3:
-        st.subheader("Mapa de ocupación diaria por quirófano")
-        ocup = ocupacion_por_dia_quirofano(df_real)
-        matriz = ocup.pivot(index="fecha_str", columns="quirofano", values="ocupacion_pct").fillna(0)
-        st.plotly_chart(figura_ocupacion_diaria(matriz), use_container_width=True)
-        st.dataframe(ocup, use_container_width=True, hide_index=True)
+
+    # ==============================
+    # PANEL VISUAL DE OCUPACIÓN
+    # ==============================
+
+    st.subheader("Resumen visual de ocupación por quirófano")
+
+    df_ocupacion = df_real.copy()
+
+    df_ocupacion["fecha"] = pd.to_datetime(df_ocupacion["fecha"])
+    df_ocupacion["mes"] = df_ocupacion["fecha"].dt.to_period("M").astype(str)
+
+    # Horario planificable aproximado: 08:00-20:00 = 720 min
+    MINUTOS_DIA = 720
+
+    resumen_qx = (
+        df_ocupacion
+        .groupby("quirofano")
+        .agg(
+            cirugias=("procedimiento_base", "count"),
+            minutos_ocupados=("duracion_min", "sum"),
+            duracion_media=("duracion_min", "mean"),
+            dias_activos=("fecha", "nunique"),
+        )
+        .reset_index()
+    )
 
     with tab4:
         st.subheader("Exportar resultados")
