@@ -48,6 +48,10 @@ def cargar_base() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     df = cargar_datos()
     df_real = preparar_dataset_funcional(df)
     catalogo = construir_catalogo_quirurgico(df_real)
+    catalogo["grupo_procedimiento"] = (
+    catalogo["procedimiento_base"]
+    .apply(agrupar_procedimiento)
+    )
     return df, df_real, catalogo
 
 
@@ -343,6 +347,61 @@ def colorear_guardias(row):
 
     return [colores.get(row["tipo_dia"], "") for _ in row]
 
+# ----------------------------------------------------------
+# FUNCIÓN AUXILIAR PARA PLANIFICADOR
+# ----------------------------------------------------------
+
+def agrupar_procedimiento(nombre):
+    nombre = str(nombre).upper().strip()
+
+    grupos = {
+        "APENDICECTOMIA": [
+            "APENDIC",
+            "APENDI",
+            "APENDICE",
+            "APENDITE",
+        ],
+        "COLECISTECTOMIA": [
+            "COLECIST",
+            "VESICULA",
+        ],
+        "HERNIA": [
+            "HERNIA",
+            "INGUINAL",
+            "UMBILICAL",
+            "EVENTRACION",
+        ],
+        "HEMORROIDES": [
+            "HEMORROID",
+            "HEMORRO",
+        ],
+        "TIROIDES": [
+            "TIROID",
+        ],
+        "COLON": [
+            "COLON",
+            "COLECTOM",
+        ],
+        "MAMA": [
+            "MAMA",
+            "MASTECT",
+        ],
+        "BIOPSIA": [
+            "BIOPSIA",
+        ],
+        "FISTULA": [
+            "FISTULA",
+        ],
+        "ABSCESO": [
+            "ABSCESO",
+        ],
+    }
+
+    for grupo, claves in grupos.items():
+        if any(clave in nombre for clave in claves):
+            return grupo
+
+    return nombre.split(",")[0][:35]
 
 # ----------------------------------------------------------
 # APP
@@ -364,8 +423,35 @@ def main() -> None:
             min_value=fechas_disponibles[0],
             max_value=fechas_disponibles[-1],
         )
-        procedimientos = sorted(catalogo["procedimiento_base"].tolist())
-        procedimiento_sel = st.selectbox("Procedimiento a planificar", procedimientos)
+        catalogo["grupo_procedimiento"] = (
+            catalogo["procedimiento_base"]
+            .apply(agrupar_procedimiento)
+        )
+
+        grupos_procedimiento = sorted(
+            catalogo["grupo_procedimiento"]
+            .dropna()
+            .unique()
+            .tolist()
+        )
+
+        grupo_sel = st.selectbox(
+            "Grupo de procedimiento",
+            grupos_procedimiento
+        )
+
+        tipos_disponibles = (
+            catalogo[catalogo["grupo_procedimiento"] == grupo_sel]
+            .sort_values("n_casos", ascending=False)["procedimiento_base"]
+            .dropna()
+            .unique()
+            .tolist()
+        )
+
+        procedimiento_sel = st.selectbox(
+            "Tipo concreto",
+            tipos_disponibles
+        )
         max_resultados = st.slider("Número de propuestas", 1, 10, 5)
         quirofanos_disponibles = sorted(df_real["quirofano"].dropna().astype(str).unique())
         filtro_qx = st.multiselect(

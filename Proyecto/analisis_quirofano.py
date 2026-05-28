@@ -60,23 +60,187 @@ def tiempos_muertos(df_real: pd.DataFrame) -> pd.DataFrame:
     return df_gap
 
 
-def normalizar_procedimiento(texto: str) -> str:
+import re
+import unicodedata
+
+
+def limpiar_texto_procedimiento(texto: str) -> str:
     if pd.isna(texto):
         return "DESCONOCIDO"
 
-    texto = str(texto).strip().upper()
+    texto = str(texto).upper().strip()
 
-    reemplazos = {
-        "APENDICECTOMIA POR LAPAROSCOPIA": "APENDICECTOMIA LAPAROSCOPICA",
-        "APENDICECTOMIA LAPAROSCOPICA": "APENDICECTOMIA LAPAROSCOPICA",
-        "RESECCION DE VESICULA BILIAR, ABORDAJE ENDOSCOPICO PERCUTA": "COLECISTECTOMIA LAPAROSCOPICA",
-        "SUPLEMENTO EN REGION INGUINAL, DERECHA, CON SUSTITUTO SINT": "HERNIA INGUINAL DERECHA",
-        "SUPLEMENTO EN REGION INGUINAL, IZQUIERDA, CON SUSTITUTO SI": "HERNIA INGUINAL IZQUIERDA",
-        "SUPLEMENTO EN REGION INGUINAL, BILATERAL, CON SUSTITUTO S": "HERNIA INGUINAL BILATERAL",
+    # quitar tildes
+    texto = unicodedata.normalize("NFKD", texto)
+    texto = "".join(c for c in texto if not unicodedata.combining(c))
+
+    # corregir caracteres raros del Excel
+    texto = texto.replace("<", " ")
+    texto = texto.replace(">", " ")
+    texto = texto.replace("\\", " ")
+    texto = texto.replace("/", " ")
+    texto = texto.replace("-", " ")
+    texto = texto.replace("_", " ")
+
+    # normalizar espacios
+    texto = re.sub(r"\s+", " ", texto).strip()
+
+    return texto
+
+
+def normalizar_procedimiento(texto: str) -> str:
+    """
+    Devuelve un nombre quirúrgico limpio y presentable.
+    Este es el nombre que verá el usuario como 'tipo concreto'.
+    """
+    t = limpiar_texto_procedimiento(texto)
+
+    # ======================
+    # APENDICE
+    # ======================
+    if any(x in t for x in ["APENDIC", "APENDI", "APENDITE"]):
+        if any(x in t for x in ["LAPAR", "LPS", "LPSC", "ENDOSCOP"]):
+            return "APENDICECTOMIA LAPAROSCOPICA"
+        return "APENDICECTOMIA"
+
+    # ======================
+    # VESICULA / COLECISTECTOMIA
+    # ======================
+    if any(x in t for x in ["COLECIST", "VESICULA BILIAR"]):
+        if any(x in t for x in ["LAPAR", "ENDOSCOP", "PERCUT"]):
+            return "COLECISTECTOMIA LAPAROSCOPICA"
+        return "COLECISTECTOMIA"
+
+    # ======================
+    # HERNIAS
+    # ======================
+    if "HERNIA" in t or "REGION INGUINAL" in t:
+        lado = ""
+        if "DERECHA" in t:
+            lado = " DERECHA"
+        elif "IZQUIERDA" in t:
+            lado = " IZQUIERDA"
+        elif "BILATERAL" in t:
+            lado = " BILATERAL"
+
+        if "UMBILICAL" in t:
+            return "HERNIORRAFIA UMBILICAL"
+        if "INGUINAL" in t or "REGION INGUINAL" in t:
+            return f"HERNIORRAFIA INGUINAL{lado}".strip()
+        if "VENTRAL" in t:
+            return "HERNIORRAFIA VENTRAL"
+        if "INCISIONAL" in t:
+            return "HERNIORRAFIA INCISIONAL"
+        return "HERNIORRAFIA"
+
+    # ======================
+    # CIERRES
+    # ======================
+    if t.startswith("CIERRE") or " CIERRE " in f" {t} ":
+        if "COLOSTOMIA" in t:
+            return "CIERRE DE COLOSTOMIA"
+        if "ILEOSTOMIA" in t:
+            return "CIERRE DE ILEOSTOMIA"
+        if "FISTULA" in t:
+            return "CIERRE DE FISTULA"
+        if "HERIDA" in t:
+            return "CIERRE DE HERIDA"
+        return "CIERRE"
+
+    # ======================
+    # BIOPSIAS
+    # ======================
+    if "BIOPSIA" in t:
+        if "ADENOPATIA" in t:
+            return "BIOPSIA DE ADENOPATIA"
+        if "HEPATICA" in t or "HIGADO" in t:
+            return "BIOPSIA HEPATICA"
+        return "BIOPSIA"
+
+    # ======================
+    # TIROIDES / PARATIROIDES
+    # ======================
+    if "TIROID" in t:
+        if "PARATIROID" in t:
+            return "PARATIROIDECTOMIA"
+        if "HEMITIROID" in t:
+            return "HEMITIROIDECTOMIA"
+        return "TIROIDECTOMIA"
+
+    # ======================
+    # COLON / RECTO
+    # ======================
+    if any(x in t for x in ["COLON", "COLECTOM", "RECTO", "RECTOSIGMA"]):
+        if "DERECHA" in t:
+            return "COLECTOMIA DERECHA"
+        if "IZQUIERDA" in t:
+            return "COLECTOMIA IZQUIERDA"
+        if "SIGMA" in t or "SIGMOID" in t:
+            return "SIGMOIDECTOMIA"
+        if "RECTO" in t:
+            return "CIRUGIA DE RECTO"
+        return "CIRUGIA DE COLON"
+
+    # ======================
+    # HEMORROIDES / FISURA / FISTULA ANAL
+    # ======================
+    if "HEMORROID" in t:
+        return "HEMORROIDECTOMIA"
+
+    if "FISURA" in t and "ANAL" in t:
+        return "FISURECTOMIA ANAL"
+
+    if "FISTULA" in t and "ANAL" in t:
+        return "FISTULOTOMIA ANAL"
+
+    # ======================
+    # ABSCESOS
+    # ======================
+    if "ABSCESO" in t:
+        return "DRENAJE DE ABSCESO"
+
+    # ======================
+    # EVENTRACION
+    # ======================
+    if "EVENTRACION" in t:
+        return "REPARACION DE EVENTRACION"
+
+    # ======================
+    # PARED ABDOMINAL
+    # ======================
+    if "PARED ABDOMINAL" in t:
+        return "REPARACION DE PARED ABDOMINAL"
+
+    # ======================
+    # Si no se reconoce, limpiar y acortar
+    # ======================
+    return t[:70]
+
+
+def obtener_grupo_procedimiento(procedimiento_limpio: str) -> str:
+    """
+    Devuelve el grupo general que verá el usuario en el primer desplegable.
+    """
+    t = limpiar_texto_procedimiento(procedimiento_limpio)
+
+    reglas = {
+        "APENDICECTOMIA": ["APENDICECTOMIA"],
+        "COLECISTECTOMIA": ["COLECISTECTOMIA"],
+        "HERNIA": ["HERNIORRAFIA", "HERNIA"],
+        "CIERRE": ["CIERRE"],
+        "BIOPSIA": ["BIOPSIA"],
+        "TIROIDES": ["TIROIDECTOMIA", "HEMITIROIDECTOMIA", "PARATIROIDECTOMIA"],
+        "COLON Y RECTO": ["COLECTOMIA", "COLON", "RECTO", "SIGMOIDECTOMIA"],
+        "PROCTOLOGIA": ["HEMORROIDECTOMIA", "FISURECTOMIA", "FISTULOTOMIA"],
+        "ABSCESO": ["ABSCESO"],
+        "PARED ABDOMINAL": ["PARED ABDOMINAL", "EVENTRACION"],
     }
 
-    return reemplazos.get(texto, texto)
+    for grupo, claves in reglas.items():
+        if any(clave in t for clave in claves):
+            return grupo
 
+    return "OTROS PROCEDIMIENTOS"
 
 def preparar_dataset_funcional(df: pd.DataFrame) -> pd.DataFrame:
     df_real = filtrar_cirugias_reales(df)
