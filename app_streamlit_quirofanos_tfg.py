@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import io
 from pathlib import Path
-
+import plotly.express as px
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -590,31 +590,156 @@ def main() -> None:
 
     with tab3:
 
-    # ==============================
-    # PANEL VISUAL DE OCUPACIÓN
-    # ==============================
+        # ==============================
+        # PANEL VISUAL DE OCUPACIÓN
+        # ==============================
 
-    st.subheader("Resumen visual de ocupación por quirófano")
+        st.subheader("Resumen visual de ocupación por quirófano")
 
-    df_ocupacion = df_real.copy()
+        df_ocupacion = df_real.copy()
 
-    df_ocupacion["fecha"] = pd.to_datetime(df_ocupacion["fecha"])
-    df_ocupacion["mes"] = df_ocupacion["fecha"].dt.to_period("M").astype(str)
+        df_ocupacion["fecha"] = pd.to_datetime(df_ocupacion["fecha"])
+        df_ocupacion["mes"] = df_ocupacion["fecha"].dt.to_period("M").astype(str)
 
-    # Horario planificable aproximado: 08:00-20:00 = 720 min
-    MINUTOS_DIA = 720
+        MINUTOS_DIA = 720
 
-    resumen_qx = (
-        df_ocupacion
-        .groupby("quirofano")
-        .agg(
-            cirugias=("procedimiento_base", "count"),
-            minutos_ocupados=("duracion_min", "sum"),
-            duracion_media=("duracion_min", "mean"),
-            dias_activos=("fecha", "nunique"),
+        resumen_qx = (
+            df_ocupacion
+            .groupby("quirofano")
+            .agg(
+                cirugias=("procedimiento_base", "count"),
+                minutos_ocupados=("duracion_min", "sum"),
+                duracion_media=("duracion_min", "mean"),
+                dias_activos=("fecha", "nunique"),
+            )
+            .reset_index()
         )
-        .reset_index()
-    )
+
+        resumen_qx["ocupacion_media_dia_%"] = (
+            resumen_qx["minutos_ocupados"] /
+            (resumen_qx["dias_activos"] * MINUTOS_DIA) * 100
+        ).round(1)
+
+        resumen_qx["duracion_media"] = resumen_qx["duracion_media"].round(1)
+
+        k1, k2, k3, k4 = st.columns(4)
+
+        with k1:
+            st.metric("Quirófanos analizados", resumen_qx["quirofano"].nunique())
+
+        with k2:
+            st.metric("Cirugías totales", int(resumen_qx["cirugias"].sum()))
+
+        with k3:
+            st.metric(
+                "Ocupación media",
+                f"{resumen_qx['ocupacion_media_dia_%'].mean():.1f} %"
+            )
+
+        with k4:
+            qx_top = resumen_qx.sort_values("cirugias", ascending=False).iloc[0]["quirofano"]
+            st.metric("Quirófano más usado", qx_top)
+
+        import plotly.express as px
+
+        fig_ocupacion = px.bar(
+            resumen_qx.sort_values("ocupacion_media_dia_%", ascending=False),
+            x="quirofano",
+            y="ocupacion_media_dia_%",
+            text="ocupacion_media_dia_%",
+            title="Ocupación media diaria por quirófano",
+            labels={
+                "quirofano": "Quirófano",
+                "ocupacion_media_dia_%": "% ocupación media"
+            },
+        )
+
+        fig_ocupacion.update_traces(
+            texttemplate="%{text:.1f}%",
+            textposition="outside"
+        )
+
+        fig_ocupacion.update_layout(
+            height=420,
+            yaxis_range=[
+                0,
+                max(100, resumen_qx["ocupacion_media_dia_%"].max() + 10)
+            ],
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+        )
+
+        st.plotly_chart(fig_ocupacion, use_container_width=True)
+
+        fig_cirugias = px.bar(
+            resumen_qx.sort_values("cirugias", ascending=True),
+            x="cirugias",
+            y="quirofano",
+            orientation="h",
+            text="cirugias",
+            title="Número total de cirugías por quirófano",
+            labels={
+                "cirugias": "Nº cirugías",
+                "quirofano": "Quirófano"
+            },
+        )
+
+        fig_cirugias.update_traces(textposition="outside")
+
+        fig_cirugias.update_layout(
+            height=420,
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+        )
+
+        st.plotly_chart(fig_cirugias, use_container_width=True)
+
+        ocupacion_mes = (
+            df_ocupacion
+            .groupby(["mes", "quirofano"])
+            .agg(
+                minutos_ocupados=("duracion_min", "sum"),
+                dias_activos=("fecha", "nunique"),
+                cirugias=("procedimiento_base", "count"),
+            )
+            .reset_index()
+        )
+
+        ocupacion_mes["ocupacion_%"] = (
+            ocupacion_mes["minutos_ocupados"] /
+            (ocupacion_mes["dias_activos"] * MINUTOS_DIA) * 100
+        ).round(1)
+
+        fig_heatmap_mes = px.density_heatmap(
+            ocupacion_mes,
+            x="quirofano",
+            y="mes",
+            z="ocupacion_%",
+            text_auto=".1f",
+            title="Ocupación mensual media por quirófano",
+            labels={
+                "quirofano": "Quirófano",
+                "mes": "Mes",
+                "ocupacion_%": "% ocupación"
+            },
+            color_continuous_scale="Blues",
+        )
+
+        fig_heatmap_mes.update_layout(
+            height=520,
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+        )
+
+        st.plotly_chart(fig_heatmap_mes, use_container_width=True)
+
+        st.subheader("Tabla resumen por quirófano")
+
+        st.dataframe(
+            resumen_qx.sort_values("ocupacion_media_dia_%", ascending=False),
+            use_container_width=True,
+            hide_index=True,
+        )
 
     with tab4:
         st.subheader("Exportar resultados")
