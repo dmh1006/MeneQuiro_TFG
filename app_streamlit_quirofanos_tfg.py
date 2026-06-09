@@ -11,6 +11,12 @@ import streamlit.components.v1 as components
 import os
 import tempfile
 from datetime import date
+from io import BytesIO
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import cm
 
 from Proyecto.planificador_tfg import (
     agenda_dia,
@@ -626,46 +632,193 @@ def main() -> None:
 
                 columnas_mostrar = [col for col in columnas_mostrar if col in sim.columns]
     with tab2:
+        st.subheader("Análisis histórico")
+
+        fecha_min_hist = df_real["fecha"].dt.date.min()
+        fecha_max_hist = df_real["fecha"].dt.date.max()
+
+        col_h1, col_h2 = st.columns(2)
+
+        with col_h1:
+            fecha_inicio_hist = st.date_input(
+                "Fecha inicial del análisis",
+                value=fecha_min_hist,
+                min_value=fecha_min_hist,
+                max_value=fecha_max_hist,
+                key="fecha_inicio_hist",
+            )
+
+        with col_h2:
+            fecha_fin_hist = st.date_input(
+                "Fecha final del análisis",
+                value=fecha_max_hist,
+                min_value=fecha_min_hist,
+                max_value=fecha_max_hist,
+                key="fecha_fin_hist",
+            )
+
+        if fecha_inicio_hist > fecha_fin_hist:
+            st.error("La fecha inicial no puede ser posterior a la fecha final.")
+            st.stop()
+
+        df_hist = df_real[
+            (df_real["fecha"].dt.date >= fecha_inicio_hist)
+            & (df_real["fecha"].dt.date <= fecha_fin_hist)
+        ].copy()
+
+        st.info(
+            f"Análisis realizado entre {fecha_inicio_hist.strftime('%d/%m/%Y')} "
+            f"y {fecha_fin_hist.strftime('%d/%m/%Y')}."
+        )
+
+        if df_hist.empty:
+            st.warning("No hay cirugías registradas en el intervalo seleccionado.")
+            st.stop()
+
+        k1, k2, k3, k4 = st.columns(4)
+
+        with k1:
+            st.metric("Cirugías analizadas", len(df_hist))
+
+        with k2:
+            st.metric("Quirófanos usados", df_hist["quirofano"].nunique())
+
+        with k3:
+            st.metric("Duración media", f"{df_hist['duracion_min'].mean():.1f} min")
+
+        with k4:
+            urgencias_pct = df_hist["es_urgencia"].mean() * 100 if "es_urgencia" in df_hist.columns else 0
+            st.metric("Urgencias", f"{urgencias_pct:.1f} %")
+
+        st.divider()
+
         st.subheader("Procedimientos más frecuentes")
-        proc = analisis_procedimientos(df_real)
-        st.dataframe(proc.head(20), use_container_width=True, hide_index=True)
+
+        proc = analisis_procedimientos(df_hist).reset_index()
+
+        if "procedimiento" in proc.columns and "procedimiento_base" not in proc.columns:
+            proc = proc.rename(columns={"procedimiento": "procedimiento_base"})
+
+        st.dataframe(
+            proc.head(20),
+            use_container_width=True,
+            hide_index=True,
+        )
 
         c1, c2 = st.columns(2)
+
         with c1:
             top_proc = proc.head(10).copy()
+
             fig_proc = px.bar(
-                top_proc,
+                top_proc.sort_values("n_cirugias", ascending=True),
                 x="n_cirugias",
                 y="procedimiento_base",
                 orientation="h",
+                text="n_cirugias",
                 title="Top 10 procedimientos por volumen",
+                labels={
+                    "n_cirugias": "Nº de cirugías",
+                    "procedimiento_base": "Procedimiento",
+                },
             )
-            fig_proc.update_layout(template="plotly_white", height=450, yaxis_title="")
+
+            fig_proc.update_traces(textposition="outside")
+
+            fig_proc.update_layout(
+                template="plotly_white",
+                height=450,
+                yaxis_title="",
+                xaxis_title="Nº de cirugías",
+            )
+
             st.plotly_chart(fig_proc, use_container_width=True)
 
         with c2:
-            uso = uso_quirofanos(df_real)
+            uso = uso_quirofanos(df_hist).reset_index()
+
+            if "index" in uso.columns and "quirofano" not in uso.columns:
+                uso = uso.rename(columns={"index": "quirofano"})
+
+            if "count" in uso.columns:
+                uso = uso.rename(columns={"count": "n_cirugias"})
+
+            if "horas_ocupadas" not in uso.columns:
+                uso = (
+                    df_hist.groupby("quirofano")
+                    .agg(
+                        horas_ocupadas=("duracion_min", lambda x: round(x.sum() / 60, 2)),
+                        n_cirugias=("duracion_min", "count"),
+                    )
+                    .reset_index()
+                )
+
             fig_uso = px.bar(
-                uso,
+                uso.sort_values("horas_ocupadas", ascending=False),
                 x="quirofano",
                 y="horas_ocupadas",
+                text="horas_ocupadas",
                 title="Horas ocupadas por quirófano",
+                labels={
+                    "quirofano": "Quirófano",
+                    "horas_ocupadas": "Horas ocupadas",
+                },
             )
-            fig_uso.update_layout(template="plotly_white", height=450)
+
+            fig_uso.update_traces(
+                texttemplate="%{text:.1f} h",
+                textposition="outside",
+            )
+
+            fig_uso.update_layout(
+                template="plotly_white",
+                height=450,
+                yaxis_title="Horas ocupadas",
+                xaxis_title="Quirófano",
+            )
+
             st.plotly_chart(fig_uso, use_container_width=True)
 
+        st.divider()
+
         st.subheader("Tiempos muertos entre cirugías")
-        gaps = tiempos_muertos(df_real)
-        gaps_validos = gaps["tiempo_muerto_min"].notna() & (gaps["tiempo_muerto_min"] >= 0)
-        st.metric("Tiempo muerto medio (min)", round(gaps.loc[gaps_validos, "tiempo_muerto_min"].mean(), 2))
-        fig_gap = px.histogram(
-            gaps.loc[gaps_validos],
-            x="tiempo_muerto_min",
-            nbins=30,
-            title="Distribución de tiempos muertos",
+
+        gaps = tiempos_muertos(df_hist)
+
+        if "tiempo_muerto_min" not in gaps.columns and "tiempo_muerto" in gaps.columns:
+            gaps = gaps.rename(columns={"tiempo_muerto": "tiempo_muerto_min"})
+
+        gaps_validos = (
+            gaps["tiempo_muerto_min"].notna()
+            & (gaps["tiempo_muerto_min"] >= 0)
         )
-        fig_gap.update_layout(template="plotly_white", height=420)
-        st.plotly_chart(fig_gap, use_container_width=True)
+
+        if gaps_validos.sum() == 0:
+            st.warning("No hay suficientes cirugías consecutivas para calcular tiempos muertos.")
+        else:
+            st.metric(
+                "Tiempo muerto medio",
+                f"{gaps.loc[gaps_validos, 'tiempo_muerto_min'].mean():.1f} min",
+            )
+
+            fig_gap = px.histogram(
+                gaps.loc[gaps_validos],
+                x="tiempo_muerto_min",
+                nbins=30,
+                title="Distribución de tiempos muertos entre cirugías",
+                labels={
+                    "tiempo_muerto_min": "Tiempo muerto entre cirugías (min)",
+                },
+            )
+
+            fig_gap.update_layout(
+                template="plotly_white",
+                height=420,
+                yaxis_title="Frecuencia",
+                xaxis_title="Tiempo muerto entre cirugías (min)",
+            )
+
+            st.plotly_chart(fig_gap, use_container_width=True)
 
     with tab3:
 
@@ -821,52 +974,268 @@ def main() -> None:
         )
 
     with tab4:
-        st.subheader("Exportar resultados")
-        vista_exportacion = st.selectbox("Vista a exportar", ["Día actual", "Mes completo"])
 
-        if vista_exportacion == "Día actual":
-            agenda_export = agenda_combinada.copy()
-            nombre_base = f"planificacion_diaria_{fecha_ts.strftime('%Y_%m_%d')}"
+        st.subheader("Exportar planificación quirúrgica")
+
+        st.markdown(
+        """
+        Selecciona el intervalo de fechas que quieres exportar.  
+        El sistema generará una tabla limpia para uso sanitario y permitirá descargarla en **CSV, Excel o PDF**.
+        """
+        )
+
+        fecha_min = df_real["fecha"].dt.date.min()
+        fecha_max = df_real["fecha"].dt.date.max()
+
+        col_f1, col_f2 = st.columns(2)
+
+        with col_f1:
+            fecha_inicio_export = st.date_input(
+                "Fecha inicial",
+                value=fecha_sel,
+                min_value=fecha_min,
+                max_value=fecha_max,
+                key="fecha_inicio_export",
+            )
+
+        with col_f2:
+            fecha_fin_export = st.date_input(
+                "Fecha final",
+                value=fecha_sel,
+                min_value=fecha_min,
+                max_value=fecha_max,
+                key="fecha_fin_export",
+            )
+
+        if fecha_inicio_export > fecha_fin_export:
+            st.error("La fecha inicial no puede ser posterior a la fecha final.")
+            st.stop()
+
+        agenda_export = df_real[
+            (df_real["fecha"].dt.date >= fecha_inicio_export)
+            & (df_real["fecha"].dt.date <= fecha_fin_export)
+        ].copy()
+
+        if "agenda_simulada" in st.session_state and not st.session_state.agenda_simulada.empty:
+            simuladas_export = st.session_state.agenda_simulada.copy()
+            simuladas_export["fecha"] = pd.to_datetime(simuladas_export["fecha"])
+
+            simuladas_export = simuladas_export[
+                (simuladas_export["fecha"].dt.date >= fecha_inicio_export)
+                & (simuladas_export["fecha"].dt.date <= fecha_fin_export)
+            ].copy()
+
+            if not simuladas_export.empty:
+                agenda_export = pd.concat([agenda_export, simuladas_export], ignore_index=True)
+
+        agenda_export = agenda_export.sort_values(["fecha", "quirofano", "inicio_dt"]).reset_index(drop=True)
+
+        tabla_export = agenda_export.copy()
+
+        if tabla_export.empty:
+            st.warning("No hay cirugías en el intervalo seleccionado.")
+            st.stop()
+
+        tabla_export["Fecha"] = pd.to_datetime(tabla_export["fecha"]).dt.strftime("%d/%m/%Y")
+        tabla_export["Quirófano"] = tabla_export["quirofano"].astype(str)
+        tabla_export["Hora inicio"] = pd.to_datetime(tabla_export["inicio_dt"]).dt.strftime("%H:%M")
+        tabla_export["Hora fin"] = pd.to_datetime(tabla_export["fin_dt"]).dt.strftime("%H:%M")
+        tabla_export["Duración"] = tabla_export["duracion_min"].round(0).astype(int).astype(str) + " min"
+        tabla_export["Procedimiento"] = tabla_export["procedimiento_base"].astype(str)
+
+        if "cirujano_principal" in tabla_export.columns:
+            tabla_export["Cirujano"] = tabla_export["cirujano_principal"].fillna("No indicado")
         else:
-            agenda_export = df_real.copy()
-            if st.session_state.cirugias_anadidas:
-                extra = pd.DataFrame(st.session_state.cirugias_anadidas).copy()
-                if not extra.empty:
-                    extra["fecha"] = pd.to_datetime(extra["fecha"])
-                    extra["inicio_dt"] = pd.to_datetime(extra["inicio"])
-                    extra["fin_dt"] = pd.to_datetime(extra["fin_estimado"])
-                    extra["duracion_min"] = (extra["fin_dt"] - extra["inicio_dt"]).dt.total_seconds() / 60
-                    extra["procedimiento_base"] = extra["procedimiento"]
-                    extra["fuente"] = "Propuesta añadida"
-                    for col in agenda_export.columns:
-                        if col not in extra.columns:
-                            extra[col] = pd.NA
-                    extra = extra[agenda_export.columns]
-                    agenda_export = pd.concat([agenda_export, extra], ignore_index=True)
-            nombre_base = "planificacion_mensual_febrero_2026"
+            tabla_export["Cirujano"] = "No indicado"
 
-        st.dataframe(agenda_export.head(30), use_container_width=True, hide_index=True)
+        if "anestesista_principal" in tabla_export.columns:
+            tabla_export["Anestesista"] = tabla_export["anestesista_principal"].fillna("No indicado")
+        else:
+            tabla_export["Anestesista"] = "No indicado"
 
-        csv_bytes = agenda_export.to_csv(index=False).encode("utf-8-sig")
-        xlsx_bytes = to_excel_bytes(agenda_export)
+        if "paciente_id" in tabla_export.columns:
+            tabla_export["Paciente"] = tabla_export["paciente_id"].fillna("No indicado")
+        else:
+            tabla_export["Paciente"] = "No indicado"
 
-        d1, d2 = st.columns(2)
+        if "fuente" in tabla_export.columns:
+            tabla_export["Origen"] = tabla_export["fuente"].fillna("Histórico")
+        else:
+            tabla_export["Origen"] = "Histórico"
+
+        tabla_export_final = tabla_export[
+            [
+                "Fecha",
+                "Quirófano",
+                "Hora inicio",
+                "Hora fin",
+                "Duración",
+                "Procedimiento",
+                "Cirujano",
+                "Anestesista",
+                "Paciente",
+                "Origen",
+            ]
+        ]
+
+        st.markdown("### Resumen del periodo seleccionado")
+
+        k1, k2, k3, k4 = st.columns(4)
+
+        with k1:
+            st.metric("Cirugías", len(tabla_export_final))
+
+        with k2:
+            st.metric("Quirófanos usados", tabla_export_final["Quirófano"].nunique())
+
+        with k3:
+            horas_totales = tabla_export["duracion_min"].sum() / 60
+            st.metric("Horas quirúrgicas", f"{horas_totales:.1f} h")
+
+        with k4:
+            duracion_media = tabla_export["duracion_min"].mean()
+            st.metric("Duración media", f"{duracion_media:.0f} min")
+
+        st.markdown("### Tabla de planificación")
+
+        st.dataframe(
+            tabla_export_final,
+            use_container_width=True,
+            hide_index=True,
+        )
+
+        nombre_base = (
+            f"planificacion_quirofanos_"
+            f"{pd.to_datetime(fecha_inicio_export).strftime('%Y_%m_%d')}_"
+            f"{pd.to_datetime(fecha_fin_export).strftime('%Y_%m_%d')}"
+        )
+
+        csv_data = tabla_export_final.to_csv(index=False).encode("utf-8-sig")
+
+
+        excel_buffer = BytesIO()
+
+        with pd.ExcelWriter(excel_buffer, engine="openpyxl") as writer:
+            tabla_export_final.to_excel(writer, index=False, sheet_name="Planificación")
+
+            workbook = writer.book
+            worksheet = writer.sheets["Planificación"]
+
+            for column_cells in worksheet.columns:
+                length = max(len(str(cell.value)) if cell.value is not None else 0 for cell in column_cells)
+                worksheet.column_dimensions[column_cells[0].column_letter].width = min(length + 3, 45)
+
+        excel_data = excel_buffer.getvalue()
+
+        def generar_pdf_exportacion(tabla_pdf, fecha_inicio, fecha_fin):
+            buffer = BytesIO()
+
+            doc = SimpleDocTemplate(
+                buffer,
+                pagesize=landscape(A4),
+                rightMargin=1 * cm,
+                leftMargin=1 * cm,
+                topMargin=1 * cm,
+                bottomMargin=1 * cm,
+            )
+
+            styles = getSampleStyleSheet()
+            elementos = []
+
+            titulo = Paragraph("Planificación quirúrgica", styles["Title"])
+            subtitulo = Paragraph(
+                f"Periodo exportado: {fecha_inicio.strftime('%d/%m/%Y')} - {fecha_fin.strftime('%d/%m/%Y')}",
+                styles["Normal"],
+            )
+
+            elementos.append(titulo)
+            elementos.append(subtitulo)
+            elementos.append(Spacer(1, 0.4 * cm))
+
+            resumen = Paragraph(
+                f"Cirugías: {len(tabla_pdf)} | "
+                f"Quirófanos usados: {tabla_pdf['Quirófano'].nunique()}",
+                styles["Normal"],
+            )
+            elementos.append(resumen)
+            elementos.append(Spacer(1, 0.4 * cm))
+
+            columnas_pdf = [
+                "Fecha",
+                "Quirófano",
+                "Hora inicio",
+                "Hora fin",
+                "Duración",
+                "Procedimiento",
+                "Cirujano",
+                "Anestesista",
+            ]
+
+            tabla_corta = tabla_pdf[columnas_pdf].copy()
+
+            data = [columnas_pdf] + tabla_corta.values.tolist()
+
+            table = Table(data, repeatRows=1)
+
+            table.setStyle(
+                TableStyle(
+                    [
+                        ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#1f2937")),
+                        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                        ("FONTSIZE", (0, 0), (-1, -1), 7),
+                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                        ("GRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#d1d5db")),
+                        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f3f4f6")]),
+                    ]
+                )
+            )
+
+            elementos.append(table)
+
+
+            doc.build(elementos)
+
+            buffer.seek(0)
+            return buffer.getvalue()
+
+        pdf_data = generar_pdf_exportacion(
+            tabla_export_final,
+            pd.to_datetime(fecha_inicio_export),
+            pd.to_datetime(fecha_fin_export),
+        )
+
+        st.markdown("### Descargas")
+
+        d1, d2, d3 = st.columns(3)
+
         with d1:
             st.download_button(
                 "Descargar CSV",
-                data=csv_bytes,
+                data=csv_data,
                 file_name=f"{nombre_base}.csv",
                 mime="text/csv",
-            )
-        with d2:
-            st.download_button(
-                "Descargar Excel",
-                data=xlsx_bytes,
-                file_name=f"{nombre_base}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
             )
 
-        st.info("Exportación para la planificación del equipo de quirofano")
+        with d2:
+            st.download_button(
+            "Descargar Excel",
+                data=excel_data,
+                file_name=f"{nombre_base}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True,
+            )
+
+        with d3:
+            st.download_button(
+                "Descargar PDF",
+                data=pdf_data,
+                file_name=f"{nombre_base}.pdf",
+                mime="application/pdf",
+                use_container_width=True,
+            )
 
     with tab5:
         st.subheader("Planificador anual de guardias de quirófano")
