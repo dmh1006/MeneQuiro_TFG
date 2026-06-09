@@ -461,7 +461,7 @@ def cargar_cirugias_realizadas():
     df = pd.read_sql_query("SELECT * FROM cirugias_realizadas", conn)
     conn.close()
 
-DB_PATH = BASE_DIR / "Data" / "quirofanos_realizadas.db"
+DB_PATH = Path.cwd() / "Data" / "quirofanos_realizadas.db"
 
 
 def inicializar_bd_realizadas():
