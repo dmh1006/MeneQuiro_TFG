@@ -847,7 +847,7 @@ def main() -> None:
 
                 guardar_cirugia_realizada(datos_realizada)
 
-                st.session_state.cirugias_simuladas = st.session_state.cirugias_simuladas.drop(index=idx).reset_index(drop=True)
+                st.session_state.cirugias_anadidas = st.session_state.cirugias_anadidas.drop(index=idx).reset_index(drop=True)
 
                 st.success("Cirugía guardada como realizada correctamente.")
                 st.rerun()
