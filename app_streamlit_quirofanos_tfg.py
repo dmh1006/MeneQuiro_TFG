@@ -847,7 +847,14 @@ def main() -> None:
 
                 guardar_cirugia_realizada(datos_realizada)
 
-                st.session_state.cirugias_anadidas = st.session_state.cirugias_anadidas.drop(index=idx).reset_index(drop=True)
+                df_tmp = pd.DataFrame(st.session_state.cirugias_anadidas)
+
+                st.session_state.cirugias_anadidas = (
+                    df_tmp
+                    .drop(index=idx)
+                    .reset_index(drop=True)
+                    .to_dict("records")
+                )
 
                 st.success("Cirugía guardada como realizada correctamente.")
                 st.rerun()
