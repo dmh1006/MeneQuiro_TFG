@@ -393,7 +393,7 @@ def agrupar_procedimiento(nombre):
 
     return "OTROS PROCEDIMIENTOS"
 
-DB_PATH = BASE_DIR / "Data" / "quirofanos_realizadas.db"
+DB_PATH = Path("Data/quirofanos_realizadas.db")
 
 
 def inicializar_bd_realizadas():
