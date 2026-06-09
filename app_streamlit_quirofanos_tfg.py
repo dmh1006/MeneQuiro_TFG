@@ -772,11 +772,10 @@ def main() -> None:
 
         st.subheader("Confirmar cirugía realizada")
 
-        if "cirugias_simuladas" not in st.session_state or st.session_state.cirugias_simuladas.empty:
+        if "cirugias_anadidas" not in st.session_state or len(st.session_state.cirugias_anadidas) == 0:
             st.info("No hay cirugías simuladas pendientes de confirmar.")
         else:
-            simuladas = st.session_state.cirugias_simuladas.copy()
-            simuladas = simuladas.reset_index(drop=True)
+            simuladas = pd.DataFrame(st.session_state.cirugias_anadidas).copy()
 
             simuladas["label"] = (
                 simuladas["quirofano"].astype(str)
