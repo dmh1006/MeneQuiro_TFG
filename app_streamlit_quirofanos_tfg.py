@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import io
-from pathlib import Path
-
+import sqlite3
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -17,6 +16,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
+from pathlib import Path
+from datetime import datetime
 
 from Proyecto.planificador_tfg import (
     agenda_dia,
@@ -392,12 +393,149 @@ def agrupar_procedimiento(nombre):
 
     return "OTROS PROCEDIMIENTOS"
 
+DB_PATH = BASE_DIR / "Data" / "quirofanos_realizadas.db"
+
+
+def inicializar_bd_realizadas():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cirugias_realizadas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT,
+            quirofano TEXT,
+            procedimiento TEXT,
+            paciente TEXT,
+            cirujano TEXT,
+            anestesista TEXT,
+            inicio_planificado TEXT,
+            fin_planificado TEXT,
+            inicio_real TEXT,
+            fin_real TEXT,
+            duracion_real_min INTEGER,
+            notas TEXT,
+            estado TEXT,
+            fecha_registro TEXT
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+def guardar_cirugia_realizada(datos):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO cirugias_realizadas (
+            fecha, quirofano, procedimiento, paciente, cirujano, anestesista,
+            inicio_planificado, fin_planificado, inicio_real, fin_real,
+            duracion_real_min, notas, estado, fecha_registro
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        datos["fecha"],
+        datos["quirofano"],
+        datos["procedimiento"],
+        datos["paciente"],
+        datos["cirujano"],
+        datos["anestesista"],
+        datos["inicio_planificado"],
+        datos["fin_planificado"],
+        datos["inicio_real"],
+        datos["fin_real"],
+        datos["duracion_real_min"],
+        datos["notas"],
+        "realizada",
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def cargar_cirugias_realizadas():
+    conn = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query("SELECT * FROM cirugias_realizadas", conn)
+    conn.close()
+
+DB_PATH = BASE_DIR / "Data" / "quirofanos_realizadas.db"
+
+
+def inicializar_bd_realizadas():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cirugias_realizadas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT,
+            quirofano TEXT,
+            procedimiento TEXT,
+            paciente TEXT,
+            cirujano TEXT,
+            anestesista TEXT,
+            inicio_planificado TEXT,
+            fin_planificado TEXT,
+            inicio_real TEXT,
+            fin_real TEXT,
+            duracion_real_min INTEGER,
+            notas TEXT,
+            estado TEXT,
+            fecha_registro TEXT
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+def guardar_cirugia_realizada(datos):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO cirugias_realizadas (
+            fecha, quirofano, procedimiento, paciente, cirujano, anestesista,
+            inicio_planificado, fin_planificado, inicio_real, fin_real,
+            duracion_real_min, notas, estado, fecha_registro
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        datos["fecha"],
+        datos["quirofano"],
+        datos["procedimiento"],
+        datos["paciente"],
+        datos["cirujano"],
+        datos["anestesista"],
+        datos["inicio_planificado"],
+        datos["fin_planificado"],
+        datos["inicio_real"],
+        datos["fin_real"],
+        datos["duracion_real_min"],
+        datos["notas"],
+        "realizada",
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def cargar_cirugias_realizadas():
+    conn = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query("SELECT * FROM cirugias_realizadas", conn)
+    conn.close()
+    return df
 # ----------------------------------------------------------
 # APP
 # ----------------------------------------------------------
 
 def main() -> None:
     inicializar_estado()
+    inicializar_bd_realizadas()
     _, df_real, catalogo = cargar_base()
     catalogo["grupo_procedimiento"] = catalogo["procedimiento_base"].apply(agrupar_procedimiento)
 
@@ -631,6 +769,103 @@ def main() -> None:
                 ]
 
                 columnas_mostrar = [col for col in columnas_mostrar if col in sim.columns]
+
+        st.subheader("Confirmar cirugía realizada")
+
+        if "agenda_simulada" not in st.session_state or st.session_state.agenda_simulada.empty:
+            st.info("No hay cirugías simuladas pendientes de confirmar.")
+        else:
+            simuladas = st.session_state.agenda_simulada.copy()
+            simuladas = simuladas.reset_index(drop=True)
+
+            simuladas["label"] = (
+                simuladas["quirofano"].astype(str)
+                + " · "
+                + pd.to_datetime(simuladas["inicio_dt"]).dt.strftime("%H:%M")
+                + "-"
+                + pd.to_datetime(simuladas["fin_dt"]).dt.strftime("%H:%M")
+                + " · "
+                + simuladas["procedimiento_base"].astype(str)
+            )
+
+            seleccion = st.selectbox(
+                "Selecciona cirugía simulada",
+                simuladas["label"].tolist(),
+                key="cirugia_simulada_a_confirmar"
+            )   
+
+            idx = simuladas[simuladas["label"] == seleccion].index[0]
+            cirugia = simuladas.loc[idx]
+
+            col_r1, col_r2 = st.columns(2)
+
+            with col_r1:
+                inicio_real = st.time_input(
+                    "Hora real de inicio",
+                    value=pd.to_datetime(cirugia["inicio_dt"]).time(),
+                    key="inicio_real_confirmacion"
+                )
+
+            with col_r2:
+                fin_real = st.time_input(
+                    "Hora real de fin",
+                    value=pd.to_datetime(cirugia["fin_dt"]).time(),
+                    key="fin_real_confirmacion"
+                )
+
+            notas = st.text_area(
+                "Notas sobre la cirugía",
+                placeholder="Ejemplo: cirugía sin incidencias, retraso por anestesia, material específico utilizado...",
+                key="notas_cirugia_realizada"
+            )
+
+            if st.button("Guardar como cirugía realizada", type="primary", use_container_width=True):
+
+                fecha_cirugia = pd.to_datetime(cirugia["fecha"]).date()
+
+                inicio_real_dt = pd.to_datetime(f"{fecha_cirugia} {inicio_real}")
+                fin_real_dt = pd.to_datetime(f"{fecha_cirugia} {fin_real}")
+
+                if fin_real_dt < inicio_real_dt:
+                    fin_real_dt += pd.Timedelta(days=1)
+
+                duracion_real = int((fin_real_dt - inicio_real_dt).total_seconds() / 60)
+
+                datos_realizada = {
+                    "fecha": str(fecha_cirugia),
+                    "quirofano": str(cirugia["quirofano"]),
+                    "procedimiento": str(cirugia["procedimiento_base"]),
+                    "paciente": str(cirugia.get("paciente_id", "No indicado")),
+                    "cirujano": str(cirugia.get("cirujano_principal", "No indicado")),
+                    "anestesista": str(cirugia.get("anestesista_principal", "No indicado")),
+                    "inicio_planificado": pd.to_datetime(cirugia["inicio_dt"]).strftime("%H:%M"),
+                    "fin_planificado": pd.to_datetime(cirugia["fin_dt"]).strftime("%H:%M"),
+                    "inicio_real": inicio_real_dt.strftime("%H:%M"),
+                    "fin_real": fin_real_dt.strftime("%H:%M"),
+                    "duracion_real_min": duracion_real,
+                    "notas": notas,
+                }
+
+                guardar_cirugia_realizada(datos_realizada)
+
+                st.session_state.agenda_simulada = st.session_state.agenda_simulada.drop(index=idx).reset_index(drop=True)
+
+                st.success("Cirugía guardada como realizada correctamente.")
+                st.rerun()
+
+        st.subheader("Cirugías realizadas registradas")
+
+        df_realizadas_bd = cargar_cirugias_realizadas()
+
+        if df_realizadas_bd.empty:
+            st.info("Todavía no hay cirugías realizadas registradas.")
+        else:
+            st.dataframe(
+                df_realizadas_bd.sort_values("fecha_registro", ascending=False),
+                use_container_width=True,
+                hide_index=True,
+            )
+
     with tab2:
         st.subheader("Análisis histórico")
 
