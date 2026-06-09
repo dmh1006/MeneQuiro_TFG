@@ -772,10 +772,10 @@ def main() -> None:
 
         st.subheader("Confirmar cirugía realizada")
 
-        if "agenda_simulada" not in st.session_state or st.session_state.agenda_simulada.empty:
+        if "cirugias_simuladas" not in st.session_state or st.session_state.cirugias_simuladas.empty:
             st.info("No hay cirugías simuladas pendientes de confirmar.")
         else:
-            simuladas = st.session_state.agenda_simulada.copy()
+            simuladas = st.session_state.cirugias_simuladas.copy()
             simuladas = simuladas.reset_index(drop=True)
 
             simuladas["label"] = (
@@ -848,7 +848,7 @@ def main() -> None:
 
                 guardar_cirugia_realizada(datos_realizada)
 
-                st.session_state.agenda_simulada = st.session_state.agenda_simulada.drop(index=idx).reset_index(drop=True)
+                st.session_state.cirugias_simuladas = st.session_state.cirugias_simuladas.drop(index=idx).reset_index(drop=True)
 
                 st.success("Cirugía guardada como realizada correctamente.")
                 st.rerun()
