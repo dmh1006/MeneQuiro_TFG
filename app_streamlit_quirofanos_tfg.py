@@ -711,7 +711,7 @@ def main() -> None:
     "Planificación diaria",
     "Análisis de procedimientos",
     "Analisis de quirófanos",
-    "Exportación",
+    "Exportación de planificación",
     "Planificador de guardias",
 ])
 
