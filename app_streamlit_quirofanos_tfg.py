@@ -474,9 +474,13 @@ def guardar_cirugia_realizada(datos):
 
 
 def cargar_cirugias_realizadas():
+    inicializar_bd_realizadas()
+
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query("SELECT * FROM cirugias_realizadas", conn)
     conn.close()
+
+    return df
 
 DB_PATH = Path.cwd() / "Data" / "quirofanos_realizadas.db"
 
@@ -572,9 +576,12 @@ def guardar_cirugia_simulada(datos):
 
 
 def cargar_cirugias_simuladas():
+    inicializar_bd_realizadas()
+
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query("SELECT * FROM cirugias_simuladas", conn)
     conn.close()
+
     return df
 
 
