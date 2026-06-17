@@ -1743,7 +1743,7 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
                     f"{cirujano[:24]}"
                 )
 
-            fuente = str(row.get("fuente", "Histórico"))
+            fuente = str(fila.get("fuente", "Histórico"))
 
             if fuente == "Realizada":
                 clase = "block-realizada"
