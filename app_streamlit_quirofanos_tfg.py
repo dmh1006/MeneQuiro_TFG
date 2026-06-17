@@ -1063,56 +1063,75 @@ def main() -> None:
 
         with c2:
 
-            duracion_proc = (
+            variabilidad_proc = (
                 df_hist.groupby("procedimiento_base")
                 .agg(
                     n_cirugias=("procedimiento_base", "count"),
                     duracion_media=("duracion_min", "mean"),
-                    duracion_mediana=("duracion_min", "median"),
+                    desviacion=("duracion_min", "std"),
                 )
                 .reset_index()
             )
 
-            duracion_proc = duracion_proc[
-                duracion_proc["n_cirugias"] >= 5
+            variabilidad_proc = variabilidad_proc[
+                variabilidad_proc["n_cirugias"] >= 5
             ].copy()
 
-            duracion_proc["duracion_media"] = (
-                duracion_proc["duracion_media"].round(1)
+            variabilidad_proc["desviacion"] = (
+                variabilidad_proc["desviacion"]
+                .fillna(0)
+                .round(1)
             )
 
-            duracion_proc = duracion_proc.sort_values(
-                "duracion_media",
+            variabilidad_proc["duracion_media"] = (
+                variabilidad_proc["duracion_media"]
+                .round(1)
+            )
+
+            variabilidad_proc = variabilidad_proc.sort_values(
+                "desviacion",
                 ascending=True
             ).tail(10)
 
-            fig_duracion = px.bar(
-                duracion_proc,
-                x="duracion_media",
+            fig_var = px.bar(
+                variabilidad_proc,
+                x="desviacion",
                 y="procedimiento_base",
                 orientation="h",
-                text="duracion_media",
-                title="Procedimientos con mayor duración media",
+                text="desviacion",
+                title="Procedimientos con mayor variabilidad de duración",
                 hover_data={
                     "n_cirugias": True,
-                    "duracion_mediana": True,
                     "duracion_media": True,
+                    "desviacion": True,
                 },
+                labels={
+                    "desviacion": "Variabilidad (min)",
+                    "procedimiento_base": "Procedimiento",
+                }
             )
 
-            fig_duracion.update_traces(
-                texttemplate="%{text:.0f} min",
+            fig_var.update_traces(
+                texttemplate="± %{text:.0f} min",
                 textposition="outside",
             )
 
-            fig_duracion.update_layout(
+            fig_var.update_layout(
                 template="plotly_white",
                 height=550,
-                xaxis_title="Duración media (minutos)",
+                xaxis_title="Desviación estándar (minutos)",
                 yaxis_title="",
             )
 
-            st.plotly_chart(fig_duracion, use_container_width=True)
+            st.plotly_chart(fig_var, use_container_width=True)
+
+            st.info(
+                """
+                La variabilidad representa cuánto cambia la duración real de una intervención
+                respecto a su duración media. Cuanto mayor es este valor, más difícil resulta
+                planificar huecos quirúrgicos con precisión.
+                """
+            )
 
         st.divider()
 
