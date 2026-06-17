@@ -639,13 +639,62 @@ def main() -> None:
                 [agenda_combinada, realizadas_dia],
                 ignore_index=True
             )
+    agenda_para_propuestas = obtener_agenda_combinada(
+        df_real,
+        fecha_ts,
+        st.session_state.cirugias_anadidas,
+    )
+
+    df_realizadas_bd = cargar_cirugias_realizadas()
+
+    if not df_realizadas_bd.empty:
+        realizadas_dia = df_realizadas_bd.copy()
+        realizadas_dia["fecha"] = pd.to_datetime(realizadas_dia["fecha"])
+
+        realizadas_dia = realizadas_dia[
+            realizadas_dia["fecha"].dt.date == fecha_ts.date()
+        ].copy()
+
+        if not realizadas_dia.empty:
+            realizadas_dia["inicio_dt"] = pd.to_datetime(
+                realizadas_dia["fecha"].dt.strftime("%Y-%m-%d") + " " + realizadas_dia["inicio_real"]
+            )
+
+            realizadas_dia["fin_dt"] = pd.to_datetime(
+                realizadas_dia["fecha"].dt.strftime("%Y-%m-%d") + " " + realizadas_dia["fin_real"]
+            )
+
+            realizadas_dia["procedimiento_base"] = realizadas_dia["procedimiento"]
+            realizadas_dia["paciente_id"] = realizadas_dia["paciente"]
+            realizadas_dia["cirujano_principal"] = realizadas_dia["cirujano"]
+            realizadas_dia["anestesista_principal"] = realizadas_dia["anestesista"]
+            realizadas_dia["duracion_min"] = realizadas_dia["duracion_real_min"]
+            realizadas_dia["fuente"] = "Realizada"
+
+            # quitar de la agenda una simulada equivalente si ya fue realizada
+            for _, realizada in realizadas_dia.iterrows():
+                agenda_para_propuestas = agenda_para_propuestas[
+                    ~(
+                        (agenda_para_propuestas["quirofano"].astype(str) == str(realizada["quirofano"]))
+                        &
+                        (agenda_para_propuestas["procedimiento_base"].astype(str) == str(realizada["procedimiento"]))
+                        &
+                        (pd.to_datetime(agenda_para_propuestas["inicio_dt"]).dt.strftime("%H:%M") == str(realizada["inicio_planificado"]))
+                    )
+                ]
+
+            agenda_para_propuestas = pd.concat(
+                [agenda_para_propuestas, realizadas_dia],
+                ignore_index=True,
+            )
+
     propuestas = proponer_huecos(
-        df_real=df_real,
-        catalogo=catalogo,
-        procedimiento=procedimiento_sel,
-        fecha=fecha_ts,
-        quirofanos_validos=filtro_qx,
+        agenda_para_propuestas,
+        catalogo,
+        procedimiento_sel,
+        fecha_ts,
         max_resultados=max_resultados,
+        quirofanos_permitidos=filtro_qx,
     )
 
     # KPIs
