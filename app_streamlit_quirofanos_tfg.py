@@ -995,40 +995,7 @@ def main() -> None:
             & (df_real["fecha"].dt.date <= fecha_fin_hist)
         ].copy()
 
-        # ==========================================
-        # KPIs DE PROCEDIMIENTOS
-        # ==========================================
-
-        proc = analisis_procedimientos(df_hist)
-
-        c1, c2, c3, c4 = st.columns(4)
-
-        with c1:
-            st.metric(
-                "Procedimientos distintos",
-                df_hist["procedimiento_base"].nunique()
-            )
-
-        with c2:
-            if not proc.empty:
-                st.metric(
-                    "Más frecuente",
-                    proc.iloc[0]["procedimiento_base"][:30]
-                )
-
-        with c3:
-            st.metric(
-                "Duración media",
-                f"{df_hist['duracion_min'].mean():.0f} min"
-            )
-
-        with c4:
-            st.metric(
-                "Horas totales",
-                f"{df_hist['duracion_horas'].sum():.0f} h"
-            )
-
-        st.divider()
+        
 
         st.info(
             f"Análisis realizado entre {fecha_inicio_hist.strftime('%d/%m/%Y')} "
@@ -1095,49 +1062,59 @@ def main() -> None:
             st.plotly_chart(fig_proc, use_container_width=True)
 
         with c2:
-            uso = uso_quirofanos(df_hist).reset_index()
-
-            if "index" in uso.columns and "quirofano" not in uso.columns:
-                uso = uso.rename(columns={"index": "quirofano"})
-
-            if "count" in uso.columns:
-                uso = uso.rename(columns={"count": "n_cirugias"})
-
-            if "horas_ocupadas" not in uso.columns:
-                uso = (
-                    df_hist.groupby("quirofano")
-                    .agg(
-                        horas_ocupadas=("duracion_min", lambda x: round(x.sum() / 60, 2)),
-                        n_cirugias=("duracion_min", "count"),
-                    )
-                    .reset_index()
+            impacto_proc = (
+                df_hist.groupby("procedimiento_base")
+                .agg(
+                    n_cirugias=("procedimiento_base", "count"),
+                    horas_totales=("duracion_min", lambda x: round(x.sum() / 60, 1)),
+                    duracion_media=("duracion_min", "mean"),
                 )
+                .reset_index()
+            )
 
-            fig_uso = px.bar(
-                uso.sort_values("horas_ocupadas", ascending=False),
-                x="quirofano",
-                y="horas_ocupadas",
-                text="horas_ocupadas",
-                title="Horas ocupadas por quirófano",
+            impacto_proc = impacto_proc[impacto_proc["n_cirugias"] >= 5].copy()
+
+            impacto_proc["duracion_media"] = impacto_proc["duracion_media"].round(1)
+
+            impacto_proc = impacto_proc.sort_values(
+                "horas_totales",
+                ascending=True,
+            ).tail(10)
+
+            fig_impacto = px.bar(
+                impacto_proc,
+                x="horas_totales",
+                y="procedimiento_base",
+                orientation="h",
+                text="horas_totales",
+                title="Procedimientos que más tiempo de quirófano consumen",
                 labels={
-                    "quirofano": "Quirófano",
-                    "horas_ocupadas": "Horas ocupadas",
+                    "horas_totales": "Horas totales ocupadas",
+                    "procedimiento_base": "Procedimiento",
+                    "n_cirugias": "Nº cirugías",
+                    "duracion_media": "Duración media",
+                },
+                hover_data={
+                    "n_cirugias": True,
+                    "duracion_media": True,
+                    "horas_totales": True,
+                    "procedimiento_base": False,
                 },
             )
 
-            fig_uso.update_traces(
+            fig_impacto.update_traces(
                 texttemplate="%{text:.1f} h",
                 textposition="outside",
             )
 
-            fig_uso.update_layout(
+            fig_impacto.update_layout(
                 template="plotly_white",
-                height=450,
-                yaxis_title="Horas ocupadas",
-                xaxis_title="Quirófano",
+                height=550,
+                xaxis_title="Horas totales de quirófano",
+                yaxis_title="",
             )
 
-            st.plotly_chart(fig_uso, use_container_width=True)
+            st.plotly_chart(fig_impacto, use_container_width=True)
 
         st.divider()
 
