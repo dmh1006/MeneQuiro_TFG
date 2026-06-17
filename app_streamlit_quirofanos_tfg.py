@@ -1135,7 +1135,7 @@ def main() -> None:
 
         st.divider()
 
-        st.subheader("Tiempos muertos entre cirugías")
+        st.subheader("Análisis de tiempos muertos por quirófano")
 
         gaps = tiempos_muertos(df_hist)
 
@@ -1150,26 +1150,75 @@ def main() -> None:
         if gaps_validos.sum() == 0:
             st.warning("No hay suficientes cirugías consecutivas para calcular tiempos muertos.")
         else:
-            st.metric(
-                "Tiempo muerto medio",
-                f"{gaps.loc[gaps_validos, 'tiempo_muerto_min'].mean():.1f} min",
+            gaps_filtrados = gaps.loc[gaps_validos].copy()
+
+            gaps_qx = (
+                gaps_filtrados
+                .groupby("quirofano")
+                .agg(
+                    tiempo_muerto_medio=("tiempo_muerto_min", "mean"),
+                    tiempo_muerto_total=("tiempo_muerto_min", "sum"),
+                    n_huecos=("tiempo_muerto_min", "count"),
+                )
+                .reset_index()
             )
 
-            fig_gap = px.histogram(
-                gaps.loc[gaps_validos],
-                x="tiempo_muerto_min",
-                nbins=30,
-                title="Distribución de tiempos muertos entre cirugías",
+            gaps_qx["tiempo_muerto_medio"] = gaps_qx["tiempo_muerto_medio"].round(1)
+            gaps_qx["tiempo_muerto_total_h"] = (gaps_qx["tiempo_muerto_total"] / 60).round(1)
+
+            k1, k2, k3 = st.columns(3)
+
+            with k1:
+                st.metric(
+                    "Tiempo muerto medio",
+                    f"{gaps_filtrados['tiempo_muerto_min'].mean():.1f} min",
+                )
+
+            with k2:
+                st.metric(
+                    "Tiempo muerto total",
+                    f"{gaps_filtrados['tiempo_muerto_min'].sum() / 60:.1f} h",
+                )
+
+            with k3:
+                qx_peor = gaps_qx.sort_values(
+                    "tiempo_muerto_medio",
+                    ascending=False,
+                ).iloc[0]["quirofano"]
+
+                st.metric(
+                    "Mayor margen de mejora",
+                    qx_peor,
+                )
+
+            fig_gap = px.bar(
+                gaps_qx.sort_values("tiempo_muerto_medio", ascending=False),
+                x="quirofano",
+                y="tiempo_muerto_medio",
+                text="tiempo_muerto_medio",
+                title="Tiempo muerto medio por quirófano",
                 labels={
-                    "tiempo_muerto_min": "Tiempo muerto entre cirugías (min)",
+                    "quirofano": "Quirófano",
+                    "tiempo_muerto_medio": "Tiempo muerto medio (min)",
+                    "tiempo_muerto_total_h": "Tiempo muerto total (h)",
+                    "n_huecos": "Nº de huecos entre cirugías",
                 },
+                hover_data={
+                    "tiempo_muerto_total_h": True,
+                    "n_huecos": True,
+                },
+            )
+
+            fig_gap.update_traces(
+                texttemplate="%{text:.1f} min",
+                textposition="outside",
             )
 
             fig_gap.update_layout(
                 template="plotly_white",
-                height=420,
-                yaxis_title="Frecuencia",
-                xaxis_title="Tiempo muerto entre cirugías (min)",
+                height=450,
+                yaxis_title="Tiempo muerto medio (min)",
+                xaxis_title="Quirófano",
             )
 
             st.plotly_chart(fig_gap, use_container_width=True)
