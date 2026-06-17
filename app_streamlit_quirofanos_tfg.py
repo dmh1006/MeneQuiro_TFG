@@ -738,7 +738,7 @@ def main() -> None:
                         "procedimiento_base": fila["procedimiento"],
                         "duracion_min": fila["duracion_necesaria"],
                         "holgura_min": fila.get("holgura_min", None),
-                        "fuente": "Propuesta añadida",
+                        "fuente": "Simulada",
                         "es_quirofano_habitual": fila.get("es_quirofano_habitual", None),
                         "paciente": paciente_sim,
                         "cirujano_principal": cirujano_sim,
