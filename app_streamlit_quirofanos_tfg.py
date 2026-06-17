@@ -600,6 +600,45 @@ def main() -> None:
     fecha_ts = pd.to_datetime(fecha_sel)
     agenda_historica = agenda_dia(df_real, fecha_ts)
     agenda_combinada = obtener_agenda_combinada(df_real, fecha_ts, st.session_state.cirugias_anadidas)
+    df_realizadas_bd = cargar_cirugias_realizadas()
+
+    if not df_realizadas_bd.empty:
+        realizadas_dia = df_realizadas_bd.copy()
+        realizadas_dia["fecha"] = pd.to_datetime(realizadas_dia["fecha"])
+
+        realizadas_dia = realizadas_dia[
+            realizadas_dia["fecha"].dt.date == fecha_ts.date()
+        ].copy()
+
+        if not realizadas_dia.empty:
+            realizadas_dia["inicio_dt"] = pd.to_datetime(
+                realizadas_dia["fecha"].dt.strftime("%Y-%m-%d") + " " + realizadas_dia["inicio_real"]
+            )
+            realizadas_dia["fin_dt"] = pd.to_datetime(
+                realizadas_dia["fecha"].dt.strftime("%Y-%m-%d") + " " + realizadas_dia["fin_real"]
+            )
+
+            realizadas_dia["procedimiento_base"] = realizadas_dia["procedimiento"]
+            realizadas_dia["paciente_id"] = realizadas_dia["paciente"]
+            realizadas_dia["cirujano_principal"] = realizadas_dia["cirujano"]
+            realizadas_dia["anestesista_principal"] = realizadas_dia["anestesista"]
+            realizadas_dia["duracion_min"] = realizadas_dia["duracion_real_min"]
+            realizadas_dia["fuente"] = "Realizada"
+            
+            for _, realizada in realizadas_dia.iterrows():
+
+                agenda_combinada = agenda_combinada[
+                    ~(
+                        (agenda_combinada["quirofano"] == realizada["quirofano"])
+                        &
+                        (agenda_combinada["procedimiento_base"] == realizada["procedimiento"])
+                    )
+                ]
+
+            agenda_combinada = pd.concat(
+                [agenda_combinada, realizadas_dia],
+                ignore_index=True
+            )
     propuestas = proponer_huecos(
         df_real=df_real,
         catalogo=catalogo,
@@ -1704,7 +1743,14 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
                     f"{cirujano[:24]}"
                 )
 
-            clase = "block-propuesta" if fuente == "Propuesta añadida" else "block-historico"
+            fuente = str(row.get("fuente", "Histórico"))
+
+            if fuente == "Realizada":
+                clase = "block-realizada"
+            elif fuente == "Simulada":
+                clase = "block-propuesta"
+            else:
+                clase = "block-historico"
 
             tooltip = (
                 f"{procedimiento} | "
@@ -1844,6 +1890,9 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
 
         .block-propuesta {{
             background: #7CFC00;
+        }}
+        .block-realizada {{
+            background: #f57c00;
         }}
     </style>
     </head>
