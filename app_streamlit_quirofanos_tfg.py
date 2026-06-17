@@ -1745,9 +1745,7 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
 
             fuente = str(fila.get("fuente", "Histórico"))
 
-            if fuente == "Realizada":
-                clase = "block-realizada"
-            elif fuente == "Simulada":
+            if fuente == "Simulada":
                 clase = "block-propuesta"
             else:
                 clase = "block-historico"
@@ -1891,9 +1889,7 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
         .block-propuesta {{
             background: #7CFC00;
         }}
-        .block-realizada {{
-            background: #f57c00;
-        }}
+        
     </style>
     </head>
     <body>
