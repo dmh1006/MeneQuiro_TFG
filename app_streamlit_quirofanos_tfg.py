@@ -961,7 +961,7 @@ def main() -> None:
             )
 
     with tab2:
-        st.subheader("Análisis histórico")
+        st.subheader("Análisis de procedimientos")
 
         fecha_min_hist = df_real["fecha"].dt.date.min()
         fecha_max_hist = df_real["fecha"].dt.date.max()
@@ -994,6 +994,41 @@ def main() -> None:
             (df_real["fecha"].dt.date >= fecha_inicio_hist)
             & (df_real["fecha"].dt.date <= fecha_fin_hist)
         ].copy()
+
+        # ==========================================
+        # KPIs DE PROCEDIMIENTOS
+        # ==========================================
+
+        proc = analisis_procedimientos(df_hist)
+
+        c1, c2, c3, c4 = st.columns(4)
+
+        with c1:
+            st.metric(
+                "Procedimientos distintos",
+                df_hist["procedimiento_base"].nunique()
+            )
+
+        with c2:
+            if not proc.empty:
+                st.metric(
+                    "Más frecuente",
+                    proc.iloc[0]["procedimiento_base"][:30]
+                )
+
+        with c3:
+            st.metric(
+                "Duración media",
+                f"{df_hist['duracion_min'].mean():.0f} min"
+            )
+
+        with c4:
+            st.metric(
+                "Horas totales",
+                f"{df_hist['duracion_horas'].sum():.0f} h"
+            )
+
+        st.divider()
 
         st.info(
             f"Análisis realizado entre {fecha_inicio_hist.strftime('%d/%m/%Y')} "
@@ -1040,26 +1075,22 @@ def main() -> None:
             top_proc = proc.head(10).copy()
 
             fig_proc = px.bar(
-                top_proc.sort_values("n_cirugias", ascending=True),
+                top_proc,
                 x="n_cirugias",
                 y="procedimiento_base",
                 orientation="h",
                 text="n_cirugias",
-                title="Top 10 procedimientos por volumen",
-                labels={
-                    "n_cirugias": "Nº de cirugías",
-                    "procedimiento_base": "Procedimiento",
-                },
+                title="Procedimientos más realizados"
             )
-
-            fig_proc.update_traces(textposition="outside")
 
             fig_proc.update_layout(
                 template="plotly_white",
-                height=450,
-                yaxis_title="",
-                xaxis_title="Nº de cirugías",
+                height=550,
+                xaxis_title="Número de intervenciones",
+                yaxis_title=""
             )
+
+            fig_proc.update_traces(textposition="outside")
 
             st.plotly_chart(fig_proc, use_container_width=True)
 
