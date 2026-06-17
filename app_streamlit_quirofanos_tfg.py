@@ -576,12 +576,33 @@ def guardar_cirugia_simulada(datos):
 
 
 def cargar_cirugias_simuladas():
-    inicializar_bd_realizadas()
-
     conn = sqlite3.connect(DB_PATH)
-    df = pd.read_sql_query("SELECT * FROM cirugias_simuladas", conn)
-    conn.close()
+    cursor = conn.cursor()
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cirugias_simuladas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT,
+            quirofano TEXT,
+            procedimiento TEXT,
+            paciente TEXT,
+            cirujano TEXT,
+            anestesista TEXT,
+            inicio_dt TEXT,
+            fin_dt TEXT,
+            duracion_min INTEGER,
+            holgura_min REAL,
+            es_quirofano_habitual TEXT,
+            fuente TEXT,
+            fecha_registro TEXT
+        )
+    """)
+
+    conn.commit()
+
+    df = pd.read_sql_query("SELECT * FROM cirugias_simuladas", conn)
+
+    conn.close()
     return df
 
 
@@ -1881,8 +1902,8 @@ def main() -> None:
 
 def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str):
     fecha = pd.to_datetime(fecha)
-    inicio_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 07:00:00")
-    fin_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 20:00:00")
+    inicio_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 08:00:00")
+    fin_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 07:59:59")
     minutos_totales = int((fin_jornada - inicio_jornada).total_seconds() / 60)
 
     st.subheader(titulo)
