@@ -1062,59 +1062,57 @@ def main() -> None:
             st.plotly_chart(fig_proc, use_container_width=True)
 
         with c2:
-            impacto_proc = (
+
+            duracion_proc = (
                 df_hist.groupby("procedimiento_base")
                 .agg(
                     n_cirugias=("procedimiento_base", "count"),
-                    horas_totales=("duracion_min", lambda x: round(x.sum() / 60, 1)),
                     duracion_media=("duracion_min", "mean"),
+                    duracion_mediana=("duracion_min", "median"),
                 )
                 .reset_index()
             )
 
-            impacto_proc = impacto_proc[impacto_proc["n_cirugias"] >= 5].copy()
+            duracion_proc = duracion_proc[
+                duracion_proc["n_cirugias"] >= 5
+            ].copy()
 
-            impacto_proc["duracion_media"] = impacto_proc["duracion_media"].round(1)
+            duracion_proc["duracion_media"] = (
+                duracion_proc["duracion_media"].round(1)
+            )
 
-            impacto_proc = impacto_proc.sort_values(
-                "horas_totales",
-                ascending=True,
+            duracion_proc = duracion_proc.sort_values(
+                "duracion_media",
+                ascending=True
             ).tail(10)
 
-            fig_impacto = px.bar(
-                impacto_proc,
-                x="horas_totales",
+            fig_duracion = px.bar(
+                duracion_proc,
+                x="duracion_media",
                 y="procedimiento_base",
                 orientation="h",
-                text="horas_totales",
-                title="Procedimientos que más tiempo de quirófano consumen",
-                labels={
-                    "horas_totales": "Horas totales ocupadas",
-                    "procedimiento_base": "Procedimiento",
-                    "n_cirugias": "Nº cirugías",
-                    "duracion_media": "Duración media",
-                },
+                text="duracion_media",
+                title="Procedimientos con mayor duración media",
                 hover_data={
                     "n_cirugias": True,
+                    "duracion_mediana": True,
                     "duracion_media": True,
-                    "horas_totales": True,
-                    "procedimiento_base": False,
                 },
             )
 
-            fig_impacto.update_traces(
-                texttemplate="%{text:.1f} h",
+            fig_duracion.update_traces(
+                texttemplate="%{text:.0f} min",
                 textposition="outside",
             )
 
-            fig_impacto.update_layout(
+            fig_duracion.update_layout(
                 template="plotly_white",
                 height=550,
-                xaxis_title="Horas totales de quirófano",
+                xaxis_title="Duración media (minutos)",
                 yaxis_title="",
             )
 
-            st.plotly_chart(fig_impacto, use_container_width=True)
+            st.plotly_chart(fig_duracion, use_container_width=True)
 
         st.divider()
 
