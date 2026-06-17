@@ -694,7 +694,7 @@ def main() -> None:
         procedimiento_sel,
         fecha_ts,
         max_resultados=max_resultados,
-        quirofanos_permitidos=filtro_qx,
+        quirofanos_validos=filtro_qx,
     )
 
     # KPIs
