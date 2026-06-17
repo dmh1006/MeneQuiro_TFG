@@ -419,7 +419,24 @@ def inicializar_bd_realizadas():
             fecha_registro TEXT
         )
     """)
-
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS cirugias_simuladas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT,
+            quirofano TEXT,
+            procedimiento TEXT,
+            paciente TEXT,
+            cirujano TEXT,
+            anestesista TEXT,
+            inicio_dt TEXT,
+            fin_dt TEXT,
+            duracion_min INTEGER,
+            holgura_min REAL,
+            es_quirofano_habitual TEXT,
+            fuente TEXT,
+            fecha_registro TEXT
+        )
+    """)
     conn.commit()
     conn.close()
 
@@ -523,12 +540,64 @@ def guardar_cirugia_realizada(datos):
     conn.commit()
     conn.close()
 
+def guardar_cirugia_simulada(datos):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO cirugias_simuladas (
+            fecha, quirofano, procedimiento, paciente, cirujano, anestesista,
+            inicio_dt, fin_dt, duracion_min, holgura_min,
+            es_quirofano_habitual, fuente, fecha_registro
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        str(pd.to_datetime(datos["fecha"]).date()),
+        str(datos["quirofano"]),
+        str(datos["procedimiento_base"]),
+        str(datos.get("paciente", "No indicado")),
+        str(datos.get("cirujano_principal", "No indicado")),
+        str(datos.get("anestesista_principal", "No indicado")),
+        pd.to_datetime(datos["inicio_dt"]).strftime("%Y-%m-%d %H:%M:%S"),
+        pd.to_datetime(datos["fin_dt"]).strftime("%Y-%m-%d %H:%M:%S"),
+        int(datos["duracion_min"]),
+        datos.get("holgura_min", None),
+        str(datos.get("es_quirofano_habitual", "")),
+        "Simulada",
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def cargar_cirugias_simuladas():
+    conn = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query("SELECT * FROM cirugias_simuladas", conn)
+    conn.close()
+    return df
+
+
+def borrar_cirugia_simulada(id_simulada):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "DELETE FROM cirugias_simuladas WHERE id = ?",
+        (int(id_simulada),)
+    )
+
+    conn.commit()
+    conn.close()
+
 
 def cargar_cirugias_realizadas():
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query("SELECT * FROM cirugias_realizadas", conn)
     conn.close()
     return df
+
+
 # ----------------------------------------------------------
 # APP
 # ----------------------------------------------------------
@@ -536,6 +605,27 @@ def cargar_cirugias_realizadas():
 def main() -> None:
     inicializar_estado()
     inicializar_bd_realizadas()
+    df_simuladas_bd = cargar_cirugias_simuladas()
+    if len(st.session_state.cirugias_anadidas) == 0 and not df_simuladas_bd.empty:
+        st.session_state.cirugias_anadidas = []
+
+        for _, sim in df_simuladas_bd.iterrows():
+            st.session_state.cirugias_anadidas.append({
+                "id_simulada": sim["id"],
+                "fecha": pd.to_datetime(sim["fecha"]),
+                "quirofano": sim["quirofano"],
+                "inicio_dt": pd.to_datetime(sim["inicio_dt"]),
+                "fin_dt": pd.to_datetime(sim["fin_dt"]),
+                "procedimiento_base": sim["procedimiento"],
+                "duracion_min": sim["duracion_min"],
+                "holgura_min": sim["holgura_min"],
+                "fuente": "Simulada",
+                "es_quirofano_habitual": sim["es_quirofano_habitual"],
+                "paciente": sim["paciente"],
+                "cirujano_principal": sim["cirujano"],
+                "anestesista_principal": sim["anestesista"],
+            })
+    
     _, df_real, catalogo = cargar_base()
     catalogo["grupo_procedimiento"] = catalogo["procedimiento_base"].apply(agrupar_procedimiento)
 
@@ -827,6 +917,7 @@ def main() -> None:
                             f"No se puede añadir la cirugía porque se solapa con otra en {quirofano_nuevo}."
                         )
                     else:
+                        guardar_cirugia_simulada(nueva)
                         st.session_state.cirugias_anadidas.append(nueva)
                         st.success("Cirugía añadida a la simulación de agenda.")
                         st.rerun()
@@ -934,6 +1025,8 @@ def main() -> None:
                 }
 
                 guardar_cirugia_realizada(datos_realizada)
+                if "id_simulada" in cirugia and pd.notna(cirugia["id_simulada"]):
+                    borrar_cirugia_simulada(cirugia["id_simulada"])
 
                 df_tmp = pd.DataFrame(st.session_state.cirugias_anadidas)
 
