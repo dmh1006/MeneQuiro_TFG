@@ -709,8 +709,8 @@ def main() -> None:
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Planificación diaria",
-    "Análisis histórico",
-    "Dashboard quirúrgico",
+    "Análisis de procedimientos",
+    "Analisis de quirófanos",
     "Exportación",
     "Planificador de guardias",
 ])
