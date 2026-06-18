@@ -236,7 +236,18 @@ def estimar_nueva_cirugia(catalogo: pd.DataFrame, procedimiento: str) -> dict:
 
 def agenda_dia(df_real: pd.DataFrame, fecha: str | pd.Timestamp) -> pd.DataFrame:
     fecha = pd.to_datetime(fecha).normalize()
-    agenda = df_real[df_real["fecha"].dt.normalize() == fecha].sort_values(["quirofano", "inicio_dt"]).copy()
+    df_real = df_real.copy()
+    df_real["fecha"] = pd.to_datetime(df_real["fecha"], errors="coerce")
+    df_real["inicio_dt"] = pd.to_datetime(df_real["inicio_dt"], errors="coerce")
+    df_real["fin_dt"] = pd.to_datetime(df_real["fin_dt"], errors="coerce")
+
+    fecha = pd.to_datetime(fecha).normalize()
+
+    agenda = (
+        df_real[df_real["fecha"].dt.normalize() == fecha]
+        .sort_values(["quirofano", "inicio_dt"])
+        .copy()
+    )
     return agenda
 
 
