@@ -474,13 +474,9 @@ def guardar_cirugia_realizada(datos):
 
 
 def cargar_cirugias_realizadas():
-    inicializar_bd_realizadas()
-
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query("SELECT * FROM cirugias_realizadas", conn)
     conn.close()
-
-    return df
 
 DB_PATH = Path.cwd() / "Data" / "quirofanos_realizadas.db"
 
@@ -576,12 +572,9 @@ def guardar_cirugia_simulada(datos):
 
 
 def cargar_cirugias_simuladas():
-    inicializar_bd_realizadas()
-
     conn = sqlite3.connect(DB_PATH)
     df = pd.read_sql_query("SELECT * FROM cirugias_simuladas", conn)
     conn.close()
-
     return df
 
 
@@ -929,9 +922,42 @@ def main() -> None:
                         st.success("Cirugía añadida a la simulación de agenda.")
                         st.rerun()
 
-                if st.session_state.cirugias_anadidas and st.button("Vaciar simulación"):
+                col_del1, col_del2 = st.columns(2)
+
+                with col_del1:
+                    if st.button("➖ Eliminar última planificación"):
+                        if st.session_state.cirugias_anadidas:
+                            ultima = st.session_state.cirugias_anadidas.pop()
+
+                            if "id_simulada" in ultima and ultima["id_simulada"]:
+                                borrar_cirugia_simulada(ultima["id_simulada"])
+                            else:
+                                conn = sqlite3.connect(DB_PATH)
+                                conn.execute("""
+                                    DELETE FROM cirugias_simuladas
+                                    WHERE id = (
+                                    SELECT MAX(id)
+                                    FROM cirugias_simuladas
+                                )
+                            """)
+                            conn.commit()
+                            conn.close()
+
+                        st.success("Última intervención planificada eliminada.")
+                        st.rerun()
+                    else:
+                        st.warning("No hay intervenciones planificadas para eliminar.")
+
+            with col_del2:
+                if st.button("🗑 Vaciar planificación"):
                     st.session_state.cirugias_anadidas = []
-                    st.success("Simulación reiniciada.")
+
+                    conn = sqlite3.connect(DB_PATH)
+                    conn.execute("DELETE FROM cirugias_simuladas")
+                    conn.commit()
+                    conn.close()
+
+                    st.success("Planificación vaciada correctamente.")
                     st.rerun()
 
             st.markdown("---")
@@ -1886,6 +1912,21 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
     minutos_totales = int((fin_jornada - inicio_jornada).total_seconds() / 60)
 
     st.subheader(titulo)
+    st.markdown(
+        """
+        <div style="
+            text-align:right;
+            font-size:13px;
+            margin-bottom:5px;
+            color:#555;
+        ">
+            🟧 <b>Intervención realizada</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            🟩 <b>Intervención planificada</b>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     if agenda.empty:
         st.info("No hay cirugías registradas para este día.")
