@@ -6,6 +6,8 @@ from typing import Iterable
 
 import numpy as np
 import pandas as pd
+import re
+import unicodedata
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "quirofano_2025_limpio.csv"
@@ -62,21 +64,133 @@ def filtrar_cirugias_reales(df: pd.DataFrame) -> pd.DataFrame:
     return salida
 
 
-def normalizar_procedimiento(texto: str) -> str:
+def limpiar_texto_procedimiento(texto):
     if pd.isna(texto):
         return "DESCONOCIDO"
 
-    texto = str(texto).strip().upper()
+    t = str(texto).upper().strip()
 
+    # Quitar tildes y caracteres raros
+    t = unicodedata.normalize("NFKD", t)
+    t = "".join(c for c in t if not unicodedata.combining(c))
+
+    # Corregir caracteres típicos mal leídos del Excel
+    t = (
+        t.replace("Ä", "A")
+         .replace("Ã", "A")
+         .replace("Â", "A")
+         .replace("�", "")
+         .replace("<", " ")
+         .replace(">", " ")
+         .replace("\\", " ")
+         .replace("/", " ")
+         .replace("-", " ")
+         .replace("_", " ")
+    )
+
+    # Quitar puntuación final y signos raros
+    t = re.sub(r"[.,;:]+$", "", t)
+
+    # Quitar dobles espacios
+    t = re.sub(r"\s+", " ", t).strip()
+
+    return t
+
+
+def normalizar_procedimiento(texto):
+    t = limpiar_texto_procedimiento(texto)
+
+    # Correcciones generales de palabras mal escritas
     reemplazos = {
-        "APENDICECTOMIA POR LAPAROSCOPIA": "APENDICECTOMIA LAPAROSCOPICA",
-        "RESECCION DE VESICULA BILIAR, ABORDAJE ENDOSCOPICO PERCUTA": "COLECISTECTOMIA LAPAROSCOPICA",
-        "SUPLEMENTO EN REGION INGUINAL, DERECHA, CON SUSTITUTO SINT": "HERNIA INGUINAL DERECHA",
-        "SUPLEMENTO EN REGION INGUINAL, IZQUIERDA, CON SUSTITUTO SI": "HERNIA INGUINAL IZQUIERDA",
-        "SUPLEMENTO EN REGION INGUINAL, BILATERAL, CON SUSTITUTO S": "HERNIA INGUINAL BILATERAL",
+        "APENDITECTOMIA": "APENDICECTOMIA",
+        "APENDICETOMIA": "APENDICECTOMIA",
+        "APENDICE3CTOMIA": "APENDICECTOMIA",
+        "LAPRAROSCOPICA": "LAPAROSCOPICA",
+        "LAPAROISCOPICA": "LAPAROSCOPICA",
+        "LAPAROSCOPIA": "LAPAROSCOPICA",
+        "LAAROSCOPICA": "LAPAROSCOPICA",
+        "LAPAROSC": "LAPAROSCOPICA",
+        "COLECISTECOTMIA": "COLECISTECTOMIA",
+        "COLECISTECSOTMIA": "COLECISTECTOMIA",
+        "COLECISCECTOMIA": "COLECISTECTOMIA",
+        "HEMORROIDES": "HEMORROIDECTOMIA",
+        "HEMORROIDE": "HEMORROIDECTOMIA",
+        "HERNIORRAFIA": "HERNIA",
+        "HERNIORRAFIA.": "HERNIA",
     }
 
-    return reemplazos.get(texto, texto)
+    for mal, bien in reemplazos.items():
+        t = t.replace(mal, bien)
+
+    # Normalizaciones por familia
+    if "APENDICECTOMIA" in t or "APENDIC" in t:
+        if "LAPAR" in t or "LPS" in t:
+            return "APENDICECTOMIA LAPAROSCOPICA"
+        return "APENDICECTOMIA"
+
+    if "COLECISTECTOMIA" in t or "VESICULA" in t:
+        if "LAPAR" in t:
+            return "COLECISTECTOMIA LAPAROSCOPICA"
+        return "COLECISTECTOMIA"
+
+    if "HERNIA" in t:
+        if "INGUINAL" in t:
+            if "DERECHA" in t:
+                return "HERNIA INGUINAL DERECHA"
+            if "IZQUIERDA" in t:
+                return "HERNIA INGUINAL IZQUIERDA"
+            if "BILATERAL" in t:
+                return "HERNIA INGUINAL BILATERAL"
+            return "HERNIA INGUINAL"
+        if "UMBILICAL" in t:
+            return "HERNIA UMBILICAL"
+        if "INCISIONAL" in t:
+            return "HERNIA INCISIONAL"
+        return "HERNIA"
+
+    if "CIERRE" in t:
+        if "COLOSTOMIA" in t:
+            return "CIERRE DE COLOSTOMIA"
+        if "ILEOSTOMIA" in t:
+            return "CIERRE DE ILEOSTOMIA"
+        if "FISTULA" in t:
+            return "CIERRE DE FISTULA"
+        return "CIERRE"
+
+    if "BIOPSIA" in t:
+        if "ADENOPATIA" in t:
+            return "BIOPSIA DE ADENOPATIA"
+        return "BIOPSIA"
+
+    if "TIROID" in t:
+        if "PARATIROID" in t:
+            return "PARATIROIDECTOMIA"
+        return "TIROIDECTOMIA"
+
+    if "COLON" in t or "COLECTOMIA" in t:
+        if "DERECHA" in t:
+            return "COLECTOMIA DERECHA"
+        if "IZQUIERDA" in t:
+            return "COLECTOMIA IZQUIERDA"
+        return "CIRUGIA DE COLON"
+
+    if "HEMORROIDECTOMIA" in t:
+        return "HEMORROIDECTOMIA"
+
+    if "FISTULA" in t and "ANAL" in t:
+        return "FISTULOTOMIA ANAL"
+
+    if "ABSCESO" in t:
+        return "DRENAJE DE ABSCESO"
+
+    if "PARED ABDOMINAL" in t:
+        return "REPARACION DE PARED ABDOMINAL"
+
+    # Limpieza final genérica
+    t = re.sub(r"[.,;:]+$", "", t)
+    t = re.sub(r"\s+", " ", t).strip()
+
+    return t
 
 
 def preparar_dataset_funcional(df: pd.DataFrame) -> pd.DataFrame:
