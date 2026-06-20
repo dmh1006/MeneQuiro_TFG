@@ -122,6 +122,35 @@ def normalizar_procedimiento(texto):
     for mal, bien in reemplazos.items():
         t = t.replace(mal, bien)
 
+    # Eliminar palabras que no aportan información
+    palabras_eliminar = [
+        "ABIERTO",
+        "ABIER",
+        "ABORDAJE ABIERTO",
+        "ABORDAJE",
+        "LPS",
+        "LAP",
+        "LAPAR",
+        "OTRA",
+        "OTRO",
+        "OTROS",
+        "N/E",
+        "NO ESPECIFICADO",
+    ]
+    for palabra in palabras_eliminar:
+        t = t.replace(palabra, " ")
+    # Unificar laparoscopia
+    if any(x in t for x in [
+        "LAPAROSCOPICA",
+        "LAPAROSCOPICO",
+        "LAPAROSCOPIA",
+        "LPS",
+        "LAP",
+        "LAPAR"
+    ]):
+        t += " LAPAROSCOPICA"
+
+
     # Normalizaciones por familia
     if "APENDICECTOMIA" in t or "APENDIC" in t:
         if "LAPAR" in t or "LPS" in t:
@@ -188,6 +217,8 @@ def normalizar_procedimiento(texto):
 
     # Limpieza final genérica
     t = re.sub(r"[.,;:]+$", "", t)
+    t = re.sub(r"\s+", " ", t).strip()
+    # Limpiar espacios sobrantes
     t = re.sub(r"\s+", " ", t).strip()
 
     return t
