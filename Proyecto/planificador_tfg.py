@@ -214,6 +214,28 @@ def normalizar_procedimiento(texto):
 
     if "PARED ABDOMINAL" in t:
         return "REPARACION DE PARED ABDOMINAL"
+    
+    # ======================
+    # COLECISTECTOMIA
+    # ======================
+    if (
+        "COLECIST" in t
+        or "COLECIS" in t
+        or "COLECISTE" in t
+        or "VESICULA" in t
+        or "VESICULA BILIAR" in t
+    ):
+        if (
+            "LAPAR" in t
+            or "LAPA" in t
+            or "LPS" in t
+            or "ENDOSCOP" in t
+            or "LAPAROSCOPICA" in t
+            or "LAPAROSCOPICAOPICA" in t
+        ):
+            return "COLECISTECTOMIA LAPAROSCOPICA"
+
+    return "COLECISTECTOMIA"
 
     # Limpieza final genérica
     t = re.sub(r"[.,;:]+$", "", t)
