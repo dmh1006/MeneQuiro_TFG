@@ -639,7 +639,7 @@ def main() -> None:
             "Fecha de trabajo",
             value=fechas_disponibles[0],
             min_value=fechas_disponibles[0],
-            max_value=fechas_disponibles[-1],
+            max_value=pd.to_datetime("2030-12-31").date(),
         )
 
 
