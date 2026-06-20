@@ -117,13 +117,6 @@ def normalizar_procedimiento(texto):
         "HEMORROIDE": "HEMORROIDECTOMIA",
         "HERNIORRAFIA": "HERNIA",
         "HERNIORRAFIA.": "HERNIA",
-        "COLECISTETOMIA": "COLECISTECTOMIA",
-        "COLECISTECTOMIS": "COLECISTECTOMIA",
-        "COLECISTESCTOMIA": "COLECISTECTOMIA",
-        "COLECISTECOTMIA": "COLECISTECTOMIA",
-        "COLECISCECTOMIA": "COLECISTECTOMIA",
-        "LAPAOSCOPICA": "LAPAROSCOPICA",
-        "LAPAROSCOPICAOPICA": "LAPAROSCOPICA",
     }
 
     for mal, bien in reemplazos.items():
@@ -228,22 +221,21 @@ def normalizar_procedimiento(texto):
     if (
         "COLECIST" in t
         or "COLECIS" in t
+        or "COLECISTE" in t
         or "VESICULA" in t
+        or "VESICULA BILIAR" in t
     ):
-        es_laparoscopica = any(x in t for x in [
-            "LAPAR",
-            "LAPA",
-            "LPS",
-            "LAPAROSCOP",
-            "LAPAROSCOPICA",
-            "ENDOSCOP",
-            "PERCUT",
-        ])
-
-        if es_laparoscopica:
+        if (
+            "LAPAR" in t
+            or "LAPA" in t
+            or "LPS" in t
+            or "ENDOSCOP" in t
+            or "LAPAROSCOPICA" in t
+            or "LAPAROSCOPICAOPICA" in t
+        ):
             return "COLECISTECTOMIA LAPAROSCOPICA"
 
-        return "COLECISTECTOMIA"
+    return "COLECISTECTOMIA"
 
     # Limpieza final genérica
     t = re.sub(r"[.,;:]+$", "", t)
