@@ -485,19 +485,40 @@ def proponer_huecos(
     duracion_necesaria = ficha["duracion_planificable_min"]
 
     agenda = agenda_dia(df_real, fecha).copy()
-    if quirofanos_validos is not None:
-        quirofanos_validos = list(quirofanos_validos)
-        agenda = agenda[agenda["quirofano"].isin(quirofanos_validos)].copy()
 
-    preferidos = [q.strip() for q in str(ficha["quirofanos_habituales"]).split(",") if q.strip()]
-
-    universo = sorted(df_real["quirofano"].dropna().astype(str).unique())
     if quirofanos_validos is not None:
-        universo = [q for q in universo if q in quirofanos_validos]
+        quirofanos_validos = [str(q) for q in list(quirofanos_validos)]
+        agenda = agenda[agenda["quirofano"].astype(str).isin(quirofanos_validos)].copy()
+
+    preferidos = [
+        q.strip()
+        for q in str(ficha["quirofanos_habituales"]).split(",")
+        if q.strip()
+    ]
+
+    # IMPORTANTE:
+    # Si el usuario ha seleccionado quirófanos en el filtro, se exploran TODOS,
+    # aunque estén vacíos ese día o no sean habituales del procedimiento.
+    if quirofanos_validos is not None and len(quirofanos_validos) > 0:
+        universo = sorted(quirofanos_validos)
+    else:
+        universo_historico = (
+            df_real["quirofano"]
+            .dropna()
+            .astype(str)
+            .unique()
+            .tolist()
+        )
+
+        universo = sorted(set(universo_historico + preferidos))
 
     candidatos: list[dict] = []
+
     for qx in universo:
-        agenda_qx = agenda[agenda["quirofano"] == qx].copy()
+        agenda_qx = agenda[
+            agenda["quirofano"].astype(str) == str(qx)
+        ].copy()
+
         huecos = calcular_huecos_quirofano(
             agenda_qx=agenda_qx,
             fecha=fecha,
@@ -508,26 +529,31 @@ def proponer_huecos(
         for h in huecos:
             if h["duracion_hueco_min"] >= duracion_necesaria:
                 score = 0
-                score += 100 if qx in preferidos else 0
+                score += 100 if str(qx) in preferidos else 0
                 score -= abs(h["duracion_hueco_min"] - duracion_necesaria)
-                score -= (h["inicio_hueco"].hour * 60 + h["inicio_hueco"].minute) / 1000
+                score -= (
+                    h["inicio_hueco"].hour * 60
+                    + h["inicio_hueco"].minute
+                ) / 1000
 
                 candidatos.append({
                     "procedimiento": ficha["procedimiento"],
-                    "quirofano": qx,
+                    "quirofano": str(qx),
                     "inicio": h["inicio_hueco"],
                     "fin_estimado": h["inicio_hueco"] + pd.Timedelta(minutes=duracion_necesaria),
                     "duracion_necesaria": duracion_necesaria,
                     "duracion_disponible": h["duracion_hueco_min"],
                     "holgura_min": h["duracion_hueco_min"] - duracion_necesaria,
-                    "es_quirofano_habitual": qx in preferidos,
+                    "es_quirofano_habitual": str(qx) in preferidos,
                     "score": round(score, 3),
                 })
 
     if not candidatos:
         return pd.DataFrame()
 
-    candidatos_df = pd.DataFrame(candidatos).sort_values(
+    candidatos_df = pd.DataFrame(candidatos)
+
+    candidatos_df = candidatos_df.sort_values(
         by=["es_quirofano_habitual", "holgura_min", "inicio"],
         ascending=[False, True, True],
     )
