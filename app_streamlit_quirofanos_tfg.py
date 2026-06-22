@@ -1538,20 +1538,31 @@ def main() -> None:
         col_f1, col_f2 = st.columns(2)
 
         with col_f1:
+            fecha_min_export = df_real["fecha"].dt.date.min()
+            fecha_max_export = pd.to_datetime("2030-12-31").date()
+
+            fecha_default_export = fecha_ts.date()
+
+            if fecha_default_export < fecha_min_export:
+                fecha_default_export = fecha_min_export
+
+            if fecha_default_export > fecha_max_export:
+                fecha_default_export = fecha_max_export
+
             fecha_inicio_export = st.date_input(
                 "Fecha inicial",
-                value=fecha_sel,
-                min_value=fecha_min,
-                max_value=fecha_max,
+                value=fecha_default_export,
+                min_value=fecha_min_export,
+                max_value=fecha_max_export,
                 key="fecha_inicio_export",
             )
 
         with col_f2:
             fecha_fin_export = st.date_input(
                 "Fecha final",
-                value=fecha_sel,
-                min_value=fecha_min,
-                max_value=fecha_max,
+                value=fecha_default_export,
+                min_value=fecha_min_export,
+                max_value=fecha_max_export,
                 key="fecha_fin_export",
             )
 
