@@ -817,38 +817,48 @@ def main() -> None:
             )
         with right:
             st.subheader("Propuestas de hueco")
+
             if propuestas.empty:
                 st.warning("No se han encontrado huecos válidos para ese procedimiento con los filtros actuales.")
+
             else:
                 propuestas_view = propuestas.copy()
                 propuestas_view["inicio"] = propuestas_view["inicio"].dt.strftime("%H:%M")
                 propuestas_view["fin_estimado"] = propuestas_view["fin_estimado"].dt.strftime("%H:%M")
+
                 st.dataframe(
-                    propuestas_view[[
-                        "quirofano",
-                        "inicio",
-                        "fin_estimado",
-                        "duracion_necesaria",
-                        "duracion_disponible",
-                        "holgura_min",
-                        "es_quirofano_habitual",
-                    ]],
+                    propuestas_view[
+                        [
+                            "quirofano",
+                            "inicio",
+                            "fin_estimado",
+                            "duracion_necesaria",
+                            "duracion_disponible",
+                            "holgura_min",
+                            "es_quirofano_habitual",
+                        ]
+                    ],
                     use_container_width=True,
                     hide_index=True,
                 )
 
                 idx = st.selectbox(
-                    "Selecciona propuesta para añadir a la simulación",
+                    "Selecciona propuesta para añadir a la planificación",
                     options=list(propuestas.index),
-                    format_func=lambda i: f"{propuestas.loc[i, 'quirofano']} · {propuestas.loc[i, 'inicio'].strftime('%H:%M')} - {propuestas.loc[i, 'fin_estimado'].strftime('%H:%M')}",
+                    format_func=lambda i: (
+                        f"{propuestas.loc[i, 'quirofano']} · "
+                        f"{propuestas.loc[i, 'inicio'].strftime('%H:%M')} - "
+                        f"{propuestas.loc[i, 'fin_estimado'].strftime('%H:%M')}"
+                    ),
                 )
+
                 col_p1, col_p2, col_p3 = st.columns(3)
 
                 with col_p1:
                     paciente_sim = st.text_input(
                         "Paciente",
                         key="paciente_sim",
-                        placeholder="Nombre y apellidos del paciente",
+                        placeholder="Nombre y apellidos",
                     )
 
                 with col_p2:
@@ -865,7 +875,6 @@ def main() -> None:
                         placeholder="Nombre del anestesista",
                     )
 
-                # EVITAMOS A TODA COSTA QUE HAYA SOLAPAMIENTOS
                 if st.button("Añadir cirugía a la agenda", type="primary"):
                     fila = propuestas.loc[idx].to_dict()
 
@@ -919,46 +928,56 @@ def main() -> None:
                     else:
                         guardar_cirugia_simulada(nueva)
                         st.session_state.cirugias_anadidas.append(nueva)
-                        st.success("Cirugía añadida a la simulación de agenda.")
+                        st.success("Intervención añadida a la planificación.")
                         st.rerun()
 
-                col_del1, col_del2 = st.columns(2)
+            st.markdown("---")
+            st.subheader("Gestión de planificación")
 
-                with col_del1:
-                    if st.button("➖ Eliminar última planificación"):
-                        if st.session_state.cirugias_anadidas:
-                            ultima = st.session_state.cirugias_anadidas.pop()
+            col_del1, col_del2 = st.columns(2)
 
-                            if "id_simulada" in ultima and ultima["id_simulada"]:
-                                borrar_cirugia_simulada(ultima["id_simulada"])
-                            else:
-                                conn = sqlite3.connect(DB_PATH)
-                                conn.execute("""
-                                    DELETE FROM cirugias_simuladas
-                                    WHERE id = (
-                                    SELECT MAX(id)
-                                    FROM cirugias_simuladas
-                                )
-                            """)
+            with col_del1:
+                if st.button("➖ Eliminar última", key="btn_eliminar_ultima_planificacion"):
+                    try:
+                        conn = sqlite3.connect(DB_PATH)
+                        cur = conn.cursor()
+
+                        cur.execute("SELECT id FROM cirugias_simuladas ORDER BY id DESC LIMIT 1")
+                        ultima = cur.fetchone()
+
+                        if ultima is None:
+                            st.warning("No hay intervenciones planificadas para eliminar.")
+                        else:
+                            cur.execute("DELETE FROM cirugias_simuladas WHERE id = ?", (ultima[0],))
                             conn.commit()
-                            conn.close()
 
-                        st.success("Última intervención planificada eliminada.")
-                        st.rerun()
-                    else:
-                        st.warning("No hay intervenciones planificadas para eliminar.")
+                            df_simuladas_bd = cargar_cirugias_simuladas()
+                            st.session_state.cirugias_anadidas = df_simuladas_bd.to_dict("records")
+
+                            st.success("Última intervención planificada eliminada.")
+                            st.rerun()
+
+                        conn.close()
+
+                    except Exception as e:
+                        st.error(f"Error eliminando planificación: {e}")
 
             with col_del2:
-                if st.button("🗑 Vaciar planificación"):
-                    st.session_state.cirugias_anadidas = []
+                if st.button("🗑 Vaciar todo", key="btn_vaciar_toda_planificacion"):
+                    try:
+                        conn = sqlite3.connect(DB_PATH)
+                        conn.execute("DELETE FROM cirugias_simuladas")
+                        conn.commit()
+                        conn.close()
 
-                    conn = sqlite3.connect(DB_PATH)
-                    conn.execute("DELETE FROM cirugias_simuladas")
-                    conn.commit()
-                    conn.close()
+                        st.session_state.cirugias_anadidas = []
 
-                    st.success("Planificación vaciada correctamente.")
-                    st.rerun()
+                        st.success("Planificación vaciada correctamente.")
+                        st.rerun()
+
+                    except Exception as e:
+                        st.error(f"Error vaciando planificación: {e}")
+
 
             st.markdown("---")
             st.subheader("Cirugías simuladas")
@@ -1908,7 +1927,7 @@ def main() -> None:
 def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str):
     fecha = pd.to_datetime(fecha)
     inicio_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 07:00:00")
-    fin_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 20:00:00")
+    fin_jornada = pd.Timestamp(f"{fecha.strftime('%Y-%m-%d')} 23:00:00")
     minutos_totales = int((fin_jornada - inicio_jornada).total_seconds() / 60)
 
     st.subheader(titulo)
@@ -1961,12 +1980,20 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
 
     # Cabecera horaria
     horas_html = ""
-    for hora in range(7, 21):
-        left = int((hora - 7) * 60 * px_por_minuto)
+
+    hora_actual = inicio_jornada
+    while hora_actual <= fin_jornada:
+        minutos_desde_inicio = int((hora_actual - inicio_jornada).total_seconds() / 60)
+        left = int(minutos_desde_inicio * px_por_minuto)
+
         horas_html += f"""
         <div class="hour-line" style="left:{left}px;"></div>
-        <div class="hour-text" style="left:{left + 2}px;">{hora}:00</div>
+        <div class="hour-text" style="left:{left + 3}px;">
+            {hora_actual.strftime('%H:%M')}
+        </div>
         """
+
+        hora_actual += pd.Timedelta(hours=1)
 
     filas_html = ""
 
@@ -1996,29 +2023,35 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
             fuente = str(fila.get("fuente", "Histórico") or "Histórico")
             paciente = str(fila.get("paciente", "") or "")
 
+            proc_corto = procedimiento[:10]
+
             if width_px < 70:
                 texto = f"""
-                <div style="font-size:9px;font-weight:bold;text-align:center;">
-                    {inicio.strftime('%H:%M')}
+                <div style="
+                    font-size:8px;
+                    font-weight:800;
+                    text-align:center;
+                    line-height:1.05;
+                    white-space:normal;
+                    overflow:hidden;
+                ">
+                    {inicio.strftime('%H:%M')}<br>
+                    {proc_corto}
                 </div>
                 """
 
             elif width_px < 130:
                 texto = f"""
-                <div style="font-size:9px;font-weight:bold;">
-                    {inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}
-                </div>
-                <div style="font-size:8px;">
-                    {procedimiento[:12]}
+                <div style="font-size:8px;font-weight:800;line-height:1.05;">
+                    {inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}<br>
+                    {procedimiento[:14]}
                 </div>
                 """
 
             elif width_px < 200:
                 texto = f"""
-                <div style="font-size:9px;font-weight:bold;">
-                    {procedimiento[:18]}
-                </div>
-                <div style="font-size:8px;">
+                <div style="font-size:9px;font-weight:800;line-height:1.05;">
+                    {procedimiento[:22]}<br>
                     {inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}
                 </div>
                 """
@@ -2161,9 +2194,9 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
             height: 42px;
             border: 1px solid rgba(0,0,0,0.25);
             box-sizing: border-box;
-            padding: 3px 5px;
+            padding: 2px 4px;
             font-size: 10px;
-            line-height: 1.15;
+            line-height: 1.1;
             color: #111;
             overflow: hidden;
             white-space: normal;
