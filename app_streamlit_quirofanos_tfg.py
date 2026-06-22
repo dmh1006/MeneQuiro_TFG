@@ -1996,13 +1996,36 @@ def render_agenda_visual(agenda: pd.DataFrame, fecha: pd.Timestamp, titulo: str)
             fuente = str(fila.get("fuente", "Histórico") or "Histórico")
             paciente = str(fila.get("paciente", "") or "")
 
-            if width_px < 95:
-                texto = f"{inicio.strftime('%H:%M')}"
-            elif width_px < 150:
-                texto = f"{procedimiento[:18]}<br>{inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}"
+            if width_px < 70:
+                texto = f"""
+                <div style="font-size:9px;font-weight:bold;text-align:center;">
+                    {inicio.strftime('%H:%M')}
+                </div>
+                """
+
+            elif width_px < 130:
+                texto = f"""
+                <div style="font-size:9px;font-weight:bold;">
+                    {inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}
+                </div>
+                <div style="font-size:8px;">
+                    {procedimiento[:12]}
+                </div>
+                """
+
+            elif width_px < 200:
+                texto = f"""
+                <div style="font-size:9px;font-weight:bold;">
+                    {procedimiento[:18]}
+                </div>
+                <div style="font-size:8px;">
+                    {inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}
+                </div>
+                """
+
             else:
                 texto = (
-                    f"{procedimiento[:28]}<br>"
+                    f"<b>{procedimiento[:30]}</b><br>"
                     f"{inicio.strftime('%H:%M')}-{fin.strftime('%H:%M')}<br>"
                     f"{cirujano[:24]}"
                 )
