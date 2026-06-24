@@ -1,0 +1,44 @@
+```{=latex}
+%% ── Capítulo 4: Metodología ─────────────────────────────────
+\capitulo{4}{Metodología}
+```
+
+## Descripción de los datos
+
+Se describirán los datos utilizados en el proyecto.
+
+## Técnicas y herramientas
+
+A continuación se muestra un **ejemplo de tabla generada con R** usando
+`knitr::kable()`:
+
+```{r tabla-ejemplo,}
+#| label: tbl-iris
+#| tbl-cap: "Estadísticos descriptivos del conjunto de datos iris"
+
+library(knitr)
+library(dplyr)
+
+iris |>
+  group_by(Species) |>
+  summarise(
+    N           = n(),
+    Media_SL    = round(mean(Sepal.Length), 2),
+    SD_SL       = round(sd(Sepal.Length), 2),
+    Media_PL    = round(mean(Petal.Length), 2),
+    SD_PL       = round(sd(Petal.Length), 2)
+  ) |>
+  kable(
+    col.names = c("Especie", "N", "Media Sep.L",
+                  "SD Sep.L", "Media Pet.L", "SD Pet.L"),
+    booktabs  = TRUE,
+    format    = "latex"
+  )
+```
+
+Y podremos referenciar esta tabla en el texto como la tabla \ref{tbl-iris} que aparece en la página \pageref{tbl-iris}.
+
+## Metodología de Ingeniería del Software
+
+Si el TFG incluye desarrollo software, indicar la metodología seguida.
+Se pueden incluir diagramas de casos de uso, diagramas de clases, diagramas de secuencia, etc. para describir el diseño del software desarrollado.

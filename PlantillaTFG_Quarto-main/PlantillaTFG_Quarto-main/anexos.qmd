@@ -1,0 +1,75 @@
+---
+# ============================================================
+#  anexos.qmd  –  Documentación Técnica (Anexos) TFG GIS UBU
+#  Universidad de Burgos · Escuela Politécnica Superior
+# ============================================================
+title: " "
+author: " "
+ 
+format:
+  pdf:
+    documentclass: memoir
+    classoption: [a4paper, 12pt, twoside]
+    pdf-engine: pdflatex 
+    include-in-header: preambulo_anexos.tex
+    maketitle: false
+    keep-tex: false
+    number-sections: true
+    toc: false
+    toc-depth: 3
+    lof: false
+    lot: false
+    cite-method: natbib
+    biblio-style: apalike
+    bibliography: bibliografiaAnexos.bib
+    lang: es
+
+knitr:
+  opts_chunk:
+    echo: true
+    warning: false
+    message: false
+    fig.pos: "!h"
+    out.width: "90%"
+    fig.align: "center"
+---
+
+```{=latex}
+%% ── Portada anexos ──────────────────────────────────────────
+\title{Título del Trabajo Fin de Grado}
+\author{\nombre}
+\date{\today}
+
+\maketitle
+```
+
+```{=latex}
+\frontmatter
+\clearpage
+\mainmatter
+\pagestyle{chapterfirst}
+\appendix
+
+\renewcommand{\contentsname}{Índice general}
+\renewcommand{\listfigurename}{Índice de figuras}
+\renewcommand{\listtablename}{Índice de tablas}
+
+
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+\pagestyle{mipc}
+```
+
+{{< include qmd/A_planificacion.qmd >}}
+{{< include qmd/B_diseno.qmd >}}
+{{< include qmd/C_requisitos.qmd >}}
+{{< include qmd/D_manual_usuario.qmd >}}
+{{< include qmd/E_manual_programador.qmd >}}
+{{< include qmd/F_datos.qmd >}}
+{{< include qmd/G_experimental.qmd >}}
+{{< include qmd/H_ODS.qmd >}}
+{{< include qmd/I_prompts.qmd >}}

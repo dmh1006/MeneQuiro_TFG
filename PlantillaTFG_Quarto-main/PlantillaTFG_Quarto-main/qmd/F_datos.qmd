@@ -1,0 +1,60 @@
+```{=latex}
+%% ══════════════════════════════════════════════════════
+%%  APÉNDICE F – Descripción de datos
+%% ══════════════════════════════════════════════════════
+\apendice{Descripción de adquisición y tratamiento de datos}
+
+
+\section{Descripción formal de los datos}
+
+Se describirá el tipo de datos utilizados, su formato, origen, volumen y características principales.
+Tablas, imágenes, señales, secuencias de ADN…
+    
+\section{Descripción clínica de los datos.}
+
+Descripción y explicaciones clinicas del significado o interpretación de los datos.
+```
+
+
+A continuación se muestra un **ejemplo de análisis exploratorio con R**
+que produce tanto código visible como tabla y figura en el PDF:
+
+```{r datos-summary}
+#| label: tbl-resumen-datos
+#| tbl-cap: "Resumen estadístico del conjunto de datos mtcars"
+
+library(knitr)
+library(dplyr)
+
+mtcars |>
+  select(mpg, cyl, hp, wt) |>
+  summarise(across(everything(),
+    list(media = mean, sd = sd, min = min, max = max),
+    .names = "{.col}_{.fn}"
+  )) |>
+  tidyr::pivot_longer(everything(),
+    names_to  = c("variable", "estadístico"),
+    names_sep = "_"
+  ) |>
+  tidyr::pivot_wider(names_from = estadístico, values_from = value) |>
+  mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+  kable(booktabs = TRUE, format = "latex",
+        col.names = c("Variable", "Media", "SD", "Mín", "Máx"))
+```
+
+```{r datos-figura}
+#| label: fig-correlacion
+#| fig-cap: "Relación entre peso del vehículo y consumo (mpg) en mtcars"
+
+library(ggplot2)
+
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(aes(color = factor(cyl)), size = 2.5) +
+  geom_smooth(method = "lm", se = TRUE, color = "grey40") +
+  labs(
+    x     = "Peso (1000 lbs)",
+    y     = "Consumo (mpg)",
+    color = "Cilindros"
+  ) +
+  theme_minimal(base_size = 11)
+```

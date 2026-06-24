@@ -1,0 +1,152 @@
+---
+# ============================================================
+#  memoria.qmd  –  Memoria TFG · Grado en Ingeniería de la Salud
+#  Universidad de Burgos · Escuela Politécnica Superior
+# ============================================================
+# DATOS DEL ALUMNO/A – edita estos campos
+title: " "
+author: " "
+
+# Campos extra accesibles desde el preámbulo LaTeX
+# Se pasan como variables para que \tutor y \tutorb funcionen
+# (se definen también en preambulo_memoria.tex vía \newcommand)
+ 
+# ── Salida PDF ──────────────────────────────────────────────
+format: 
+  pdf:
+    documentclass: memoir
+    classoption: [a4paper, 12pt, twoside]
+    pdf-engine: pdflatex 
+    # El preámbulo LaTeX con todos los paquetes y comandos custom
+    include-in-header: preambulo_memoria.tex
+    maketitle: false
+    # Portada y páginas previas gestionadas desde el propio .qmd
+    # con bloques raw LaTeX
+    keep-tex: false          # pon true para depurar
+    number-sections: false   # los capítulos no van numerados
+    toc: false
+    toc-depth: 3
+    lof: false                # lista de figuras
+    lot: false                # lista de tablas
+    cite-method: natbib      # compatible con apalike
+    biblio-style: apalike
+    bibliography: bibliografia.bib
+    lang: es
+
+# ── Motor knitr para R ──────────────────────────────────────
+knitr:
+  opts_chunk:
+    echo: true        # muestra el código R en el pdf
+    warning: false
+    message: false
+    fig.pos: "!h"     # posición de figuras
+    out.width: "90%"
+    fig.align: "center"
+---
+
+```{=latex}
+%% ── Datos de portada (editar aquí) ─────────────────────────
+\title{Título del Trabajo Fin de Grado}
+\author{\nombre}
+\date{\today}
+
+\maketitle
+```
+
+```{=latex}
+%% ── Página de autorización (Vº Bº tutores) ─────────────────
+\newpage\null\thispagestyle{empty}\newpage
+\thispagestyle{empty}
+
+\noindent\includegraphics[width=\textwidth]{CabeceraEPS.png}\vspace{1cm}
+
+\noindent D. \nombreTutor, profesor/a del departamento de ~, área de ~.
+\noindent D. \nombreTutorb, profesor/a del departamento de ~, área de ~.
+
+\noindent Expone/n:
+
+\noindent Que el/la alumno/a D. \nombre, con DNI \dni, ha realizado el Trabajo
+final de Grado en Ingeniería de la Salud titulado \textit{título del trabajo}.
+
+\noindent Y que dicho trabajo ha sido realizado por el/la alumno/a bajo la
+dirección del/los que suscribe/n.
+
+\begin{center}
+  En Burgos, a {\large \today}
+\end{center}
+
+\vfill\vfill\vfill
+
+\begin{minipage}{0.45\textwidth}
+  \begin{flushleft}
+    Vº. Bº. del Tutor:\\[2cm]
+    D. \nombreTutor
+  \end{flushleft}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+  \begin{flushleft}
+    Tutor:\\[2cm]
+    D. \nombreTutorb
+  \end{flushleft}
+\end{minipage}
+
+\vfill
+\newpage\null\thispagestyle{empty}\newpage
+```
+
+```{=latex}
+%% ── Resumen / Abstract ──────────────────────────────────────
+\frontmatter
+
+\pagestyle{chapterfirst}
+
+\renewcommand*\abstractname{Resumen}
+\begin{abstract}
+En este primer apartado se hace una \textbf{breve} presentación del tema
+que se aborda en el proyecto.
+\end{abstract}
+
+\renewcommand*\abstractname{Descriptores}
+\begin{abstract}
+Palabras separadas por comas que identifiquen el contenido del proyecto.
+\end{abstract}
+
+\clearpage
+
+\renewcommand*\abstractname{Abstract}
+\begin{abstract}
+A \textbf{brief} presentation of the topic addressed in the project.
+\end{abstract}
+
+\renewcommand*\abstractname{Keywords}
+\begin{abstract}
+keywords separated by commas.
+\end{abstract}
+
+\clearpage
+
+\renewcommand{\contentsname}{Índice general}
+\renewcommand{\listfigurename}{Índice de figuras}
+\renewcommand{\listtablename}{Índice de tablas}
+
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+
+\mainmatter
+
+\pagestyle{mipc}
+```
+
+{{< include qmd/1_introduccion.qmd >}}
+{{< include qmd/2_objetivos.qmd >}}
+{{< include qmd/3_teoricos.qmd >}}
+{{< include qmd/4_metodologia.qmd >}}
+{{< include qmd/5_resultados.qmd >}}
+{{< include qmd/6_discusion.qmd >}}
+{{< include qmd/7_conclusiones.qmd >}}
+{{< include qmd/8_lineas_futuras.qmd >}}

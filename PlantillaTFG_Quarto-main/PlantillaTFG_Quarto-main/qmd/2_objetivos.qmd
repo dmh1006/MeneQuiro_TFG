@@ -1,0 +1,15 @@
+```{=latex}
+%% ── Capítulo 2: Objetivos ───────────────────────────────────
+\capitulo{2}{Objetivos}
+```
+
+Objetivos del trabajo realizado.
+
+En este apartado se definen de forma clara y concisa los objetivos del Trabajo Fin de Grado. 
+
+Es recomendable distinguir entre:
+
+- Un **objetivo general** que describa el propósito principal.
+- **Objetivos específicos** de carácter técnico, experimental o clínico.
+- **Objetivos marcados por los requisitos del software/hardware/análisis** a desarrollar.
+- **Objetivos de aprendizaje** relacionados con competencias adquiridas.

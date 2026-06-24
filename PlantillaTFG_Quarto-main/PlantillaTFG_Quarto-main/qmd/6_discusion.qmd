@@ -1,0 +1,6 @@
+```{=latex}
+%% ── Capítulo 6: Discusión ───────────────────────────────────
+\capitulo{6}{Discusión}
+```
+
+Se realizará un análisis crítico de los resultados, interpretando su significado y, cuando sea pertinente, comparándolos con los resultados de trabajos previos, obtenidos con la revisión del estado del arte; de forma que se destaquen las mejoras y aportes sobre el mismo.

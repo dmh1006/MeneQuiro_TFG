@@ -1,0 +1,32 @@
+```{=latex}
+%% ── Capítulo 5: Resultados ──────────────────────────────────
+\capitulo{5}{Resultados}
+```
+
+## Resumen de resultados
+
+Breve resumen de los resultados. En caso de ser un trabajo muy experimental, los resultados completos pueden aparecer en su anexo correspondiente.
+
+
+Debería haber una correspondencia entre los objetivos y los resultados explicados en esta sección
+
+A continuación se muestra un **ejemplo de figura generada con R**:
+
+```{r fig-ejemplo}
+#| label: fig-boxplot
+#| fig-cap: "Distribución de la longitud de sépalo por especie en el conjunto iris"
+
+library(ggplot2)
+
+ggplot(iris, aes(x = Species, y = Sepal.Length, fill = Species)) +
+  geom_boxplot(alpha = 0.7, show.legend = FALSE) +
+  labs(
+    x = "Especie",
+    y = "Longitud del sépalo (cm)"
+  ) +
+  theme_minimal(base_size = 11) +
+  theme(panel.grid.minor = element_blank())
+```
+
+Debería existir correspondencia entre los objetivos definidos y los
+resultados mostrados [@koza92].

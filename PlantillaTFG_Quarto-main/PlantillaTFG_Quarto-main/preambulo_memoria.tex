@@ -1,0 +1,172 @@
+%% ============================================================
+%%  Preámbulo LaTeX compartido – Memoria TFG GIS UBU
+%%  Incluido automáticamente por memoria.qmd via include-before-body
+%% ============================================================
+
+% --- Clase y opciones ya las gestiona Quarto (memoir, a4paper, 12pt, twoside)
+
+% --- Castellano
+%\usepackage[spanish,es-tabla]{babel} % No es necesario en Quarto
+%\selectlanguage{spanish} % No es necesario en Quarto
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+\addto\captionsspanish{\renewcommand{\listtablename}{Índice de tablas}}
+\addto\captionsspanish{\renewcommand{\contentsname}{Índice general}}
+\addto\captionsspanish{\renewcommand{\listfigurename}{Índice de figuras}}
+
+
+% --- Tipografía
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{placeins}
+
+% --- Tablas
+\RequirePackage{booktabs}
+%\RequirePackage[table]{xcolor}
+\PassOptionsToPackage{table}{xcolor}
+\RequirePackage{xtab}
+\RequirePackage{multirow}
+\RequirePackage{tabularx}
+
+% --- Links
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[colorlinks]{hyperref}
+\hypersetup{allcolors={red}}
+
+% --- Matemáticas
+\usepackage{amsmath}
+
+% --- Párrafos
+\nonzeroparskip
+\widowpenalty100000
+\clubpenalty100000
+\nouppercaseheads
+
+% --- Márgenes espejo
+\let\tmp\oddsidemargin
+\let\oddsidemargin\evensidemargin
+\let\evensidemargin\tmp
+\reversemarginpar
+
+% --- Imágenes
+\usepackage{graphicx}
+\graphicspath{{./img/}}
+
+%% Comando \imagen{ruta}{caption}{escala}
+\newcommand{\imagen}[3]{%
+  \begin{figure}[!h]
+    \centering
+    \includegraphics[width=#3\textwidth]{#1}
+    \caption{#2}\label{fig:#1}
+  \end{figure}
+  \FloatBarrier
+}
+
+%% Comando \ruta{texto}
+\newcommand{\ruta}[1]{{\sffamily #1}}
+
+% --- Estilo capítulos memoir
+\chapterstyle{bianchi}
+
+%% \capitulo{número}{título}  – capítulos sin numerar en el cuerpo
+\newcommand{\capitulo}[2]{%
+  \setcounter{chapter}{#1}%
+  \setcounter{section}{0}%
+  \setcounter{figure}{0}%
+  \setcounter{table}{0}%
+  \chapter*{#2}%
+  \addcontentsline{toc}{chapter}{#2}%
+  \markboth{#2}{#2}%
+}
+
+%% Apéndices
+\renewcommand{\appendixname}{Apéndice}
+\renewcommand*\cftappendixname{\appendixname}
+
+\newcommand{\apendice}[1]{%
+  \chapter{#1}%
+}
+\renewcommand*\cftappendixname{\appendixname\ }
+
+% --- Portada personalizada UBU-GIS
+\usepackage{xcolor}
+\definecolor{newBox}{HTML}{D8AD6E}
+
+\makeatletter
+\newcommand{\tutor}[1]{\def\@tutor{#1}}
+\newcommand{\tutorb}[1]{\def\@tutorb{#1}}
+\newcommand{\course}[1]{\def\@course{#1}}
+
+% ── EDITAR ESTOS DATOS ──────────────────────────────────────
+\newcommand{\nombre}{Nombre Alumno/a}            % Tu nombre completo
+\newcommand{\nombreTutor}{Nombre Tutor/a 1}      % Nombre del tutor/a 1
+\newcommand{\nombreTutorb}{Nombre Tutor/a 2}     % Nombre del tutor/a 2
+\newcommand{\dni}{123456A}                       % Tu DNI  
+% ────────────────────────────────────────────────────────────
+
+\tutor{\nombreTutor}
+\tutorb{\nombreTutorb}
+
+\def\maketitle{%
+  \null
+  \thispagestyle{empty}
+
+\nouppercaseheads
+
+\makepagestyle{mipc}
+\makepsmarks{mipc}{%
+  \nouppercaseheads
+  \createmark{chapter}{both}{nonumber}{}{}
+}
+\makeevenhead{mipc}{\leftmark}{}{}   % páginas pares → izquierda
+\makeoddhead{mipc}{}{}{\leftmark}    % páginas impares → derecha
+
+\makeevenfoot{mipc}{}{\thepage}{}
+\makeoddfoot{mipc}{}{\thepage}{}
+\makeheadrule{mipc}{\textwidth}{\normalrulethickness}
+\pagestyle{mipc}
+
+\makepagestyle{chapterfirst}
+\makeevenhead{chapterfirst}{}{}{}
+\makeoddhead{chapterfirst}{}{}{}
+\makeevenfoot{chapterfirst}{}{\thepage}{}
+\makeoddfoot{chapterfirst}{}{\thepage}{}
+\aliaspagestyle{chapter}{chapterfirst}
+
+  % Cabecera
+  \begin{center}
+    \noindent\includegraphics[width=\textwidth]{CabeceraEPS.png}\vspace{1.5cm}
+  \end{center}
+  % Logo GIS
+  \begin{center}
+    \begin{minipage}[c][1.5cm][c]{.20\textwidth}
+      \includegraphics[width=\textwidth]{Logo_GIS.png}
+    \end{minipage}
+  \end{center}
+  % Caja título
+  \begin{center}
+    \colorbox{newBox}{%
+      \begin{minipage}{.8\textwidth}
+        \vspace{.5cm}\Large
+        \begin{center}
+          \textbf{TFG del Grado en Ingeniería de la Salud}\vspace{.6cm}\\
+          \textbf{\LARGE\@title{}}
+        \end{center}
+        \vspace{.2cm}
+      \end{minipage}
+    }
+  \end{center}
+  % Datos
+  \begin{center}
+    \noindent\LARGE
+    Presentado por \@author{}\\
+    en Universidad de Burgos\\
+    \vspace{0.5cm}
+    \noindent\Large
+    \@date{}\\
+    \vspace{0.5cm}
+    Tutores: \@tutor{} -- \@tutorb{}\\
+  \end{center}
+  \null
+  \cleardoublepage
+}
+\makeatother
