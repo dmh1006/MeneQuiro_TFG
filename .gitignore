@@ -1,12 +1,52 @@
+# Entorno virtual
 venv/
+.venv/
+env/
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
 .ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Bases de datos locales
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Datos sensibles o pesados
+Data/*.xls
+Data/*.xlsx
+Data/*.csv
+Data/*.db
+Data/*.db-journal
+
+# Exportaciones generadas
+*.pdf
+*.docx
+*.xlsx
+*.csv
+
+# Quarto / LaTeX temporales
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.tex
+
+# Sistema
 .DS_Store
-.env
+Thumbs.db
 
-data/raw/*.xls
-data/raw/*.xlsx
-
-.idea/
+# VS Code
 .vscode/
