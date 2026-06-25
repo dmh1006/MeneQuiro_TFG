@@ -316,6 +316,4 @@ Universidad de Burgos
 
 ---
 
-# ⭐ Si este proyecto te resulta interesante...
 
-Puedes dejar una ⭐ en el repositorio.
