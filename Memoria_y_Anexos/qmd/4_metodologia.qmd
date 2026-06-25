@@ -7,7 +7,7 @@ En este capítulo se describe la metodología seguida para el desarrollo de Mene
 
 El enfoque metodológico adoptado parte de una idea central: los registros históricos de actividad quirúrgica pueden transformarse en conocimiento útil para la planificación si son tratados, normalizados y analizados adecuadamente. A partir de este planteamiento, MeneQuiro utiliza información retrospectiva del bloque quirúrgico para estimar duraciones, detectar huecos disponibles y generar propuestas de planificación asistidas por datos.
 
-## 4.1 Entorno de trabajo
+## Entorno de trabajo
 
 El proyecto se ha desarrollado en el contexto de las prácticas curriculares realizadas en el Servicio de Cirugía General y Digestiva del Hospital Universitario de Burgos. Durante este periodo fue posible conocer el flujo de trabajo asociado a la planificación quirúrgica, analizar los documentos utilizados habitualmente por el servicio e identificar oportunidades de mejora relacionadas con la explotación de los datos históricos.
 
@@ -32,7 +32,7 @@ La @tbl-herramientas resume las principales tecnologías empleadas durante el de
 
 La elección de estas herramientas responde a criterios de accesibilidad, facilidad de integración y adecuación al tipo de problema abordado. Python permite trabajar de forma natural con datos tabulares y desarrollar algoritmos de análisis de forma flexible. Streamlit facilita la transformación del análisis en una herramienta interactiva, mientras que SQLite proporciona una solución ligera para la persistencia de datos en un prototipo académico.
 
-## 4.2 Conjunto de datos empleado
+## Conjunto de datos empleado
 
 El desarrollo de MeneQuiro se basa en el análisis de un histórico anonimizado de intervenciones quirúrgicas procedente del Hospital Universitario de Burgos. Este conjunto de datos contiene información relativa a la programación y realización de cirugías, incluyendo variables temporales, organizativas y clínicas necesarias para estudiar el comportamiento del bloque quirúrgico.
 
@@ -79,7 +79,7 @@ donde \(d_i\) representa la duración de la intervención \(i\), \(t_{fin,i}\) l
 
 Esta transformación permitió pasar de registros administrativos a variables cuantitativas directamente explotables desde el punto de vista estadístico. En consecuencia, el histórico quirúrgico dejó de ser únicamente una fuente de consulta retrospectiva para convertirse en la base analítica del sistema de recomendación desarrollado.
 
-## 4.3 Preprocesamiento de los datos
+## Preprocesamiento de los datos
 
 Antes de realizar cualquier análisis estadístico fue necesario llevar a cabo una fase de preprocesamiento destinada a garantizar la calidad y consistencia de la información disponible. Como ocurre habitualmente en conjuntos de datos procedentes de entornos hospitalarios, el histórico presentaba diferencias de formato, registros incompletos, nomenclaturas heterogéneas y pequeñas inconsistencias derivadas del uso continuado de hojas de cálculo como herramienta de planificación.
 
@@ -101,7 +101,7 @@ Como resultado del preprocesamiento se obtuvo un conjunto de datos consistente, 
 
 La Figura XX resume el flujo seguido durante esta fase.
 
-## 4.4 Estudio estadístico de la actividad quirúrgica
+## Estudio estadístico de la actividad quirúrgica
 
 Una vez completado el proceso de depuración, se realizó un estudio estadístico descriptivo de la actividad quirúrgica con el objetivo de caracterizar el comportamiento temporal de los distintos procedimientos y extraer conocimiento útil para el proceso de planificación.
 
@@ -139,7 +139,7 @@ El análisis conjunto de estos indicadores permitió identificar procedimientos 
 
 La Figura XX muestra un ejemplo del análisis estadístico realizado sobre los procedimientos quirúrgicos.
 
-## 4.5 Construcción del catálogo quirúrgico
+## Construcción del catálogo quirúrgico
 
 El catálogo quirúrgico constituye el núcleo del sistema desarrollado en MeneQuiro. Su finalidad es resumir el comportamiento histórico observado para cada procedimiento y convertir dicha información en conocimiento reutilizable durante la planificación de nuevas intervenciones.
 
@@ -158,7 +158,7 @@ Este catálogo se genera automáticamente a partir del histórico disponible, pe
 
 La utilización de un catálogo construido mediante análisis estadístico aporta una ventaja significativa frente a los sistemas tradicionales basados en tiempos introducidos manualmente, ya que las estimaciones evolucionan junto con la actividad real del servicio.
 
-## 4.6 Desarrollo del algoritmo de recomendación
+## Desarrollo del algoritmo de recomendación
 
 El componente principal de MeneQuiro es el algoritmo de recomendación de huecos quirúrgicos, diseñado para asistir al planificador durante la incorporación de nuevas intervenciones a la agenda diaria. Su objetivo consiste en identificar automáticamente los intervalos temporales compatibles con la duración estimada del procedimiento seleccionado y presentar las alternativas más adecuadas para su planificación.
 
@@ -234,7 +234,7 @@ Cada recomendación incluye:
 
 El usuario mantiene en todo momento la decisión final sobre la planificación, pudiendo seleccionar cualquiera de las alternativas propuestas o modificar posteriormente la agenda según las necesidades organizativas del servicio.
 
-## 4.7 Desarrollo de la aplicación MeneQuiro
+## Desarrollo de la aplicación MeneQuiro
 
 Una vez completadas las fases de preparación de los datos y desarrollo del algoritmo de recomendación, se procedió a la implementación de MeneQuiro como herramienta interactiva de apoyo a la planificación quirúrgica.
 
@@ -258,7 +258,7 @@ La separación entre módulos permitió mantener un elevado grado de independenc
 
 Asimismo, la aplicación incorpora una base de datos SQLite destinada al almacenamiento de las intervenciones simuladas y realizadas por el usuario durante el proceso de planificación. Esta base de datos permite conservar la información entre sesiones y mantener una separación clara entre los datos históricos originales y aquellos generados durante el uso de la herramienta.
 
-## 4.8 Metodología de desarrollo software
+## Metodología de desarrollo software
 
 El desarrollo de MeneQuiro se llevó a cabo siguiendo una metodología incremental basada en prototipos. Esta estrategia permitió desarrollar inicialmente una versión funcional mínima e incorporar progresivamente nuevas funcionalidades conforme se identificaban nuevas necesidades durante las prácticas realizadas en el Hospital Universitario de Burgos.
 
@@ -279,7 +279,7 @@ Durante todo el desarrollo se utilizó Git como sistema de control de versiones,
 
 Esta metodología permitió mantener una evolución continua del software, incorporando mejoras sucesivas derivadas tanto del análisis de los datos como de las observaciones realizadas durante el uso de la herramienta por parte del personal sanitario.
 
-## 4.9 Validación funcional del sistema
+## Validación funcional del sistema
 
 Una vez implementadas las diferentes funcionalidades de MeneQuiro, se llevó a cabo una fase de validación funcional cuyo objetivo fue comprobar el correcto funcionamiento de todos los módulos desarrollados.
 
