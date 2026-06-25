@@ -3,17 +3,28 @@
 \capitulo{1}{Introducción}
 ```
 
-Descripción del contexto y motivación del trabajo. Se puede incluir texto
-normal en Markdown junto con bloques LaTeX cuando sea necesario.
+La planificación quirúrgica constituye uno de los procesos organizativos más complejos dentro de un entorno hospitalario. La correcta asignación de intervenciones a los distintos quirófanos requiere coordinar simultáneamente numerosos factores, entre los que destacan la disponibilidad de recursos humanos, la duración prevista de cada procedimiento, la especialidad quirúrgica implicada, la disponibilidad del bloque quirúrgico y la aparición de incidencias imprevisibles, como urgencias o cancelaciones de última hora. La adecuada gestión de todos estos elementos resulta fundamental para garantizar un uso eficiente de los recursos hospitalarios, reducir los tiempos de espera y optimizar la utilización de unos recursos asistenciales especialmente costosos y limitados.
 
-En este capítulo se presenta el trabajo realizado y se contextualiza el problema abordado. 
-Se debe indicar el ámbito en el que se enmarca el Trabajo Fin de Grado, la motivación del mismo  y la relevancia del problema tratado. 
-Asimismo, se describirá brevemente la estructura de la memoria, indicando el contenido de cada capítulo.
+En numerosos hospitales, la planificación diaria continúa realizándose mediante herramientas de propósito general, principalmente hojas de cálculo, complementadas con la experiencia del personal responsable de la programación quirúrgica. Aunque este procedimiento permite desarrollar la actividad asistencial con normalidad, presenta importantes limitaciones relacionadas con la reutilización del conocimiento histórico, la automatización del proceso de planificación y la capacidad para apoyar la toma de decisiones ante modificaciones de la programación inicial. Como consecuencia, una gran parte de la información generada tras años de actividad quirúrgica permanece infrautilizada, desaprovechando un recurso de gran valor para optimizar futuras planificaciones.
 
-La extensión máxima del Trabajo Fin de Grado será de **50 páginas**, contabilizadas como el total resultante de la suma de todos los capítulos de la memoria comprendidos entre los apartados **Introducción, Metodología, Resultados, Discusión, Conclusiones y Lineas futuras**. 
+El presente Trabajo Fin de Grado surge en el contexto de las prácticas curriculares realizadas en el Servicio de Cirugía General y Digestiva del Hospital Universitario de Burgos (HUBU). Durante dicho periodo fue posible estudiar el funcionamiento del bloque quirúrgico, analizar la información almacenada sobre intervenciones realizadas e identificar las principales dificultades a las que se enfrenta diariamente el personal encargado de la planificación. Este análisis permitió detectar la oportunidad de desarrollar una herramienta informática capaz de asistir al planificador mediante el aprovechamiento de los datos históricos disponibles.
 
-Este límite no incluye los anexos, que se entregarán en documentos independientes.
+Como respuesta a esta necesidad se ha desarrollado **MeneQuiro**, una aplicación web diseñada como sistema inteligente de apoyo a la planificación quirúrgica. La herramienta integra técnicas de análisis de datos con algoritmos de recomendación para estimar la duración esperada de nuevos procedimientos, localizar automáticamente huecos compatibles dentro de la programación existente y generar propuestas de planificación fundamentadas en la actividad histórica registrada. Además, incorpora módulos específicos destinados al análisis estadístico de la actividad quirúrgica, la visualización interactiva de la ocupación de los quirófanos, la simulación de nuevas intervenciones y la planificación de guardias del personal sanitario.
 
-### Estructura del documento
+El desarrollo de MeneQuiro ha requerido la integración de conocimientos adquiridos durante el Grado en Ingeniería de la Salud relacionados con programación en Python, análisis y procesamiento de datos, desarrollo de aplicaciones web, visualización de información, gestión de bases de datos y optimización de procesos asistenciales. De este modo, el trabajo constituye una aplicación práctica de las competencias desarrolladas durante la titulación sobre un problema real de ingeniería sanitaria, aportando una solución funcional construida en colaboración con profesionales del entorno hospitalario.
 
-Breve descripción de cómo está organizado el resto de la memoria.
+Aunque el sistema desarrollado constituye un prototipo académico, su diseño se ha realizado siguiendo criterios de modularidad, escalabilidad y reutilización del software, permitiendo su evolución futura hacia una plataforma plenamente integrada en el ecosistema tecnológico hospitalario mediante la incorporación de bases de datos centralizadas, acceso multiusuario y nuevas técnicas de apoyo a la decisión basadas en inteligencia artificial.
+
+## Estructura del documento
+
+La presente memoria se estructura en seis capítulos principales, además de la bibliografía y los anexos.
+
+En el **Capítulo 2** se describen los objetivos perseguidos por el proyecto y la metodología seguida durante su desarrollo, incluyendo el entorno de trabajo, las tecnologías empleadas y la arquitectura general del sistema.
+
+El **Capítulo 3** presenta el diseño e implementación de MeneQuiro, detallando la estructura de la aplicación, el tratamiento de los datos históricos, el funcionamiento del sistema de recomendación de huecos quirúrgicos y el módulo de planificación de guardias.
+
+El **Capítulo 4** recoge los resultados obtenidos tras el desarrollo de la aplicación, mostrando las principales funcionalidades implementadas y su comportamiento sobre datos reales procedentes del Hospital Universitario de Burgos.
+
+En el **Capítulo 5** se realiza una discusión de los resultados obtenidos, analizando las principales aportaciones del sistema, sus limitaciones actuales y las decisiones de diseño adoptadas durante el desarrollo.
+
+Finalmente, el **Capítulo 6** expone las conclusiones alcanzadas y propone diversas líneas de trabajo futuro orientadas a la evolución de MeneQuiro hacia una herramienta plenamente integrada en los sistemas de información hospitalarios.

@@ -11,7 +11,7 @@ author: " "
 # Se pasan como variables para que \tutor y \tutorb funcionen
 # (se definen también en preambulo_memoria.tex vía \newcommand)
  
-# ── Salida PDF ──────────────────────────────────────────────
+# -- Salida PDF ----------------------------------------------
 format: 
   pdf:
     documentclass: memoir
@@ -33,7 +33,7 @@ format:
     bibliography: bibliografia.bib
     lang: es
 
-# ── Motor knitr para R ──────────────────────────────────────
+# -- Motor knitr para R --------------------------------------
 knitr:
   opts_chunk:
     echo: true        # muestra el código R en el pdf
@@ -45,8 +45,8 @@ knitr:
 ---
 
 ```{=latex}
-%% ── Datos de portada (editar aquí) ─────────────────────────
-\title{Título del Trabajo Fin de Grado}
+%% -- Datos de portada (editar aquí) -------------------------
+\title{MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos}
 \author{\nombre}
 \date{\today}
 
@@ -54,7 +54,7 @@ knitr:
 ```
 
 ```{=latex}
-%% ── Página de autorización (Vº Bº tutores) ─────────────────
+%% -- Página de autorización (Vº Bº tutores) -----------------
 \newpage\null\thispagestyle{empty}\newpage
 \thispagestyle{empty}
 
@@ -96,7 +96,7 @@ dirección del/los que suscribe/n.
 ```
 
 ```{=latex}
-%% ── Resumen / Abstract ──────────────────────────────────────
+%% -- Resumen / Abstract --------------------------------------
 \frontmatter
 
 \pagestyle{chapterfirst}
