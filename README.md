@@ -321,7 +321,7 @@ Universidad de Burgos
 
 #  Autor
 
-**Darío Meneses**
+**Darío Meneses Hernández**
 
 **En colaboración con los tutores: Alejandro Merino Gomez y Daniel Sarabia Ortiz**
 
