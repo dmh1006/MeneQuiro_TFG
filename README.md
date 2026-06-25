@@ -230,16 +230,18 @@ TFG_DarioMeneses
 │   ├── planificador_tfg.py
 │   ├── planificador_guardias.py
 │   ├── limpiar_csv.py
-│   └── analisis_quirofano.py
+│   └── analisis_historico.py
 │
 ├── Data
 │   ├── 2025.xlsx
-│   ├── Qº FEBRERO.xls
-│   └── Base de datos
+│   ├── quirofano_2025_limpio.csv
+│   ├── planificacion_guardias_quirófano.xlsx
+│   ├── correrapp.txt
+│   └── quirofanos_realizadas.db
 │
-├── PlantillaTFG_Quarto-main
+├── Memoria_y_Anexos
 │
-├── app_streamlit_quirofanos_tfg.py
+├── MeneQuiro.py
 │
 ├── requirements.txt
 │
