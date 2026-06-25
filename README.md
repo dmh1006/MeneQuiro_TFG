@@ -30,7 +30,7 @@
 
 **Autoría**
 
-Alumno: Darío Meneses
+Alumno: Darío Meneses Hernández
 
 Tutores: Alejandro Merino Gomez y Daniel Sarabia Ortiz
 
