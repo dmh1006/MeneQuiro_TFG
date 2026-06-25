@@ -1,10 +1,10 @@
-<div align="center">
+<p align="center">
+  <img src="./img/ubu.png" width="100%">
+</p>
 
-<img src="img/CabeceraEPS.png" width="100%">
-
-<br><br>
-
-<img src="img/Logo_GIS.png" width="280">
+<p align="center">
+  <img src="./img/logo_menequiro.png" width="260">
+</p>
 
 #  MeneQuiro
 
