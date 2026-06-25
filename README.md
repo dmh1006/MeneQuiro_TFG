@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="./img/ubu.png" width="100%">
+  <img src="./img/CabeceraEPS.png" width="100%">
 </p>
 
 <p align="center">
-  <img src="./img/logo_menequiro.png" width="260">
+  <img src="./img/Logo_GIS.png" width="260">
 </p>
 
 #  MeneQuiro
