@@ -19,7 +19,7 @@
 
 ---
 
-**Autor**
+**Autoría**
 
 Alumno: Darío Meneses
 
