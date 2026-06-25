@@ -270,13 +270,13 @@ TFG_DarioMeneses
 Clonar el repositorio
 
 ```bash
-git clone https://github.com/dmh1006/TFG_DarioMeneses.git
+git clone https://github.com/dmh1006/MeneQuiro_TFG.git
 ```
 
 Entrar en el proyecto
 
 ```bash
-cd TFG_DarioMeneses
+cd MeneQuiro_TFG
 ```
 
 Instalar dependencias
