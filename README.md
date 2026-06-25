@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏥 MeneQuiro: Plataforma inteligente para la planificación y optimización de quirófanos mediante análisis predictivo de intervenciones
+#  MeneQuiro: Plataforma inteligente para la planificación y optimización de quirófanos mediante análisis predictivo de intervenciones
 
 ### Trabajo de Fin de Grado · Ingeniería de la Salud
 ### Universidad de Burgos
@@ -31,7 +31,7 @@ Universidad de Burgos
 
 ---
 
-# 📖 Descripción
+#  Descripción
 
 Este proyecto presenta el desarrollo de una **herramienta web inteligente para la planificación quirúrgica**, diseñada como Trabajo Fin de Grado del Grado en Ingeniería de la Salud.
 
@@ -41,7 +41,7 @@ A diferencia de un planificador tradicional, el sistema no únicamente represent
 
 ---
 
-# 🎯 Objetivos
+#  Objetivos
 
 Los principales objetivos del proyecto son:
 
@@ -55,9 +55,9 @@ Los principales objetivos del proyecto son:
 
 ---
 
-# 🚀 Funcionalidades principales
+#  Funcionalidades principales
 
-## 📅 Agenda quirúrgica
+##  Agenda quirúrgica
 
 Visualización completa de la planificación diaria mediante un calendario interactivo organizado por quirófanos.
 
@@ -72,7 +72,7 @@ Permite visualizar:
 
 ---
 
-## 🤖 Propuesta inteligente de huecos
+##  Propuesta inteligente de huecos
 
 El sistema analiza automáticamente:
 
@@ -87,7 +87,7 @@ Y genera automáticamente las mejores propuestas ordenadas por prioridad.
 
 ---
 
-## 📊 Análisis histórico
+##  Análisis histórico
 
 La aplicación incorpora herramientas para estudiar el comportamiento histórico del bloque quirúrgico.
 
@@ -103,7 +103,7 @@ Entre otras métricas:
 
 ---
 
-## 🏥 Catálogo inteligente de procedimientos
+##  Catálogo inteligente de procedimientos
 
 El sistema construye automáticamente un catálogo a partir del histórico.
 
@@ -124,7 +124,7 @@ Además incorpora un sistema de normalización que corrige:
 
 ---
 
-## 🟢 Simulación de planificación
+##  Simulación de planificación
 
 Es posible añadir nuevas intervenciones sin modificar el histórico real.
 
@@ -140,7 +140,7 @@ La simulación incluye:
 
 ---
 
-## ✔ Registro de intervenciones realizadas
+##  Registro de intervenciones realizadas
 
 Una planificación puede confirmarse posteriormente como intervención realizada.
 
@@ -153,7 +153,7 @@ El sistema almacena:
 
 ---
 
-## 📁 Exportación
+##  Exportación
 
 La aplicación permite exportar información en:
 
@@ -163,7 +163,7 @@ La aplicación permite exportar información en:
 
 ---
 
-## 👨‍⚕️ Planificador de guardias
+##  Planificador de guardias
 
 Se incluye un segundo módulo destinado a la planificación automática de guardias hospitalarias.
 
@@ -176,7 +176,7 @@ Características:
 
 ---
 
-# 🧠 Funcionamiento interno
+#  Funcionamiento interno
 
 El algoritmo sigue las siguientes fases:
 
@@ -210,7 +210,7 @@ Simulación de planificación
 
 ---
 
-# 🏗 Arquitectura del proyecto
+#  Arquitectura del proyecto
 
 ```
 TFG_DarioMeneses
@@ -237,7 +237,7 @@ TFG_DarioMeneses
 
 ---
 
-# 💻 Tecnologías utilizadas
+#  Tecnologías utilizadas
 
 | Tecnología | Uso |
 |------------|-----|
@@ -252,7 +252,7 @@ TFG_DarioMeneses
 
 ---
 
-# ⚙ Instalación
+#  Instalación
 
 Clonar el repositorio
 
@@ -280,7 +280,7 @@ streamlit run app_streamlit_quirofanos_tfg.py
 
 ---
 
-# 📈 Posibles mejoras futuras
+#  Posibles mejoras futuras
 
 - Integración con PostgreSQL.
 - Predicción mediante Machine Learning.
@@ -294,7 +294,7 @@ streamlit run app_streamlit_quirofanos_tfg.py
 
 ---
 
-# 📚 Trabajo académico
+#  Trabajo académico
 
 Este repositorio contiene el desarrollo íntegro del Trabajo Fin de Grado:
 
@@ -306,7 +306,7 @@ Universidad de Burgos
 
 ---
 
-# 👨‍💻 Autor
+#  Autor
 
 **Darío Meneses**
 
