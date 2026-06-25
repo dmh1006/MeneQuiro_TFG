@@ -11,7 +11,14 @@ El bloque quirúrgico constituye una de las unidades asistenciales más compleja
 
 Desde el punto de vista de la Ingeniería de la Salud, el bloque quirúrgico puede entenderse como un sistema dinámico sujeto a restricciones, incertidumbre y variabilidad. Cada intervención requiere una combinación específica de recursos y presenta una duración difícil de predecir con exactitud, ya que depende de factores como el tipo de procedimiento, la complejidad clínica del paciente, el equipo quirúrgico, la técnica empleada y las posibles incidencias intraoperatorias.
 
-La planificación quirúrgica tiene como objetivo asignar intervenciones a quirófanos y franjas horarias disponibles, intentando maximizar la utilización de los recursos y reducir los tiempos improductivos. Esta tarea se complica por la existencia de urgencias, cancelaciones, retrasos, variabilidad en la duración de las cirugías y restricciones de disponibilidad del personal. Por ello, la literatura científica considera la programación de quirófanos como un problema clásico de planificación y optimización dentro de la gestión sanitaria [@cardoen2010; @alamin2025].
+La planificación quirúrgica tiene como objetivo asignar intervenciones a quirófanos y franjas horarias disponibles, intentando maximizar la utilización de los recursos y reducir los tiempos improductivos. Esta tarea se complica por la existencia de urgencias, cancelaciones, retrasos, variabilidad en la duración de las cirugías y restricciones de disponibilidad del personal. Por ello, la literatura científica considera la programación de quirófanos como un problema clásico de planificación y optimización dentro de la gestión sanitaria [@cardoen2010; @alamin2025]. La arquitectura general del sistema desarrollado en este Trabajo Fin de Grado se presenta en la Figura \ref{fig:arquitectura_general}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{img/Figura3.1.png}
+    \caption{Arquitectura general de MeneQuiro y relación entre sus principales módulos funcionales. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.}
+    \label{fig:figura31}
+\end{figure}
 
 ## Planificación quirúrgica y niveles de decisión
 
@@ -24,6 +31,15 @@ La planificación quirúrgica puede analizarse en diferentes niveles temporales 
 El presente trabajo se centra principalmente en la planificación operativa, ya que MeneQuiro asiste al planificador en la asignación de nuevas intervenciones dentro de una agenda diaria existente. Sin embargo, los indicadores generados por la herramienta, como la duración media de procedimientos, la ocupación por quirófano o la variabilidad de las intervenciones, también pueden aportar información útil para niveles tácticos de decisión.
 
 La planificación quirúrgica no debe interpretarse únicamente como un problema de ocupación de salas, sino como un proceso de toma de decisiones en el que se combinan criterios clínicos, organizativos y temporales. Por este motivo, una herramienta de apoyo debe permitir que el usuario mantenga siempre la decisión final, actuando como un sistema de ayuda y no como un sustituto del criterio profesional.
+
+La planificación quirúrgica implica una secuencia de etapas que comienza con la programación de las intervenciones y finaliza con el registro de la actividad realizada. Este flujo de trabajo, representado en la Figura \ref{fig:figura32}, pone de manifiesto la necesidad de coordinar múltiples recursos humanos y materiales, así como la importancia de disponer de herramientas que permitan optimizar el proceso de planificación.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{img/Figura3.2.png}
+    \caption{Flujo general del proceso de planificación quirúrgica implementado en MeneQuiro. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.}
+    \label{fig:figura32}
+\end{figure}
 
 ## Importancia del análisis estadístico de datos reales
 
@@ -45,6 +61,15 @@ A partir de estas variables es posible calcular indicadores como:
 La duración quirúrgica es una variable especialmente relevante. En la práctica, dos intervenciones con el mismo nombre pueden presentar duraciones diferentes debido a la variabilidad clínica y organizativa. Por ello, el uso de medidas estadísticas como la media, la mediana y la desviación típica permite representar mejor el comportamiento real de cada procedimiento que una estimación fija introducida manualmente.
 
 En MeneQuiro, el estudio estadístico de los datos reales constituye la base del catálogo quirúrgico. Este catálogo no es una simple lista de procedimientos, sino una estructura derivada del histórico que resume el comportamiento observado de cada tipo de intervención. De este modo, la herramienta puede estimar la duración planificable de una nueva cirugía a partir de información empírica procedente de intervenciones realizadas previamente.
+
+A partir del histórico de intervenciones quirúrgicas, el sistema analiza la duración real de los procedimientos, identifica huecos disponibles en la programación diaria y propone automáticamente las alternativas más adecuadas para incorporar nuevas cirugías. La Figura \ref{fig:figura33} resume el funcionamiento del algoritmo de recomendación desarrollado.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{img/Figura3.3.png}
+    \caption{Esquema del algoritmo de recomendación automática de huecos quirúrgicos basado en datos históricos reales. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.}
+    \label{fig:figura33}
+\end{figure}
 
 ## Sistemas de apoyo a la decisión
 
@@ -101,6 +126,15 @@ Python se ha utilizado como lenguaje principal debido a su amplio ecosistema de 
 SQLite se ha utilizado como sistema de persistencia local para almacenar las intervenciones planificadas y realizadas durante el uso de la herramienta. Esta elección resulta adecuada para un prototipo académico por su sencillez, portabilidad y facilidad de integración. No obstante, en un escenario hospitalario real sería recomendable migrar a una base de datos centralizada, como PostgreSQL o SQL Server, para permitir sincronización, concurrencia y acceso multiusuario.
 
 Streamlit se ha empleado como framework de interfaz por su capacidad para convertir scripts de análisis de datos en aplicaciones interactivas de forma rápida y mantenible. Esta elección ha permitido centrar el desarrollo en la lógica de planificación, el análisis estadístico y la visualización de resultados, manteniendo una interfaz accesible para usuarios no técnicos.
+
+Como se observa en la Figura~\ref{fig:figura34}, MeneQuiro se apoya en una arquitectura tecnológica sencilla y modular, en la que los datos históricos reales se procesan mediante Python, se analizan con bibliotecas especializadas y se presentan al usuario mediante una interfaz interactiva.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{img/Figura3.4.png}
+    \caption{Arquitectura funcional del módulo de planificación automática de guardias integrado en MeneQuiro. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.}
+    \label{fig:figura34}
+\end{figure}
 
 ## Estado del arte y trabajos relacionados
 
