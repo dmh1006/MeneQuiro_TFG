@@ -21,7 +21,9 @@
 
 **Autor**
 
-Darío Meneses
+Alumno: Darío Meneses
+
+Tutores: Alejandro Merino Gomez y Daniel Sarabia Ortiz
 
 Grado en Ingeniería de la Salud
 
@@ -309,6 +311,8 @@ Universidad de Burgos
 #  Autor
 
 **Darío Meneses**
+
+**En colaboración con los tutores: Alejandro Merino Gomez y Daniel Sarabia Ortiz**
 
 Grado en Ingeniería de la Salud
 
