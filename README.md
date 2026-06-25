@@ -30,7 +30,7 @@
 
 **Autoría**
 
-Alumno: Darío Meneses
+Alumno: Darío Meneses Hernández
 
 Tutores: Alejandro Merino Gomez y Daniel Sarabia Ortiz
 
@@ -321,7 +321,7 @@ Universidad de Burgos
 
 #  Autor
 
-**Darío Meneses**
+**Darío Meneses Hernández**
 
 **En colaboración con los tutores: Alejandro Merino Gomez y Daniel Sarabia Ortiz**
 
