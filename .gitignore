@@ -20,9 +20,6 @@ __pycache__/
 *.sqlite3
 
 # Datos sensibles o pesados
-Data/*.xls
-Data/*.xlsx
-Data/*.csv
 Data/*.db
 Data/*.db-journal
 
