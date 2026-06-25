@@ -309,7 +309,7 @@ python -m streamlit run MeneQuiro.py
 
 Este repositorio contiene el desarrollo íntegro del Trabajo Fin de Grado:
 
-**"Sistema inteligente para la planificación quirúrgica mediante análisis histórico y recomendación automática de huecos"**
+**"Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos"**
 
 Grado en Ingeniería de la Salud
 
