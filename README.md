@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏥 Intelligent Surgical Planning System
+# 🏥 MeneQuiro: Plataforma inteligente para la planificación y optimización de quirófanos mediante análisis predictivo de intervenciones
 
 ### Trabajo de Fin de Grado · Ingeniería de la Salud
 ### Universidad de Burgos
