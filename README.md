@@ -286,7 +286,7 @@ pip install -r requirements.txt
 Ejecutar la aplicación
 
 ```bash
-streamlit run app_streamlit_quirofanos_tfg.py
+python -m streamlit run MeneQuiro.py
 ```
 
 ---
