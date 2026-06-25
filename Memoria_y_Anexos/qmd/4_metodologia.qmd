@@ -3,42 +3,303 @@
 \capitulo{4}{Metodología}
 ```
 
-## Descripción de los datos
+En este capítulo se describe la metodología seguida para el desarrollo de MeneQuiro, desde el análisis inicial del problema hasta la construcción de la herramienta final. La metodología se ha organizado en fases consecutivas: estudio del entorno de trabajo, preparación de los datos, análisis estadístico de la actividad quirúrgica, construcción del catálogo de procedimientos, desarrollo del algoritmo de recomendación, implementación de la aplicación y validación funcional del sistema.
 
-Se describirán los datos utilizados en el proyecto.
+El enfoque metodológico adoptado parte de una idea central: los registros históricos de actividad quirúrgica pueden transformarse en conocimiento útil para la planificación si son tratados, normalizados y analizados adecuadamente. A partir de este planteamiento, MeneQuiro utiliza información retrospectiva del bloque quirúrgico para estimar duraciones, detectar huecos disponibles y generar propuestas de planificación asistidas por datos.
 
-## Técnicas y herramientas
+## 4.1 Entorno de trabajo
 
-A continuación se muestra un **ejemplo de tabla generada con R** usando
-`knitr::kable()`:
+El proyecto se ha desarrollado en el contexto de las prácticas curriculares realizadas en el Servicio de Cirugía General y Digestiva del Hospital Universitario de Burgos. Durante este periodo fue posible conocer el flujo de trabajo asociado a la planificación quirúrgica, analizar los documentos utilizados habitualmente por el servicio e identificar oportunidades de mejora relacionadas con la explotación de los datos históricos.
 
-```{r tabla-ejemplo,}
-#| label: tbl-iris
-#| tbl-cap: "Estadísticos descriptivos del conjunto de datos iris"
+Desde el punto de vista técnico, el desarrollo se llevó a cabo en un entorno local basado en Python, utilizando Visual Studio Code como editor principal y GitHub como sistema de control de versiones. La herramienta final fue concebida como una aplicación interactiva accesible desde navegador, con el objetivo de facilitar su uso por parte de perfiles no necesariamente técnicos.
 
-library(knitr)
-library(dplyr)
+La @tbl-herramientas resume las principales tecnologías empleadas durante el desarrollo del proyecto.
 
-iris |>
-  group_by(Species) |>
-  summarise(
-    N           = n(),
-    Media_SL    = round(mean(Sepal.Length), 2),
-    SD_SL       = round(sd(Sepal.Length), 2),
-    Media_PL    = round(mean(Petal.Length), 2),
-    SD_PL       = round(sd(Petal.Length), 2)
-  ) |>
-  kable(
-    col.names = c("Especie", "N", "Media Sep.L",
-                  "SD Sep.L", "Media Pet.L", "SD Pet.L"),
-    booktabs  = TRUE,
-    format    = "latex"
-  )
-```
+| Herramienta | Finalidad dentro del proyecto |
+|---|---|
+| Python | Lenguaje principal de programación |
+| Pandas | Limpieza, transformación y análisis de datos quirúrgicos |
+| NumPy | Operaciones numéricas y tratamiento de variables derivadas |
+| Plotly | Generación de visualizaciones interactivas |
+| Streamlit | Construcción de la interfaz de usuario |
+| SQLite | Persistencia local de cirugías planificadas y realizadas |
+| OpenPyXL | Lectura y exportación de archivos Excel |
+| ReportLab | Generación de documentos PDF |
+| Git y GitHub | Control de versiones y mantenimiento del repositorio |
+| Quarto | Redacción y generación de la memoria del Trabajo Fin de Grado |
 
-Y podremos referenciar esta tabla en el texto como la tabla \ref{tbl-iris} que aparece en la página \pageref{tbl-iris}.
+: Herramientas utilizadas durante el desarrollo de MeneQuiro {#tbl-herramientas}
 
-## Metodología de Ingeniería del Software
+La elección de estas herramientas responde a criterios de accesibilidad, facilidad de integración y adecuación al tipo de problema abordado. Python permite trabajar de forma natural con datos tabulares y desarrollar algoritmos de análisis de forma flexible. Streamlit facilita la transformación del análisis en una herramienta interactiva, mientras que SQLite proporciona una solución ligera para la persistencia de datos en un prototipo académico.
 
-Si el TFG incluye desarrollo software, indicar la metodología seguida.
-Se pueden incluir diagramas de casos de uso, diagramas de clases, diagramas de secuencia, etc. para describir el diseño del software desarrollado.
+## 4.2 Conjunto de datos empleado
+
+El desarrollo de MeneQuiro se basa en el análisis de un histórico anonimizado de intervenciones quirúrgicas procedente del Hospital Universitario de Burgos. Este conjunto de datos contiene información relativa a la programación y realización de cirugías, incluyendo variables temporales, organizativas y clínicas necesarias para estudiar el comportamiento del bloque quirúrgico.
+
+La información original se encontraba almacenada en hojas de cálculo utilizadas en el entorno asistencial. Este formato resulta habitual en procesos de planificación manual, ya que permite registrar de forma flexible la actividad programada y realizada. Sin embargo, para su utilización dentro de un sistema de recomendación fue necesario transformar dicha información en una estructura tabular homogénea y procesable computacionalmente.
+
+Las variables utilizadas se agruparon en cuatro bloques principales:
+
+- variables temporales, relacionadas con la fecha, hora de inicio y hora de finalización;
+- variables organizativas, como quirófano, servicio, turno y centro;
+- variables clínicas y procedimentales, como diagnóstico, procedimiento y tipo de caso;
+- variables de estado, como suspensión, urgencia o motivo de cancelación.
+
+La @tbl-variables muestra las principales variables empleadas durante el desarrollo.
+
+| Variable | Tipo | Descripción |
+|---|---|---|
+| `fecha` | Fecha | Día asociado a la intervención quirúrgica |
+| `hora_inicio` | Hora | Hora programada o registrada de inicio |
+| `hora_fin` | Hora | Hora programada o registrada de finalización |
+| `inicio_dt` | Fecha-hora | Marca temporal completa de inicio |
+| `fin_dt` | Fecha-hora | Marca temporal completa de finalización |
+| `duracion_min` | Numérica | Duración de la intervención expresada en minutos |
+| `quirofano` | Categórica | Quirófano asignado a la intervención |
+| `servicio` | Categórica | Servicio quirúrgico responsable |
+| `procedimiento` | Texto | Descripción original del procedimiento |
+| `procedimiento_base` | Texto | Procedimiento normalizado tras el preprocesamiento |
+| `cirujano_principal` | Texto | Profesional responsable de la intervención |
+| `anestesista_principal` | Texto | Profesional responsable de la anestesia |
+| `tipo_caso` | Categórica | Tipo de intervención registrada |
+| `es_urgencia` | Booleana | Indica si la cirugía corresponde a una urgencia |
+| `esta_suspendida` | Booleana | Indica si la cirugía fue suspendida |
+
+: Variables principales utilizadas en el análisis quirúrgico {#tbl-variables}
+
+A partir de las variables temporales se calculó la duración real de cada intervención. Esta magnitud constituye una de las variables fundamentales del proyecto, ya que permite caracterizar estadísticamente cada procedimiento y estimar el tiempo necesario para futuras planificaciones.
+
+La duración de cada cirugía se calculó mediante la diferencia entre la hora de finalización y la hora de inicio, como se expresa en la @eq-duracion.
+
+$$
+d_i = t_{fin,i} - t_{inicio,i}
+$$ {#eq-duracion}
+
+donde \(d_i\) representa la duración de la intervención \(i\), \(t_{fin,i}\) la marca temporal de finalización y \(t_{inicio,i}\) la marca temporal de inicio.
+
+Esta transformación permitió pasar de registros administrativos a variables cuantitativas directamente explotables desde el punto de vista estadístico. En consecuencia, el histórico quirúrgico dejó de ser únicamente una fuente de consulta retrospectiva para convertirse en la base analítica del sistema de recomendación desarrollado.
+
+## 4.3 Preprocesamiento de los datos
+
+Antes de realizar cualquier análisis estadístico fue necesario llevar a cabo una fase de preprocesamiento destinada a garantizar la calidad y consistencia de la información disponible. Como ocurre habitualmente en conjuntos de datos procedentes de entornos hospitalarios, el histórico presentaba diferencias de formato, registros incompletos, nomenclaturas heterogéneas y pequeñas inconsistencias derivadas del uso continuado de hojas de cálculo como herramienta de planificación.
+
+El objetivo de esta fase fue transformar el conjunto de datos original en una estructura homogénea y preparada para su explotación estadística, asegurando que cada intervención pudiera ser analizada de forma consistente y comparable con el resto.
+
+Las principales operaciones realizadas fueron las siguientes:
+
+- Conversión de fechas y horas a objetos temporales normalizados.
+- Cálculo automático de la duración de cada intervención.
+- Eliminación de registros incompletos o inconsistentes.
+- Normalización de la nomenclatura de procedimientos quirúrgicos.
+- Agrupación de procedimientos equivalentes escritos de forma diferente.
+- Identificación automática de cirugías urgentes y suspendidas.
+- Generación de variables derivadas utilizadas posteriormente por el algoritmo de recomendación.
+
+Especial atención requirió la normalización de los nombres de los procedimientos quirúrgicos. Durante el análisis preliminar se identificaron múltiples variantes ortográficas, abreviaturas y errores de escritura correspondientes a un mismo procedimiento. Si estos registros se hubieran tratado como procedimientos independientes, los resultados estadísticos habrían quedado distorsionados, afectando directamente a las estimaciones realizadas por el sistema.
+
+Como resultado del preprocesamiento se obtuvo un conjunto de datos consistente, libre de duplicidades semánticas y preparado para la construcción del catálogo quirúrgico empleado por MeneQuiro.
+
+La Figura XX resume el flujo seguido durante esta fase.
+
+## 4.4 Estudio estadístico de la actividad quirúrgica
+
+Una vez completado el proceso de depuración, se realizó un estudio estadístico descriptivo de la actividad quirúrgica con el objetivo de caracterizar el comportamiento temporal de los distintos procedimientos y extraer conocimiento útil para el proceso de planificación.
+
+Para cada procedimiento registrado se calcularon diferentes indicadores estadísticos, entre ellos:
+
+- número total de intervenciones;
+- duración media;
+- mediana;
+- desviación típica;
+- duración mínima y máxima;
+- distribución temporal;
+- frecuencia de utilización por quirófano.
+
+La duración media constituye el primer indicador empleado para caracterizar cada procedimiento y se calcula mediante la expresión:
+
+$$
+\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
+$$ {#eq-media}
+
+donde \(x_i\) representa la duración observada de la intervención \(i\) y \(n\) el número total de intervenciones pertenecientes al mismo procedimiento.
+
+No obstante, la duración media por sí sola no resulta suficiente para describir completamente el comportamiento de un procedimiento quirúrgico. Dos procedimientos pueden presentar una duración media similar y, sin embargo, mostrar niveles de variabilidad completamente diferentes.
+
+Por este motivo también se calculó la desviación típica:
+
+$$
+s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}
+$$ {#eq-desviacion}
+
+Este indicador permite cuantificar la dispersión existente alrededor de la duración media y constituye una medida fundamental para valorar la estabilidad temporal de cada procedimiento.
+
+Asimismo, se calculó la mediana como medida robusta de tendencia central, especialmente útil en aquellos procedimientos cuya distribución presenta valores extremos.
+
+El análisis conjunto de estos indicadores permitió identificar procedimientos altamente estables, así como otros cuya duración presenta una elevada variabilidad y requiere una mayor precaución durante la planificación.
+
+La Figura XX muestra un ejemplo del análisis estadístico realizado sobre los procedimientos quirúrgicos.
+
+## 4.5 Construcción del catálogo quirúrgico
+
+El catálogo quirúrgico constituye el núcleo del sistema desarrollado en MeneQuiro. Su finalidad es resumir el comportamiento histórico observado para cada procedimiento y convertir dicha información en conocimiento reutilizable durante la planificación de nuevas intervenciones.
+
+Cada entrada del catálogo contiene la información estadística obtenida durante la fase anterior, incluyendo:
+
+- número de intervenciones registradas;
+- duración media;
+- duración mediana;
+- desviación típica;
+- duración planificable;
+- quirófanos utilizados con mayor frecuencia.
+
+La duración planificable utilizada por el algoritmo no corresponde necesariamente a la duración media, sino a un valor calculado a partir del comportamiento observado históricamente para cada procedimiento. De este modo, el sistema evita utilizar estimaciones arbitrarias y fundamenta sus recomendaciones en la experiencia acumulada del servicio.
+
+Este catálogo se genera automáticamente a partir del histórico disponible, permitiendo su actualización conforme se incorporan nuevas intervenciones.
+
+La utilización de un catálogo construido mediante análisis estadístico aporta una ventaja significativa frente a los sistemas tradicionales basados en tiempos introducidos manualmente, ya que las estimaciones evolucionan junto con la actividad real del servicio.
+
+## 4.6 Desarrollo del algoritmo de recomendación
+
+El componente principal de MeneQuiro es el algoritmo de recomendación de huecos quirúrgicos, diseñado para asistir al planificador durante la incorporación de nuevas intervenciones a la agenda diaria. Su objetivo consiste en identificar automáticamente los intervalos temporales compatibles con la duración estimada del procedimiento seleccionado y presentar las alternativas más adecuadas para su planificación.
+
+A diferencia de un sistema basado únicamente en la búsqueda de espacios libres, el algoritmo desarrollado utiliza la información obtenida durante el estudio estadístico realizado sobre el histórico de intervenciones. De este modo, la estimación temporal utilizada durante la planificación se fundamenta en el comportamiento observado para cada procedimiento y no en tiempos establecidos manualmente.
+
+
+### Obtención de la duración planificable
+
+La primera etapa consiste en consultar el catálogo quirúrgico generado durante el análisis estadístico. Para cada procedimiento seleccionado se recupera la duración planificable, calculada a partir de las intervenciones registradas históricamente.
+
+Esta duración constituye el tiempo de referencia utilizado posteriormente durante la búsqueda de huecos compatibles.
+
+### Construcción de la agenda diaria
+
+Posteriormente se construye una representación completa de la agenda correspondiente a la fecha seleccionada.
+
+Para ello se integran las intervenciones históricas registradas para dicha jornada junto con aquellas planificaciones simuladas realizadas previamente por el usuario. Esta estrategia permite que el algoritmo trabaje siempre sobre el estado más actualizado de la planificación.
+
+### Identificación de huecos disponibles
+
+Una vez ordenadas cronológicamente todas las intervenciones de cada quirófano, el algoritmo identifica automáticamente los intervalos temporales existentes entre intervenciones consecutivas.
+
+La duración de cada hueco se obtiene mediante
+
+$$
+h=t_{inicio}^{(i+1)}-t_{fin}^{(i)}
+$$ {#eq-hueco}
+
+donde \(h\) representa la duración disponible entre dos intervenciones consecutivas.
+
+Únicamente se consideran candidatos aquellos huecos cuya duración resulta igual o superior a la duración planificable del procedimiento.
+
+### Evaluación de las propuestas
+
+Cada hueco candidato es evaluado considerando diferentes criterios de planificación:
+
+- disponibilidad temporal suficiente;
+- holgura restante tras incorporar la nueva intervención;
+- utilización habitual del quirófano para dicho procedimiento;
+- posición del hueco dentro de la jornada quirúrgica.
+
+Estos criterios permiten ordenar automáticamente las diferentes alternativas antes de presentarlas al usuario.
+
+### Comprobación de solapamientos
+
+Antes de añadir una nueva intervención a la planificación, el sistema realiza una comprobación adicional para garantizar que no exista solapamiento temporal con ninguna cirugía previamente programada.
+
+Sean dos intervenciones \(A\) y \(B\), existe incompatibilidad temporal cuando se verifica simultáneamente
+
+$$
+t_{inicio}^{A}<t_{fin}^{B}
+\quad \land \quad
+t_{fin}^{A}>t_{inicio}^{B}
+$$ {#eq-solape}
+
+En caso de cumplirse esta condición, la propuesta es descartada automáticamente.
+
+Esta comprobación garantiza que todas las planificaciones generadas sean temporalmente consistentes.
+
+### Generación de recomendaciones
+
+Finalmente, las propuestas válidas se ordenan según los criterios anteriormente descritos y se presentan al usuario mediante una tabla interactiva.
+
+Cada recomendación incluye:
+
+- quirófano propuesto;
+- hora de inicio;
+- hora prevista de finalización;
+- duración necesaria;
+- duración disponible;
+- holgura restante;
+- indicación de si el procedimiento se realiza habitualmente en dicho quirófano.
+
+El usuario mantiene en todo momento la decisión final sobre la planificación, pudiendo seleccionar cualquiera de las alternativas propuestas o modificar posteriormente la agenda según las necesidades organizativas del servicio.
+
+## 4.7 Desarrollo de la aplicación MeneQuiro
+
+Una vez completadas las fases de preparación de los datos y desarrollo del algoritmo de recomendación, se procedió a la implementación de MeneQuiro como herramienta interactiva de apoyo a la planificación quirúrgica.
+
+La aplicación fue desarrollada utilizando Streamlit, permitiendo transformar los algoritmos implementados en Python en una interfaz accesible desde cualquier navegador web. Esta decisión permitió centrar el desarrollo en la lógica del sistema sin necesidad de emplear tecnologías específicas para desarrollo web, facilitando además el mantenimiento y la evolución futura de la aplicación.
+
+El diseño de la herramienta se estructuró siguiendo una arquitectura modular, en la que cada componente desarrolla una función claramente diferenciada. Esta organización facilita tanto la reutilización del código como la incorporación de nuevas funcionalidades.
+
+Los principales módulos implementados fueron los siguientes:
+
+- Importación y tratamiento del histórico quirúrgico.
+- Construcción automática del catálogo de procedimientos.
+- Estimación estadística de nuevas intervenciones.
+- Recomendación automática de huecos quirúrgicos.
+- Visualización interactiva de la agenda diaria.
+- Gestión de intervenciones planificadas y realizadas.
+- Análisis estadístico de la actividad quirúrgica.
+- Planificador automático de guardias.
+- Exportación de resultados en diferentes formatos.
+
+La separación entre módulos permitió mantener un elevado grado de independencia entre las diferentes funcionalidades de la aplicación. Como consecuencia, modificaciones realizadas sobre un componente concreto no afectan al funcionamiento del resto del sistema, facilitando tanto el mantenimiento como futuras ampliaciones.
+
+Asimismo, la aplicación incorpora una base de datos SQLite destinada al almacenamiento de las intervenciones simuladas y realizadas por el usuario durante el proceso de planificación. Esta base de datos permite conservar la información entre sesiones y mantener una separación clara entre los datos históricos originales y aquellos generados durante el uso de la herramienta.
+
+## 4.8 Metodología de desarrollo software
+
+El desarrollo de MeneQuiro se llevó a cabo siguiendo una metodología incremental basada en prototipos. Esta estrategia permitió desarrollar inicialmente una versión funcional mínima e incorporar progresivamente nuevas funcionalidades conforme se identificaban nuevas necesidades durante las prácticas realizadas en el Hospital Universitario de Burgos.
+
+Cada nueva versión fue validada antes de continuar con el desarrollo, permitiendo detectar errores de funcionamiento, mejorar la interfaz de usuario y adaptar el comportamiento del sistema a las necesidades observadas durante el proceso de planificación quirúrgica.
+
+El proceso de desarrollo puede resumirse en las siguientes etapas:
+
+1. Análisis del problema y recopilación de requisitos.
+2. Estudio y preparación del conjunto de datos.
+3. Desarrollo del catálogo estadístico de procedimientos.
+4. Implementación del algoritmo de recomendación.
+5. Desarrollo de la interfaz interactiva.
+6. Incorporación de nuevas funcionalidades.
+7. Validación continua del funcionamiento.
+8. Optimización del rendimiento y experiencia de usuario.
+
+Durante todo el desarrollo se utilizó Git como sistema de control de versiones, permitiendo registrar de forma estructurada la evolución del proyecto y facilitando la incorporación progresiva de nuevas funcionalidades sin comprometer la estabilidad del sistema.
+
+Esta metodología permitió mantener una evolución continua del software, incorporando mejoras sucesivas derivadas tanto del análisis de los datos como de las observaciones realizadas durante el uso de la herramienta por parte del personal sanitario.
+
+## 4.9 Validación funcional del sistema
+
+Una vez implementadas las diferentes funcionalidades de MeneQuiro, se llevó a cabo una fase de validación funcional cuyo objetivo fue comprobar el correcto funcionamiento de todos los módulos desarrollados.
+
+La validación no se orientó a comparar el algoritmo con otros modelos de planificación existentes, sino a verificar que cada uno de los componentes implementados cumplía correctamente la función para la que había sido diseñado.
+
+Entre las comprobaciones realizadas destacan:
+
+- correcta importación del histórico quirúrgico;
+- generación automática del catálogo de procedimientos;
+- cálculo correcto de las duraciones quirúrgicas;
+- identificación de huecos disponibles;
+- detección de posibles solapamientos;
+- generación ordenada de recomendaciones;
+- incorporación de nuevas intervenciones a la agenda;
+- almacenamiento persistente de las planificaciones realizadas;
+- actualización dinámica de la interfaz de usuario;
+- exportación correcta de la información generada.
+
+Durante esta fase también se evaluó el comportamiento del sistema frente a diferentes situaciones de uso, incluyendo jornadas con elevada ocupación, planificación de nuevos procedimientos, incorporación de cirugías simuladas y actualización continua de la agenda.
+
+Las pruebas realizadas permitieron verificar la estabilidad del sistema y confirmar el correcto funcionamiento de las principales funcionalidades desarrolladas.
+
+Como resultado, se obtuvo una aplicación completamente funcional capaz de asistir al proceso de planificación quirúrgica, integrar nuevas intervenciones sin generar inconsistencias temporales y proporcionar información de apoyo basada en el análisis de la actividad histórica.
