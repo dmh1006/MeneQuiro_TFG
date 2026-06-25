@@ -58,3 +58,22 @@ El desarrollo de este Trabajo Fin de Grado ha permitido aplicar de forma integra
 Asimismo, el proyecto ha favorecido la adquisición de competencias relacionadas con el desarrollo de soluciones tecnológicas para el ámbito sanitario, el trabajo con datos clínicos reales, la resolución de problemas complejos de ingeniería y la integración de diferentes herramientas software para la construcción de sistemas de apoyo a la decisión.
 
 Finalmente, el trabajo ha permitido desarrollar capacidades de planificación de proyectos, documentación técnica, validación experimental y comunicación científica, competencias esenciales para el ejercicio profesional de un ingeniero de la salud.
+
+## Tabla resumen de objetivos
+
+La @tbl-objetivos resume la relación entre los principales objetivos definidos y el resultado esperado dentro del desarrollo del proyecto.
+
+| Código | Objetivo | Resultado esperado |
+|---|---|---|
+| OG | Diseñar e implementar MeneQuiro como sistema inteligente de apoyo a la planificación quirúrgica. | Herramienta funcional capaz de asistir al planificador quirúrgico. |
+| OE1 | Analizar el proceso de planificación quirúrgica del Hospital Universitario de Burgos. | Identificación de necesidades, limitaciones y oportunidades de mejora. |
+| OE2 | Procesar y depurar el histórico de intervenciones quirúrgicas. | Conjunto de datos estructurado, limpio y explotable. |
+| OE3 | Construir un catálogo quirúrgico basado en datos históricos. | Caracterización estadística de procedimientos y duraciones. |
+| OE4 | Desarrollar un motor de recomendación de huecos quirúrgicos. | Propuestas automáticas compatibles con la agenda existente. |
+| OE5 | Incorporar simulación de nuevas intervenciones. | Planificaciones futuras sin alterar el histórico original. |
+| OE6 | Implementar módulos de análisis y visualización. | Indicadores y gráficos para apoyar la toma de decisiones. |
+| OE7 | Integrar un planificador de guardias. | Generación automatizada y equilibrada de guardias. |
+| OT1 | Diseñar una arquitectura modular y mantenible. | Código reutilizable y fácilmente ampliable. |
+| OT2 | Desplegar una versión accesible mediante navegador web. | Prototipo funcional disponible para evaluación remota. |
+
+: Resumen de objetivos del Trabajo Fin de Grado {#tbl-objetivos}
