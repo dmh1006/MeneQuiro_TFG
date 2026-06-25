@@ -224,7 +224,7 @@ Simulación de planificación
 #  Arquitectura del proyecto
 
 ```
-TFG_DarioMeneses
+MeneQuiro_TFG
 │
 ├── Proyecto
 │   ├── planificador_tfg.py
