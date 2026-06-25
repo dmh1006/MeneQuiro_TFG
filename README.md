@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="./img/CabeceraEPS.png" width="100%">
+  <img src="https://raw.githubusercontent.com/dmh1006/TFG_DarioMeneses/main/assets/CabeceraEPS.png" width="900">
 </p>
 
 <p align="center">
-  <img src="./img/Logo_GIS.png" width="260">
+  <img src="https://raw.githubusercontent.com/dmh1006/TFG_DarioMeneses/main/assets/Logo_GIS.png" width="260">
 </p>
 
 #  MeneQuiro
