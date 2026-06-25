@@ -103,25 +103,36 @@ dirección del/los que suscribe/n.
 
 \renewcommand*\abstractname{Resumen}
 \begin{abstract}
-En este primer apartado se hace una \textbf{breve} presentación del tema
-que se aborda en el proyecto.
+La planificación quirúrgica constituye una de las tareas organizativas más complejas dentro de la gestión hospitalaria, debido a la necesidad de coordinar recursos humanos, salas de quirófano, tiempos de intervención, disponibilidad del personal sanitario, urgencias, cancelaciones y restricciones propias de la actividad asistencial. En muchos entornos hospitalarios, esta planificación continúa apoyándose en herramientas manuales o semiautomáticas, como hojas de cálculo, lo que puede dificultar la explotación sistemática de los datos históricos y limitar la capacidad de anticipación ante modificaciones de la agenda quirúrgica.
+
+Este Trabajo Fin de Grado presenta el diseño, desarrollo y validación funcional de \textbf{MeneQuiro}, una aplicación web inteligente orientada al apoyo de la planificación quirúrgica. La herramienta ha sido desarrollada en el contexto de las prácticas realizadas en el Hospital Universitario de Burgos y se fundamenta en el análisis de datos históricos de intervenciones quirúrgicas. A partir de esta información, el sistema construye un catálogo quirúrgico, estima duraciones planificables por procedimiento, identifica huecos disponibles en la agenda diaria, propone automáticamente alternativas de programación y permite simular nuevas intervenciones sin modificar el histórico original.
+
+El sistema se ha implementado mediante Python y Streamlit, incorporando bibliotecas de análisis y visualización de datos como Pandas y Plotly, así como una base de datos SQLite para almacenar intervenciones planificadas y realizadas. Además, la aplicación incluye módulos complementarios para el análisis histórico de procedimientos, la visualización de la ocupación de quirófanos, la exportación de planificación en distintos formatos y la generación de guardias hospitalarias.
+
+Los resultados obtenidos muestran que MeneQuiro permite transformar un proceso de planificación principalmente manual en un flujo digital, visual e interactivo, capaz de integrar información histórica, recomendaciones automáticas y registro operativo. Aunque se trata de un prototipo académico, el desarrollo realizado demuestra la viabilidad técnica de una herramienta de apoyo a la decisión quirúrgica y establece una base sólida para futuras ampliaciones orientadas a entornos hospitalarios reales, como la migración a bases de datos centralizadas, el acceso multiusuario o la incorporación de modelos predictivos más avanzados.
 \end{abstract}
 
 \renewcommand*\abstractname{Descriptores}
 \begin{abstract}
-Palabras separadas por comas que identifiquen el contenido del proyecto.
+planificación quirúrgica, bloque quirúrgico, sistemas de apoyo a la decisión, análisis histórico de datos, optimización hospitalaria, Streamlit, Python, gestión de quirófanos, Ingeniería de la Salud, MeneQuiro
 \end{abstract}
 
 \clearpage
 
 \renewcommand*\abstractname{Abstract}
 \begin{abstract}
-A \textbf{brief} presentation of the topic addressed in the project.
+Surgical planning is one of the most complex organizational tasks in hospital management, as it requires the coordination of human resources, operating rooms, surgical times, staff availability, emergency cases, cancellations and clinical constraints. In many hospital environments, this process is still supported by manual or semi-automatic tools, such as spreadsheets, which may limit the systematic use of historical data and reduce the ability to anticipate changes in the surgical schedule.
+
+This Final Degree Project presents the design, development and functional validation of \textbf{MeneQuiro}, an intelligent web application intended to support surgical planning. The tool was developed within the context of an internship at the University Hospital of Burgos and is based on the analysis of historical surgical intervention data. From this information, the system builds a surgical catalogue, estimates procedure-specific planning durations, identifies available time slots in the daily operating room schedule, automatically proposes scheduling alternatives and enables the simulation of new interventions without modifying the original historical dataset.
+
+The system was implemented using Python and Streamlit, integrating data analysis and visualization libraries such as Pandas and Plotly, as well as a SQLite database for storing planned and completed interventions. In addition, the application includes complementary modules for historical procedure analysis, operating room occupancy visualization, planning export in different formats and hospital on-call duty scheduling.
+
+The results show that MeneQuiro transforms a mainly manual planning process into a digital, visual and interactive workflow capable of integrating historical information, automatic recommendations and operational records. Although it is an academic prototype, the developed system demonstrates the technical feasibility of a surgical decision-support tool and provides a solid basis for future extensions in real hospital environments, such as migration to centralized databases, multi-user access or the incorporation of more advanced predictive models.
 \end{abstract}
 
 \renewcommand*\abstractname{Keywords}
 \begin{abstract}
-keywords separated by commas.
+surgical planning, operating room scheduling, surgical block, decision support system, historical data analysis, hospital optimization, Streamlit, Python, operating room management, Health Engineering, MeneQuiro
 \end{abstract}
 
 \clearpage
@@ -140,7 +151,6 @@ keywords separated by commas.
 \mainmatter
 
 \pagestyle{mipc}
-```
 
 {{< include qmd/1_introduccion.qmd >}}
 {{< include qmd/2_objetivos.qmd >}}
