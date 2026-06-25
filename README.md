@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="./img/CabeceraEPS.png" width="100%">
+  <img src="https://raw.githubusercontent.com/dmh1006/TFG_DarioMeneses/main/assets/CabeceraEPS.png" width="900">
 </p>
 
 <p align="center">
-  <img src="./img/Logo_GIS.png" width="260">
+  <img src="https://raw.githubusercontent.com/dmh1006/TFG_DarioMeneses/main/assets/Logo_GIS.png" width="260">
 </p>
 
 #  MeneQuiro
@@ -224,22 +224,24 @@ Simulación de planificación
 #  Arquitectura del proyecto
 
 ```
-TFG_DarioMeneses
+MeneQuiro_TFG
 │
 ├── Proyecto
 │   ├── planificador_tfg.py
 │   ├── planificador_guardias.py
 │   ├── limpiar_csv.py
-│   └── analisis_quirofano.py
+│   └── analisis_historico.py
 │
 ├── Data
 │   ├── 2025.xlsx
-│   ├── Qº FEBRERO.xls
-│   └── Base de datos
+│   ├── quirofano_2025_limpio.csv
+│   ├── planificacion_guardias_quirófano.xlsx
+│   ├── correrapp.txt
+│   └── quirofanos_realizadas.db
 │
-├── PlantillaTFG_Quarto-main
+├── Memoria_y_Anexos
 │
-├── app_streamlit_quirofanos_tfg.py
+├── MeneQuiro.py
 │
 ├── requirements.txt
 │
@@ -268,13 +270,13 @@ TFG_DarioMeneses
 Clonar el repositorio
 
 ```bash
-git clone https://github.com/dmh1006/TFG_DarioMeneses.git
+git clone https://github.com/dmh1006/MeneQuiro_TFG.git
 ```
 
 Entrar en el proyecto
 
 ```bash
-cd TFG_DarioMeneses
+cd MeneQuiro_TFG
 ```
 
 Instalar dependencias
@@ -286,7 +288,7 @@ pip install -r requirements.txt
 Ejecutar la aplicación
 
 ```bash
-streamlit run app_streamlit_quirofanos_tfg.py
+python -m streamlit run MeneQuiro.py
 ```
 
 ---
@@ -309,7 +311,7 @@ streamlit run app_streamlit_quirofanos_tfg.py
 
 Este repositorio contiene el desarrollo íntegro del Trabajo Fin de Grado:
 
-**"Sistema inteligente para la planificación quirúrgica mediante análisis histórico y recomendación automática de huecos"**
+**"Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos"**
 
 Grado en Ingeniería de la Salud
 
