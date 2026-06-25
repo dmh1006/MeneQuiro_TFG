@@ -3,13 +3,58 @@
 \capitulo{2}{Objetivos}
 ```
 
-Objetivos del trabajo realizado.
+El presente Trabajo Fin de Grado tiene como finalidad el diseño, desarrollo y validación de una herramienta informática orientada a asistir el proceso de planificación quirúrgica mediante el análisis de datos históricos de intervenciones realizadas. Para ello, se plantea una solución que combina técnicas de análisis de datos, gestión de bases de datos, visualización de información y apoyo a la toma de decisiones, con el objetivo de mejorar la eficiencia del proceso de planificación desarrollado en el bloque quirúrgico.
 
-En este apartado se definen de forma clara y concisa los objetivos del Trabajo Fin de Grado. 
+Los objetivos del proyecto se estructuran en cuatro bloques: objetivo general, objetivos específicos, objetivos técnicos y competencias adquiridas durante el desarrollo del trabajo.
 
-Es recomendable distinguir entre:
+## Objetivo general
 
-- Un **objetivo general** que describa el propósito principal.
-- **Objetivos específicos** de carácter técnico, experimental o clínico.
-- **Objetivos marcados por los requisitos del software/hardware/análisis** a desarrollar.
-- **Objetivos de aprendizaje** relacionados con competencias adquiridas.
+Diseñar e implementar **MeneQuiro**, un sistema inteligente de apoyo a la planificación quirúrgica capaz de analizar el histórico de intervenciones realizadas, estimar la duración de nuevos procedimientos y proponer automáticamente alternativas de planificación que optimicen la utilización del bloque quirúrgico, manteniendo la posibilidad de supervisión y decisión final por parte del planificador.
+
+## Objetivos específicos
+
+Para alcanzar el objetivo general se establecen los siguientes objetivos específicos:
+
+- Analizar el funcionamiento del proceso de planificación quirúrgica desarrollado en el Hospital Universitario de Burgos, identificando sus principales limitaciones y oportunidades de mejora.
+
+- Procesar y depurar la información procedente del histórico de intervenciones quirúrgicas, obteniendo un conjunto de datos consistente y adecuado para su posterior explotación.
+
+- Construir un catálogo quirúrgico basado en información histórica que permita caracterizar estadísticamente los distintos procedimientos realizados.
+
+- Desarrollar un algoritmo capaz de estimar la duración esperada de una intervención a partir del comportamiento observado en procedimientos similares.
+
+- Diseñar un sistema automático de recomendación de huecos quirúrgicos que proponga alternativas compatibles con la programación existente y minimice los tiempos muertos entre intervenciones.
+
+- Incorporar herramientas de simulación que permitan evaluar nuevas planificaciones sin modificar la programación histórica almacenada.
+
+- Facilitar el análisis de la actividad quirúrgica mediante indicadores estadísticos y representaciones gráficas que apoyen la toma de decisiones.
+
+- Integrar un módulo independiente para la planificación automatizada de guardias del personal sanitario siguiendo criterios de reparto equitativo y restricciones organizativas.
+
+## Objetivos técnicos
+
+Desde el punto de vista del desarrollo del sistema, se plantean los siguientes objetivos técnicos:
+
+- Implementar la aplicación utilizando Python como lenguaje principal de programación.
+
+- Diseñar una arquitectura modular que facilite el mantenimiento, escalabilidad y reutilización del software.
+
+- Integrar herramientas de análisis y manipulación de datos mediante las bibliotecas Pandas y NumPy.
+
+- Emplear una base de datos SQLite para el almacenamiento de la información generada durante la utilización de la herramienta.
+
+- Desarrollar una interfaz gráfica interactiva mediante Streamlit que permita una utilización sencilla por parte del personal encargado de la planificación.
+
+- Implementar mecanismos de importación y exportación de información compatibles con los formatos habitualmente empleados en el entorno hospitalario.
+
+- Garantizar la correcta separación entre datos históricos, datos simulados y registros generados durante la utilización de la aplicación.
+
+- Desplegar una versión funcional accesible mediante navegador web con objeto de facilitar su utilización y evaluación.
+
+## Competencias adquiridas
+
+El desarrollo de este Trabajo Fin de Grado ha permitido aplicar de forma integrada conocimientos adquiridos a lo largo del Grado en Ingeniería de la Salud, especialmente en los ámbitos del análisis y procesamiento de datos, programación científica, diseño de software, bases de datos, estadística aplicada y optimización de procesos asistenciales.
+
+Asimismo, el proyecto ha favorecido la adquisición de competencias relacionadas con el desarrollo de soluciones tecnológicas para el ámbito sanitario, el trabajo con datos clínicos reales, la resolución de problemas complejos de ingeniería y la integración de diferentes herramientas software para la construcción de sistemas de apoyo a la decisión.
+
+Finalmente, el trabajo ha permitido desarrollar capacidades de planificación de proyectos, documentación técnica, validación experimental y comunicación científica, competencias esenciales para el ejercicio profesional de un ingeniero de la salud.
