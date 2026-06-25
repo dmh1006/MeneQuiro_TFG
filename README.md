@@ -1,9 +1,18 @@
 <div align="center">
 
-#  MeneQuiro: Plataforma inteligente para la planificación y optimización de quirófanos mediante análisis predictivo de intervenciones
+<img src="img/CabeceraEPS.png" width="100%">
 
-### Trabajo de Fin de Grado · Ingeniería de la Salud
-### Universidad de Burgos
+<br><br>
+
+<img src="img/Logo_GIS.png" width="280">
+
+#  MeneQuiro
+
+### Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos
+
+**Trabajo Fin de Grado · Ingeniería de la Salud**
+
+**Universidad de Burgos**
 
 ---
 
