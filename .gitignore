@@ -24,7 +24,6 @@ Data/*.db
 Data/*.db-journal
 
 # Exportaciones generadas
-*.pdf
 *.docx
 *.xlsx
 *.csv
