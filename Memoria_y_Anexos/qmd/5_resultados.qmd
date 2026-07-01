@@ -34,17 +34,15 @@ Cada entrada del catálogo incluye información estadística relevante, como la 
 
 El catálogo permite que MeneQuiro no dependa de estimaciones manuales aisladas, sino de valores calculados a partir del comportamiento observado en intervenciones previas.
 
+
 ## Agenda quirúrgica interactiva
 
 Otro resultado fundamental del proyecto fue el desarrollo de una agenda diaria interactiva organizada por quirófanos. Esta vista permite representar visualmente las intervenciones programadas a lo largo de la jornada, facilitando la identificación rápida de ocupación, huecos disponibles y posibles conflictos de planificación.
 
 La agenda distingue entre intervenciones históricas, intervenciones planificadas y cirugías ya confirmadas como realizadas. Esta diferenciación visual permite al usuario comprender rápidamente el estado de la planificación.
 
-Aquí añadiremos una captura de la agenda diaria de MeneQuiro.
 
-<!-- 
-![Agenda quirúrgica diaria de MeneQuiro, organizada por quirófanos y franjas horarias. Fuente: elaboración propia.](../img/AgendaMeneQuiro.png){#fig-agenda-menequiro width=95%}
--->
+![Agenda quirúrgica interactiva desarrollada en MeneQuiro. La aplicación representa gráficamente la ocupación de cada quirófano mediante una línea temporal, diferenciando las intervenciones históricas, planificadas y realizadas para facilitar el proceso de planificación quirúrgica. **Fuente:** elaboración propia.](../img/AgendaMeneQuiro.png){#fig-agenda-menequiro width=95%}
 
 ## Recomendación automática de huecos
 
@@ -54,11 +52,7 @@ Las propuestas generadas se muestran al usuario en forma de tabla, incluyendo el
 
 Este resultado permite pasar de una búsqueda manual de espacios libres a un sistema asistido por datos, en el que el usuario mantiene la decisión final pero dispone de alternativas generadas automáticamente.
 
-Aquí añadiremos una captura del módulo de propuestas de hueco.
-
-<!--
-![Sistema de recomendación automática de huecos quirúrgicos de MeneQuiro. Fuente: elaboración propia.](../img/PropuestasHueco.png){#fig-propuestas-hueco width=95%}
--->
+![Propuestas automáticas de planificación generadas por MeneQuiro para una nueva intervención quirúrgica. Cada alternativa incorpora información temporal y operativa que facilita la selección del hueco más adecuado por parte del usuario. **Fuente:** elaboración propia.](../img/PropuestasHueco.png){#fig-propuestas-hueco width=90%}
 
 ## Gestión de intervenciones planificadas y realizadas
 
@@ -74,11 +68,15 @@ MeneQuiro incorpora opciones de exportación destinadas a facilitar el uso de la
 
 Esta funcionalidad resulta especialmente útil para generar informes, compartir planificaciones o conservar registros de la actividad planificada.
 
+![Informe de planificación quirúrgica exportado automáticamente por MeneQuiro en formato PDF. El documento resume las intervenciones programadas, incluyendo información temporal, quirófano asignado y personal responsable de cada procedimiento. **Fuente:** elaboración propia.](../img/PlanificacionPDF.png){#fig-exportacion-pdf width=95%}
+
 ## Planificador de guardias
 
 Como resultado adicional, se desarrolló un módulo independiente para la planificación automática de guardias. Este módulo permite generar asignaciones de personal siguiendo criterios de reparto equitativo y restricciones organizativas previamente definidas.
 
 El sistema permite distribuir guardias entre los miembros del equipo, teniendo en cuenta días laborables, fines de semana y reglas específicas de descanso. Además, genera una salida exportable que facilita su revisión y utilización posterior.
+
+![Visualizador mensual del planificador de guardias desarrollado como módulo complementario de MeneQuiro. La herramienta permite consultar la distribución automática del personal para cada jornada, diferenciando visualmente el tipo de día y mostrando la asignación de profesionales responsables de cada guardia. **Fuente:** elaboración propia.](../img/PlanificadorGuardias.png){#fig-planificador-guardias width=95%}
 
 ## Correspondencia entre objetivos y resultados
 
