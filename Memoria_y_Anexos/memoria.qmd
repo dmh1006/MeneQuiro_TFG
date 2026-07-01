@@ -4,8 +4,8 @@
 #  Universidad de Burgos · Escuela Politécnica Superior
 # ============================================================
 # DATOS DEL ALUMNO/A – edita estos campos
-title: " "
-author: " "
+title: "MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos "
+author: "Darío Meneses Hernandez "
 
 # Campos extra accesibles desde el preámbulo LaTeX
 # Se pasan como variables para que \tutor y \tutorb funcionen

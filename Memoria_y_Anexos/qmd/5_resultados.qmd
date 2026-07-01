@@ -52,7 +52,7 @@ Las propuestas generadas se muestran al usuario en forma de tabla, incluyendo el
 
 Este resultado permite pasar de una búsqueda manual de espacios libres a un sistema asistido por datos, en el que el usuario mantiene la decisión final pero dispone de alternativas generadas automáticamente.
 
-![Propuestas automáticas de planificación generadas por MeneQuiro para una nueva intervención quirúrgica. Cada alternativa incorpora información temporal y operativa que facilita la selección del hueco más adecuado por parte del usuario. **Fuente:** elaboración propia.](../img/PropuestasHueco.png){#fig-propuestas-hueco width=90%}
+![Propuestas automáticas de planificación generadas por MeneQuiro para una nueva intervención quirúrgica. Cada alternativa incorpora información temporal y operativa que facilita la selección del hueco más adecuado por parte del usuario. **Fuente:** elaboración propia.](../img/PropuestaHueco.png){#fig-propuestas-hueco width=90%}
 
 ## Gestión de intervenciones planificadas y realizadas
 
