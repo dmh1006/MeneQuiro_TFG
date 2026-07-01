@@ -128,6 +128,10 @@ Por otra parte, los sistemas de apoyo a la decisión han adquirido una importanc
 
 Frente a herramientas convencionales basadas en hojas de cálculo, MeneQuiro aporta tres elementos diferenciales. En primer lugar, incorpora un estudio estadístico de datos quirúrgicos reales, lo que permite caracterizar procedimientos a partir de evidencia histórica. En segundo lugar, transforma dicho análisis en recomendaciones automáticas de planificación. En tercer lugar, permite simular nuevas intervenciones y registrar su evolución sin alterar el histórico original.
 
+En el ámbito académico también existen trabajos orientados al desarrollo de herramientas de apoyo a la planificación quirúrgica. Entre ellos destaca el Trabajo Fin de Grado desarrollado por García González [@garcia2025], en el que se plantea una aplicación destinada a la gestión de quirófanos desde una perspectiva organizativa. Aunque comparte el objetivo de mejorar la planificación quirúrgica, MeneQuiro incorpora como elemento diferenciador la construcción de un catálogo estadístico de procedimientos y un algoritmo propio de recomendación de huecos basado en el análisis del histórico de intervenciones.
+
+En el ámbito comercial existen igualmente soluciones especializadas para la gestión integral del bloque quirúrgico, como Torin OR Management de Getinge [@torin2025], que integra funciones de planificación, seguimiento de la actividad, gestión de recursos y análisis de indicadores. Sin embargo, este tipo de plataformas están orientadas a implantaciones hospitalarias de gran escala, mientras que MeneQuiro se plantea como una herramienta ligera, fácilmente adaptable y centrada en la explotación del histórico quirúrgico para asistir al proceso de planificación.
+
 La @tbl-comparativa-sistemas resume de forma conceptual la diferencia entre una planificación manual, una agenda digital convencional y el enfoque desarrollado en MeneQuiro.
 
 | Característica | Hoja de cálculo | Agenda digital convencional | MeneQuiro |
