@@ -79,6 +79,8 @@ donde \(d_i\) representa la duración de la intervención \(i\), \(t_{fin,i}\) l
 
 Esta transformación permitió pasar de registros administrativos a variables cuantitativas directamente explotables desde el punto de vista estadístico. En consecuencia, el histórico quirúrgico dejó de ser únicamente una fuente de consulta retrospectiva para convertirse en la base analítica del sistema de recomendación desarrollado.
 
+![Fragmento del conjunto de datos histórico utilizado durante el desarrollo de MeneQuiro. En la imagen pueden observarse algunas de las variables empleadas para el análisis estadístico y la construcción del sistema de recomendación. **Fuente:** Hospital Universitario de Burgos, anonimizado y adaptado por el autor. {#fig-datoshubu}](../img/datosHUBU.png){width=95%}
+
 ## Preprocesamiento de los datos
 
 Antes de realizar cualquier análisis estadístico fue necesario llevar a cabo una fase de preprocesamiento destinada a garantizar la calidad y consistencia de la información disponible. Como ocurre habitualmente en conjuntos de datos procedentes de entornos hospitalarios, el histórico presentaba diferencias de formato, registros incompletos, nomenclaturas heterogéneas y pequeñas inconsistencias derivadas del uso continuado de hojas de cálculo como herramienta de planificación.
@@ -99,7 +101,7 @@ Especial atención requirió la normalización de los nombres de los procedimien
 
 Como resultado del preprocesamiento se obtuvo un conjunto de datos consistente, libre de duplicidades semánticas y preparado para la construcción del catálogo quirúrgico empleado por MeneQuiro.
 
-La Figura XX resume el flujo seguido durante esta fase.
+
 
 ## Estudio estadístico de la actividad quirúrgica
 
@@ -137,7 +139,7 @@ Asimismo, se calculó la mediana como medida robusta de tendencia central, espec
 
 El análisis conjunto de estos indicadores permitió identificar procedimientos altamente estables, así como otros cuya duración presenta una elevada variabilidad y requiere una mayor precaución durante la planificación.
 
-La Figura XX muestra un ejemplo del análisis estadístico realizado sobre los procedimientos quirúrgicos.
+![Módulo de análisis estadístico de MeneQuiro. La aplicación permite visualizar indicadores relacionados con la actividad quirúrgica, incluyendo la distribución de procedimientos, tiempos de ocupación, utilización de quirófanos y métricas descriptivas obtenidas a partir del histórico analizado. **Fuente:** elaboración propia. {#fig-estudioestadistico}](../img/Estudioestadistico.png){width=95%}
 
 ## Construcción del catálogo quirúrgico
 
