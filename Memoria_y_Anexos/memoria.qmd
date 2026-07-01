@@ -96,7 +96,7 @@ dirección del/los que suscribe/n.
 ```
 
 ```{=latex}
-%% -- Resumen / Abstract --------------------------------------
+%% ── Resumen / Abstract ──────────────────────────────────
 \frontmatter
 
 \pagestyle{chapterfirst}
