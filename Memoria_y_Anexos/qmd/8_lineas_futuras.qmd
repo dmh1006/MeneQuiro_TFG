@@ -3,4 +3,18 @@
 \capitulo{8}{Líneas de trabajo futuras}
 ```
 
-Este capítulo debería ser informe crítico indicando cómo se puede mejorar el proyecto, o cómo se puede continuar trabajando en la línea del proyecto realizado.
+El desarrollo de MeneQuiro ha permitido comprobar la viabilidad de una herramienta de apoyo a la planificación quirúrgica basada en el análisis estadístico de datos históricos reales. No obstante, el sistema desarrollado constituye un primer prototipo funcional sobre el que pueden plantearse múltiples líneas de evolución tanto desde el punto de vista tecnológico como organizativo.
+
+Una de las mejoras más relevantes consistiría en integrar la aplicación con los sistemas de información hospitalarios utilizados en la práctica clínica. Actualmente, la carga de datos se realiza mediante ficheros exportados desde el sistema de gestión hospitalaria, mientras que una conexión directa con la base de datos institucional permitiría actualizar automáticamente la información disponible y trabajar siempre sobre datos en tiempo real.
+
+Otra línea de desarrollo especialmente interesante sería la migración de la base de datos local SQLite hacia un sistema gestor de bases de datos centralizado, como PostgreSQL. Esta modificación permitiría el acceso simultáneo de múltiples usuarios, la sincronización de la información entre diferentes equipos y la gestión centralizada de las planificaciones realizadas, acercando la aplicación a un entorno de utilización hospitalaria real.
+
+Asimismo, podrían incorporarse nuevos criterios de decisión dentro del algoritmo de recomendación. En la versión actual, las propuestas se generan considerando principalmente la disponibilidad temporal y la información estadística obtenida del histórico. En futuras versiones sería posible incluir variables adicionales como la prioridad clínica del paciente, la disponibilidad específica del equipo quirúrgico, la ocupación prevista de las unidades de recuperación o la disponibilidad del equipamiento necesario para determinados procedimientos.
+
+Otra posible línea de investigación consistiría en desarrollar modelos predictivos capaces de estimar con mayor precisión la duración de las intervenciones quirúrgicas. El estudio estadístico realizado en este trabajo constituye una base adecuada para entrenar modelos de aprendizaje automático que tengan en cuenta no solo el procedimiento realizado, sino también otras variables clínicas y organizativas que puedan influir en la duración real de la cirugía.
+
+Desde el punto de vista funcional, la aplicación podría ampliarse incorporando nuevas herramientas de análisis dirigidas a los responsables de gestión hospitalaria. Entre ellas destacan la generación automática de indicadores de rendimiento, el seguimiento de la utilización de los quirófanos, el análisis de cancelaciones, la identificación de cuellos de botella o la elaboración de cuadros de mando que faciliten la evaluación continua de la actividad quirúrgica.
+
+Finalmente, una futura validación del sistema en un entorno hospitalario permitiría analizar el impacto real de MeneQuiro sobre el proceso de planificación quirúrgica. La utilización continuada de la herramienta por parte del personal responsable del bloque quirúrgico proporcionaría información muy valiosa para evaluar su utilidad práctica, detectar nuevas necesidades funcionales y orientar futuras mejoras del sistema.
+
+En conjunto, estas líneas de trabajo muestran que MeneQuiro constituye una plataforma con un elevado potencial de evolución. La arquitectura modular desarrollada durante este Trabajo Fin de Grado facilita la incorporación de nuevas funcionalidades y proporciona una base sólida para continuar investigando en el desarrollo de herramientas inteligentes de apoyo a la gestión del bloque quirúrgico basadas en el análisis de datos sanitarios.
