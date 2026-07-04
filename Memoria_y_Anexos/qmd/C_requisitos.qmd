@@ -1,49 +1,229 @@
 ```{=latex}
-%% ══════════════════════════════════════════════════════
-%%  APÉNDICE C – Especificación de Requisitos
-%% ══════════════════════════════════════════════════════
-
+%% APENDICE C - Especificacion de Requisitos
 \apendice{Especificación de Requisitos}
-
-Si procede.
-
-
-\section{Diagrama de casos de uso}
-Se presentará un diagrama de casos de uso que represente las funcionalidades principales del sistema y los actores que interactúan con él.
-
-\section{Explicación casos de uso.}
-
-Se puede describir mediante el uso de tablas o mediante lenguaje natural.    
-
-Una muestra de cómo podría ser una tabla de casos de uso:
-
-% Caso de Uso 1 -> Consultar Experimentos.
-\begin{table}[p]
-	\centering
-	\begin{tabularx}{\linewidth}{ p{0.21\columnwidth} p{0.71\columnwidth} }
-		\toprule
-		\textbf{CU-1}    & \textbf{Ejemplo de caso de uso}\\
-		\toprule
-		\textbf{Versión}              & 1.0    \\
-		\textbf{Autor}                & Alumno \\
-		\textbf{Requisitos asociados} & RF-xx, RF-xx \\
-		\textbf{Descripción}          & La descripción del CU \\
-		\textbf{Precondición}         & Precondiciones (podría haber más de una) \\
-		\textbf{Acciones}             &
-		\begin{enumerate}
-			\def\labelenumi{\arabic{enumi}.}
-			\tightlist
-			\item Pasos del CU
-			\item Pasos del CU (añadir tantos como sean necesarios)
-		\end{enumerate}\\
-		\textbf{Postcondición}        & Postcondiciones (podría haber más de una) \\
-		\textbf{Excepciones}          & Excepciones \\
-		\textbf{Importancia}          & Alta o Media o Baja... \\
-		\bottomrule
-	\end{tabularx}
-	\caption{CU-1 Nombre del caso de uso.}
-\end{table}
-
-\section{Prototipos de interfaz o interacción con el proyecto.}
-Se incluirán bocetos, prototipos o capturas de pantalla que muestren la interacción del usuario con el sistema desarrollado.
 ```
+
+### Introducción
+
+En este apéndice se recogen los requisitos funcionales y no funcionales que han guiado el desarrollo de **MeneQuiro**, así como los principales casos de uso que describen la interacción entre el usuario y la aplicación.
+
+La especificación de requisitos constituye una de las fases fundamentales del desarrollo software, ya que permite definir de forma precisa el comportamiento esperado del sistema antes de su implementación. Durante el desarrollo de este Trabajo Fin de Grado los requisitos fueron refinándose progresivamente conforme avanzaban las prácticas realizadas en el Hospital Universitario de Burgos y se identificaban nuevas necesidades relacionadas con la planificación quirúrgica [@pressman2010; @sommerville2016].
+
+Los requisitos aquí descritos representan la versión final implementada en MeneQuiro y constituyen la base sobre la que se diseñó la arquitectura descrita en el Apéndice B.
+
+### Requisitos funcionales
+
+Los requisitos funcionales definen los servicios que el sistema debe proporcionar al usuario. La Tabla @tbl-rf resume las funcionalidades implementadas en la versión final de MeneQuiro.
+
+| Código | Requisito funcional |
+|:------:|---------------------|
+| RF-01 | Cargar el histórico quirúrgico desde archivos Excel o CSV. |
+| RF-02 | Normalizar automáticamente los procedimientos quirúrgicos. |
+| RF-03 | Construir un catálogo estadístico de procedimientos. |
+| RF-04 | Visualizar la agenda diaria organizada por quirófanos. |
+| RF-05 | Consultar información detallada de cada intervención. |
+| RF-06 | Estimar la duración de una nueva cirugía. |
+| RF-07 | Recomendar automáticamente huecos disponibles. |
+| RF-08 | Añadir nuevas planificaciones a la agenda. |
+| RF-09 | Eliminar planificaciones simuladas. |
+| RF-10 | Confirmar cirugías realizadas. |
+| RF-11 | Registrar observaciones clínicas de la intervención. |
+| RF-12 | Exportar la planificación en formato PDF. |
+| RF-13 | Exportar datos en formato Excel y CSV. |
+| RF-14 | Consultar estadísticas históricas de procedimientos. |
+| RF-15 | Generar automáticamente la planificación mensual de guardias. |
+
+: Requisitos funcionales implementados en MeneQuiro {#tbl-rf}
+
+Como puede observarse en la Tabla @tbl-rf, la aplicación no se limita únicamente a representar la agenda quirúrgica, sino que incorpora funcionalidades de análisis estadístico, apoyo a la decisión, persistencia de datos y generación de documentación.
+
+### Requisitos no funcionales
+
+Además de las funcionalidades implementadas, durante el desarrollo se establecieron una serie de requisitos no funcionales orientados a garantizar la calidad del sistema.
+
+La Tabla @tbl-rnf resume los principales requisitos no funcionales considerados.
+
+| Código | Requisito no funcional |
+|:------:|------------------------|
+| RNF-01 | Interfaz sencilla e intuitiva para personal sanitario. |
+| RNF-02 | Respuesta inferior a unos segundos para las consultas habituales. |
+| RNF-03 | Compatibilidad con archivos Excel utilizados en el hospital. |
+| RNF-04 | Persistencia automática de la información añadida por el usuario. |
+| RNF-05 | Arquitectura modular y fácilmente mantenible. |
+| RNF-06 | Facilidad para incorporar nuevos procedimientos quirúrgicos. |
+| RNF-07 | Exportación de resultados en formatos ampliamente utilizados. |
+| RNF-08 | Compatibilidad con sistemas Windows. |
+| RNF-09 | Utilización de software libre siempre que fuera posible. |
+| RNF-10 | Protección de la información mediante anonimización de los datos. |
+
+: Requisitos no funcionales del sistema {#tbl-rnf}
+
+Los requisitos no funcionales tuvieron una influencia directa sobre las decisiones de diseño adoptadas durante el proyecto. Por ejemplo, la necesidad de mantener una interfaz sencilla motivó la utilización de Streamlit como framework de desarrollo, mientras que la persistencia de datos se resolvió mediante SQLite debido a su facilidad de integración y reducido mantenimiento [@streamlit2026; @sqlite2026].
+
+### Diagrama de casos de uso
+
+La Figura @fig-casos-uso representa los principales actores y funcionalidades implementadas en MeneQuiro. En ella se resume la interacción entre el planificador quirúrgico y los distintos módulos que componen la aplicación.
+
+**(Aquí añadiremos posteriormente el diagrama UML de casos de uso).**
+
+La Figura @fig-casos-uso muestra el diagrama de casos de uso de MeneQuiro. En él se representan las principales funcionalidades implementadas en la aplicación y la interacción del planificador quirúrgico con cada una de ellas. El diagrama resume el alcance funcional del sistema y constituye la base para los casos de uso descritos en las siguientes secciones.
+
+![Diagrama de casos de uso de MeneQuiro. Se representan las principales funcionalidades disponibles para el planificador quirúrgico y las relaciones existentes entre ellas. **Fuente:** elaboración propia.](img/EsquemaPlanificacionQuirurgica.png){#fig-casos-uso width=95%}
+
+### Explicación de los casos de uso
+
+A continuación se describen los principales casos de uso implementados en MeneQuiro. Cada uno de ellos representa una funcionalidad relevante de la aplicación y permite comprender la interacción existente entre el usuario y el sistema.
+
+#### CU-1. Cargar histórico quirúrgico
+
+| Campo | Descripción |
+|---|---|
+| **Código** | CU-1 |
+| **Versión** | 1.0 |
+| **Autor** | Darío Meneses |
+| **Requisitos asociados** | RF-01, RF-02, RF-03 |
+| **Descripción** | Permite cargar el histórico quirúrgico del Hospital Universitario de Burgos para realizar el análisis estadístico y generar el catálogo de procedimientos. |
+| **Actor principal** | Planificador quirúrgico |
+| **Precondición** | Existencia de un archivo Excel o CSV válido. |
+| **Acciones** | 1. El usuario selecciona el archivo.<br>2. El sistema carga la información.<br>3. Se normalizan los procedimientos.<br>4. Se calculan las variables derivadas.<br>5. Se almacena el conjunto de datos para el resto de módulos. |
+| **Postcondición** | Histórico correctamente cargado y preparado para su utilización. |
+| **Excepciones** | Archivo inexistente, formato incorrecto o columnas incompatibles. |
+| **Prioridad** | Alta |
+
+: Caso de uso CU-1. Carga del histórico quirúrgico {#tbl-cu1}
+
+---
+
+#### CU-2. Buscar hueco para una intervención
+
+| Campo | Descripción |
+|---|---|
+| **Código** | CU-2 |
+| **Versión** | 1.0 |
+| **Autor** | Darío Meneses |
+| **Requisitos asociados** | RF-06, RF-07 |
+| **Descripción** | El sistema analiza la agenda quirúrgica y propone automáticamente los huecos más adecuados para una nueva intervención. |
+| **Actor principal** | Planificador quirúrgico |
+| **Precondición** | Histórico cargado y agenda disponible para la fecha seleccionada. |
+| **Acciones** | 1. Seleccionar procedimiento.<br>2. Seleccionar fecha.<br>3. Calcular duración prevista.<br>4. Analizar la agenda.<br>5. Mostrar las propuestas ordenadas. |
+| **Postcondición** | Se muestran varias alternativas de planificación. |
+| **Excepciones** | No existen huecos compatibles o el procedimiento no dispone de información estadística suficiente. |
+| **Prioridad** | Muy alta |
+
+: Caso de uso CU-2. Recomendación automática de huecos quirúrgicos {#tbl-cu2}
+
+---
+
+#### CU-3. Añadir planificación
+
+| Campo | Descripción |
+|---|---|
+| **Código** | CU-3 |
+| **Versión** | 1.0 |
+| **Autor** | Darío Meneses |
+| **Requisitos asociados** | RF-08, RF-09 |
+| **Descripción** | Permite incorporar una nueva intervención quirúrgica a la agenda diaria utilizando una de las propuestas generadas o introduciendo manualmente los datos. |
+| **Actor principal** | Planificador quirúrgico |
+| **Precondición** | Existencia de una propuesta válida o introducción manual de la planificación. |
+| **Acciones** | 1. Seleccionar propuesta.<br>2. Revisar los datos.<br>3. Confirmar la incorporación.<br>4. Actualizar la agenda.<br>5. Guardar la planificación en la base de datos. |
+| **Postcondición** | La intervención aparece incorporada en la agenda diaria. |
+| **Excepciones** | Solapamiento con otra intervención o datos incompletos. |
+| **Prioridad** | Alta |
+
+: Caso de uso CU-3. Incorporación de una nueva planificación {#tbl-cu3}
+
+### CU-4. Confirmar cirugía realizada
+
+| Campo | Descripción |
+|---|---|
+| **Código** | CU-4 |
+| **Versión** | 1.0 |
+| **Autor** | Darío Meneses |
+| **Requisitos asociados** | RF-10, RF-11 |
+| **Descripción** | Permite registrar una intervención previamente planificada como realizada, almacenando los tiempos reales y las observaciones introducidas por el usuario. |
+| **Actor principal** | Planificador quirúrgico |
+| **Precondición** | La intervención debe encontrarse previamente planificada en la agenda. |
+| **Acciones** | 1. Seleccionar la intervención.<br>2. Pulsar el botón de confirmación.<br>3. Introducir observaciones si procede.<br>4. Confirmar la operación.<br>5. Registrar la intervención como realizada. |
+| **Postcondición** | La cirugía queda almacenada en la base de datos de intervenciones realizadas y actualiza automáticamente su representación en la agenda. |
+| **Excepciones** | La intervención no existe o ya ha sido confirmada previamente. |
+| **Prioridad** | Alta |
+
+: Caso de uso CU-4. Confirmación de cirugía realizada {#tbl-cu4}
+
+---
+
+### CU-5. Exportar planificación
+
+| Campo | Descripción |
+|---|---|
+| **Código** | CU-5 |
+| **Versión** | 1.0 |
+| **Autor** | Darío Meneses |
+| **Requisitos asociados** | RF-12, RF-13 |
+| **Descripción** | Permite exportar la planificación quirúrgica y los resultados generados por la aplicación en distintos formatos. |
+| **Actor principal** | Planificador quirúrgico |
+| **Precondición** | Existencia de una planificación generada. |
+| **Acciones** | 1. Seleccionar el formato de exportación.<br>2. Generar el documento.<br>3. Guardar el archivo en el equipo del usuario. |
+| **Postcondición** | Se genera correctamente el documento solicitado. |
+| **Excepciones** | Error durante la generación del documento o falta de permisos de escritura. |
+| **Prioridad** | Media |
+
+: Caso de uso CU-5. Exportación de resultados {#tbl-cu5}
+
+---
+
+### CU-6. Planificar guardias
+
+| Campo | Descripción |
+|---|---|
+| **Código** | CU-6 |
+| **Versión** | 1.0 |
+| **Autor** | Darío Meneses |
+| **Requisitos asociados** | RF-15 |
+| **Descripción** | Genera automáticamente la planificación mensual de guardias aplicando las restricciones definidas por el usuario. |
+| **Actor principal** | Planificador quirúrgico |
+| **Precondición** | Introducción de la plantilla de profesionales y de las restricciones de planificación. |
+| **Acciones** | 1. Seleccionar el mes.<br>2. Definir el personal disponible.<br>3. Ejecutar el algoritmo.<br>4. Visualizar la planificación generada.<br>5. Exportar el resultado. |
+| **Postcondición** | Se obtiene una planificación mensual de guardias equilibrada. |
+| **Excepciones** | Restricciones incompatibles o imposibilidad de generar una planificación válida. |
+| **Prioridad** | Media |
+
+: Caso de uso CU-6. Planificación automática de guardias {#tbl-cu6}
+
+---
+
+## Prototipos de interfaz
+
+Con el objetivo de facilitar la interacción entre el usuario y el sistema, MeneQuiro incorpora una interfaz gráfica desarrollada mediante Streamlit, priorizando la sencillez de uso y la accesibilidad para personal sanitario sin conocimientos de programación [@streamlit2026].
+
+Las diferentes pantallas de la aplicación se diseñaron de forma iterativa durante el desarrollo del proyecto, incorporando mejoras conforme se identificaban nuevas necesidades funcionales.
+
+La Figura @fig-interfaz-principal muestra la pantalla principal de MeneQuiro, desde la que el usuario puede acceder a las diferentes funcionalidades implementadas.
+
+
+
+![Pantalla principal de MeneQuiro. Fuente: elaboración propia.](img/InicioMeneQuiro.png){#fig-interfaz-principal width=95%}
+
+
+La Figura @fig-agenda muestra la agenda diaria organizada por quirófanos, donde se representan tanto las intervenciones históricas como las planificaciones incorporadas por el usuario.
+
+
+![Visualización de la agenda quirúrgica diaria. Fuente: elaboración propia.](img/Planificacion.png){#fig-agenda width=95%}
+
+La Figura @fig-propuestas presenta el módulo de recomendación automática de huecos, uno de los componentes principales de MeneQuiro. En esta pantalla se muestran las alternativas compatibles para la incorporación de una nueva intervención quirúrgica.
+
+
+![Recomendación automática de huecos quirúrgicos. Fuente: elaboración propia.](img/ModuloSeleccion.png){#fig-propuestas width=95%}
+
+
+La Figura @fig-analisis muestra el apartado de análisis estadístico, donde el usuario puede consultar indicadores obtenidos a partir del histórico de actividad quirúrgica.
+
+
+![Módulo de análisis estadístico. Fuente: elaboración propia.](img/Estadistico.png){#fig-analisis width=95%}
+
+Finalmente, la Figura @fig-exportacion presenta una de las funcionalidades de exportación implementadas por la aplicación, permitiendo generar informes en formato PDF para facilitar la distribución de la planificación quirúrgica.
+
+
+![Exportación de la planificación quirúrgica en formato PDF. Fuente: elaboración propia.](img/PlanificacionPDF.png){#fig-exportacion width=95%}
+
+En conjunto, los prototipos presentados reflejan el funcionamiento completo de MeneQuiro y muestran la integración de los diferentes módulos desarrollados dentro de una única herramienta de apoyo a la planificación quirúrgica.

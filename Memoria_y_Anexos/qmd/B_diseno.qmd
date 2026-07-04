@@ -1,21 +1,150 @@
 ```{=latex}
-%% ══════════════════════════════════════════════════════
-%%  APÉNDICE B – Especificación de Diseño
-%% ══════════════════════════════════════════════════════
+%% APENDICE B - Especificacion de Diseno
 \apendice{Manual de especificación de diseño}
-
-
-Si procede.
-
-\section{Planos}
-
-Si procede
-
-En este apartado se incluirán los planos técnicos del sistema si procede, tales como esquemas de hardware, distribución de dispositivos, flujos físicos o cualquier otro elemento relevante para la comprensión del diseño.
-
-\section{Diseño arquitectónico}
-
-Si procede.
-
-Se describirá la arquitectura general del sistema o solución desarrollada. Puede incluir diagramas de bloques, diagramas de clases, diagramas de despliegue u otros esquemas que faciliten la comprensión del diseño.
 ```
+
+### Introducción
+
+Este apéndice describe el diseño técnico de **MeneQuiro**, detallando la arquitectura general del sistema, sus principales componentes funcionales y la relación existente entre los módulos desarrollados. El objetivo es proporcionar una visión estructurada del diseño de la aplicación, de forma que pueda servir como referencia para futuras ampliaciones, mantenimiento o reutilización del proyecto.
+
+El diseño de MeneQuiro se ha planteado siguiendo una arquitectura modular, separando las tareas de carga de datos, análisis estadístico, recomendación de huecos, visualización, persistencia y exportación. Este enfoque facilita la comprensión del sistema y permite modificar o ampliar módulos concretos sin afectar al conjunto de la aplicación [@pressman2010; @sommerville2016].
+
+### Planos
+
+El proyecto desarrollado no requiere planos físicos ni esquemas de hardware, dado que MeneQuiro es una aplicación software ejecutable desde un entorno local o desplegable en la nube mediante navegador web.
+
+No obstante, sí resulta necesario representar el diseño lógico del sistema mediante diagramas de arquitectura y esquemas funcionales. Estos elementos permiten comprender cómo fluye la información desde los datos originales hasta la generación de recomendaciones y la visualización final por parte del usuario.
+
+### Diseño arquitectónico
+
+La arquitectura general de MeneQuiro se organiza en torno a cinco bloques principales:
+
+- capa de datos;
+- capa de preprocesamiento;
+- capa de análisis estadístico;
+- capa de lógica de planificación;
+- capa de interfaz y exportación.
+
+La @tbl-bloques-arquitectura resume la función principal de cada bloque.
+
+| Bloque | Función principal |
+|---|---|
+| Capa de datos | Almacena el histórico quirúrgico, las cirugías planificadas y las intervenciones realizadas |
+| Preprocesamiento | Limpia, normaliza y transforma los registros originales |
+| Análisis estadístico | Calcula duraciones, variabilidad y uso habitual de quirófanos |
+| Lógica de planificación | Estima duraciones y genera propuestas de huecos quirúrgicos |
+| Interfaz y exportación | Permite visualizar la agenda, añadir intervenciones y exportar resultados |
+
+: Bloques principales de la arquitectura de MeneQuiro {#tbl-bloques-arquitectura}
+
+Como se observa en la @tbl-bloques-arquitectura, cada componente cumple una función diferenciada dentro del sistema. Esta separación permite que el desarrollo sea más mantenible y facilita la incorporación de mejoras futuras.
+
+La arquitectura del sistema parte de un histórico quirúrgico en formato tabular. Este histórico se procesa mediante funciones de limpieza y normalización, generando un conjunto de datos estructurado sobre el que se calcula el catálogo estadístico de procedimientos. A partir de dicho catálogo, el algoritmo de recomendación estima la duración de nuevas intervenciones y analiza la agenda disponible para proponer huecos compatibles.
+
+### Componentes funcionales
+
+Desde el punto de vista funcional, MeneQuiro se compone de diferentes módulos integrados dentro de una única aplicación. La @tbl-componentes-funcionales recoge los principales componentes desarrollados.
+
+| Componente | Descripción |
+|---|---|
+| Carga de datos | Lectura del histórico quirúrgico desde archivos Excel o CSV |
+| Limpieza de datos | Transformación de fechas, horas, duraciones y procedimientos |
+| Catálogo quirúrgico | Agrupación estadística de procedimientos y duraciones |
+| Agenda diaria | Visualización cronológica de intervenciones por quirófano |
+| Recomendador de huecos | Generación automática de propuestas de planificación |
+| Gestión de simulaciones | Incorporación y eliminación de intervenciones planificadas |
+| Confirmación de realizadas | Registro de cirugías confirmadas como realizadas |
+| Exportación | Generación de salidas en Excel, CSV y PDF |
+| Planificador de guardias | Asignación automática de guardias según restricciones |
+
+: Componentes funcionales implementados en MeneQuiro {#tbl-componentes-funcionales}
+
+El diseño modular de estos componentes permite que cada funcionalidad tenga una responsabilidad concreta. Por ejemplo, el módulo de recomendación no modifica directamente el histórico original, sino que trabaja sobre una agenda combinada formada por las intervenciones existentes y las simulaciones añadidas por el usuario.
+
+### Diseño de la capa de datos
+
+La capa de datos se diseñó con el objetivo de separar claramente tres tipos de información:
+
+- datos históricos originales;
+- intervenciones planificadas por el usuario;
+- intervenciones confirmadas como realizadas.
+
+Esta separación evita modificar el histórico de partida y permite mantener trazabilidad sobre las acciones realizadas durante el uso de la aplicación.
+
+La @tbl-datos-sistema resume los principales conjuntos de datos utilizados por MeneQuiro.
+
+| Conjunto de datos | Origen | Uso dentro del sistema |
+|---|---|---|
+| Histórico quirúrgico | Archivo Excel/CSV | Base para análisis estadístico y agenda real |
+| Catálogo de procedimientos | Generado automáticamente | Estimación de duraciones y quirófanos habituales |
+| Cirugías simuladas | Base de datos SQLite | Planificaciones añadidas por el usuario |
+| Cirugías realizadas | Base de datos SQLite | Registro de intervenciones confirmadas |
+| Planificación de guardias | Generada por algoritmo | Organización de turnos del personal |
+
+: Conjuntos de datos utilizados por el sistema {#tbl-datos-sistema}
+
+SQLite fue seleccionada como sistema de persistencia local por su sencillez, portabilidad y facilidad de integración con Python [@sqlite2026]. Esta decisión resulta adecuada para un prototipo académico, aunque una implantación hospitalaria real requeriría migrar hacia una base de datos centralizada.
+
+### Diseño de la lógica de planificación
+
+La lógica de planificación se basa en la combinación de dos elementos: el catálogo estadístico de procedimientos y la agenda diaria disponible. El catálogo proporciona una duración estimada para el procedimiento seleccionado, mientras que la agenda permite identificar huecos disponibles en cada quirófano.
+
+El proceso seguido puede resumirse en las siguientes etapas:
+
+1. El usuario selecciona fecha y procedimiento.
+2. El sistema consulta el catálogo quirúrgico.
+3. Se obtiene la duración planificable.
+4. Se construye la agenda del día.
+5. Se identifican huecos disponibles por quirófano.
+6. Se descartan huecos insuficientes o con solapamientos.
+7. Se ordenan las propuestas válidas.
+8. Se muestran las alternativas al usuario.
+
+Esta lógica permite que MeneQuiro funcione como un sistema de apoyo a la decisión, ya que genera propuestas automáticamente pero mantiene al usuario como responsable final de la selección.
+
+### Diseño de la interfaz
+
+La interfaz se diseñó buscando claridad y facilidad de uso. Dado que el usuario final puede no tener conocimientos técnicos, se priorizó una estructura visual sencilla, basada en selectores, tablas, botones y gráficos interactivos.
+
+La aplicación se organiza en diferentes áreas funcionales:
+
+- selección de fecha y procedimiento;
+- visualización de la agenda diaria;
+- consulta de propuestas de hueco;
+- gestión de intervenciones planificadas;
+- confirmación de cirugías realizadas;
+- análisis estadístico;
+- exportación de resultados;
+- planificación de guardias.
+
+Streamlit permitió desarrollar esta interfaz de forma rápida y mantener una integración directa con los scripts de análisis y planificación implementados en Python [@streamlit2026].
+
+### Diseño de exportaciones
+
+El sistema incorpora exportación de resultados para facilitar el uso de la información fuera de la aplicación. Se implementaron salidas en formatos habituales en entornos administrativos y hospitalarios.
+
+La @tbl-exportaciones resume los formatos disponibles.
+
+| Formato | Utilidad |
+|---|---|
+| CSV | Exportación ligera de datos tabulares |
+| Excel | Revisión y edición en herramientas ofimáticas |
+| PDF | Generación de informes de planificación |
+| Visualización interactiva | Consulta directa desde la aplicación |
+
+: Formatos de exportación disponibles en MeneQuiro {#tbl-exportaciones}
+
+La exportación en PDF permite generar documentos estructurados con la planificación quirúrgica seleccionada, mientras que los formatos Excel y CSV facilitan el tratamiento posterior de los datos.
+
+### Consideraciones de diseño
+
+El diseño de MeneQuiro se ha guiado por los siguientes principios:
+
+- modularidad;
+- separación entre histórico y simulaciones;
+- claridad visual;
+- interpretabilidad de las recomendaciones;
+- facilidad de mantenimiento;
+- posibilidad de ampliación futura.
+
+Estos criterios permiten que el sistema sea comprensible, modificable y adaptable a nuevas necesidades. Aunque MeneQuiro se ha desarrollado como prototipo académico, su arquitectura proporciona una base sólida para futuras mejoras, como la integración con bases de datos centralizadas, la gestión de usuarios o la incorporación de modelos predictivos más avanzados.

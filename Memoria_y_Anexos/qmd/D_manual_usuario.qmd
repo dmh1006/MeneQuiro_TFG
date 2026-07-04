@@ -1,16 +1,255 @@
 ```{=latex}
-%% ══════════════════════════════════════════════════════
-%%  APÉNDICE D – Manual de Usuario
-%% ══════════════════════════════════════════════════════
+%% APENDICE D - Manual de Usuario
 \apendice{Documentación de usuario}
-
-
-\section{Requisitos software y hardware para ejecutar el proyecto.}
-Se detallarán los requisitos mínimos de software y hardware necesarios para ejecutar correctamente el proyecto.
-
-\section{Instalación / Puesta en marcha}
-Se describirá el proceso de instalación y ejecución del sistema de forma clara y ordenada, indicando los pasos necesarios para su correcta puesta en funcionamiento.
-
-\section{Manuales y/o Demostraciones prácticas}
-Se incluirán instrucciones de uso del sistema y ejemplos prácticos que faciliten su comprensión por parte del usuario final.
 ```
+
+### Introducción
+
+El presente apéndice tiene como objetivo proporcionar las instrucciones necesarias para la instalación, configuración y utilización de **MeneQuiro**. El manual está dirigido al personal encargado de la planificación quirúrgica, de forma que pueda comenzar a utilizar la aplicación sin necesidad de conocimientos avanzados de programación o administración de sistemas.
+
+MeneQuiro ha sido desarrollado como una aplicación de escritorio basada en Python y Streamlit, permitiendo su ejecución tanto en un entorno local como mediante despliegue en un servidor accesible desde un navegador web. La interfaz ha sido diseñada siguiendo criterios de simplicidad, claridad y facilidad de uso, con el objetivo de minimizar la curva de aprendizaje del usuario [@streamlit2026; @nielsen1994].
+
+---
+
+### Requisitos software y hardware para ejecutar el proyecto
+
+La aplicación ha sido desarrollada y validada sobre sistemas Windows, aunque puede ejecutarse igualmente en otros sistemas operativos compatibles con Python.
+
+Los requisitos mínimos recomendados se resumen en la Tabla @tbl-requisitos-sistema.
+
+| Recurso | Requisito mínimo |
+|---|---|
+| Sistema operativo | Windows 10 o superior |
+| Procesador | Intel Core i3 o equivalente |
+| Memoria RAM | 8 GB |
+| Espacio libre en disco | 500 MB |
+| Resolución recomendada | 1920 × 1080 píxeles |
+| Conexión a Internet | Solo necesaria para despliegues web |
+
+: Requisitos mínimos del sistema {#tbl-requisitos-sistema}
+
+En cuanto al entorno software, MeneQuiro requiere la instalación de Python y de las principales bibliotecas utilizadas durante el desarrollo.
+
+La Tabla @tbl-requisitos-software recoge las dependencias necesarias.
+
+| Software | Versión recomendada |
+|---|---|
+| Python | 3.11 o superior |
+| Streamlit | Última versión estable |
+| Pandas | Última versión estable |
+| NumPy | Última versión estable |
+| Plotly | Última versión estable |
+| OpenPyXL | Última versión estable |
+| SQLite | Incluido en Python |
+
+: Dependencias software utilizadas por MeneQuiro {#tbl-requisitos-software}
+
+Todas las bibliotecas utilizadas son de distribución gratuita y código abierto, facilitando la instalación y el mantenimiento de la aplicación [@python2026; @streamlit2026; @pandas2026; @numpy2026; @plotly2026].
+
+---
+
+### Instalación y puesta en marcha
+
+La instalación de MeneQuiro puede realizarse siguiendo una secuencia sencilla de pasos.
+
+#### Paso 1. Descargar el proyecto
+
+Clonar el repositorio o copiar la carpeta del proyecto al equipo donde se vaya a ejecutar la aplicación.
+
+#### Paso 2. Crear el entorno virtual
+
+Desde una terminal situada en la carpeta del proyecto ejecutar:
+
+```bash
+python -m venv venv
+```
+
+#### Paso 3. Activar el entorno virtual
+
+En Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+En Linux:
+
+```bash
+source venv/bin/activate
+```
+
+#### Paso 4. Instalar las dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+#### Paso 5. Ejecutar la aplicación
+
+```bash
+python -m streamlit run MeneQuiro.py
+```
+
+Una vez iniciado el servidor, la aplicación quedará accesible desde el navegador mediante una dirección similar a:
+
+```text
+http://localhost:8501
+```
+
+La Figura @fig-inicio-streamlit muestra el proceso general de puesta en marcha de la aplicación.
+
+
+![Proceso de ejecución de MeneQuiro mediante Streamlit. Fuente: elaboración propia.](img/CorrerApp.png){#fig-inicio-streamlit width=95%} 
+
+![Pantalla de inicio de MeneQuiro tras ejecución en terminal de comandos. Fuente: elaboración propia.](img/Ini.png){#fig-inicio width=95%}
+
+
+Durante la primera ejecución, la aplicación crea automáticamente la base de datos SQLite necesaria para almacenar las planificaciones simuladas y las intervenciones confirmadas como realizadas. En ejecuciones posteriores dicha base de datos se reutiliza automáticamente, manteniendo toda la información registrada previamente.
+
+## Manual de uso
+
+Una vez iniciada la aplicación, el usuario accede a la pantalla principal de MeneQuiro, desde la cual es posible utilizar todas las funcionalidades implementadas durante el desarrollo del proyecto. La interfaz se ha diseñado siguiendo un flujo de trabajo similar al proceso habitual de planificación quirúrgica, permitiendo realizar todas las operaciones desde un único entorno de trabajo [@streamlit2026; @nielsen1994].
+
+El flujo habitual de utilización de la aplicación se resume en las siguientes etapas:
+
+1. Seleccionar la fecha de planificación.
+2. Consultar la agenda quirúrgica existente.
+3. Seleccionar el procedimiento que se desea programar.
+4. Obtener las propuestas automáticas de planificación.
+5. Incorporar una de las propuestas a la agenda.
+6. Confirmar las intervenciones realizadas.
+7. Consultar el análisis estadístico.
+8. Exportar los resultados obtenidos.
+
+Las siguientes subsecciones describen con mayor detalle cada una de estas operaciones.
+
+### Consulta de la agenda quirúrgica
+
+La primera pantalla que visualiza el usuario corresponde a la agenda diaria del bloque quirúrgico.
+
+En ella se representan gráficamente todas las intervenciones programadas para la fecha seleccionada, agrupadas por quirófano y ordenadas cronológicamente.
+
+La Figura @fig-manual-agenda muestra el aspecto general de esta pantalla.
+
+<!--
+![Agenda quirúrgica diaria de MeneQuiro. Fuente: elaboración propia.](img/FiguraD2.png){#fig-manual-agenda width=95%}
+-->
+
+Desde esta vista el usuario puede consultar:
+
+- distribución temporal de las intervenciones;
+- duración prevista de cada cirugía;
+- quirófano asignado;
+- información básica del procedimiento;
+- estado de cada intervención.
+
+---
+
+### Búsqueda automática de huecos
+
+Una de las funcionalidades principales de MeneQuiro consiste en la recomendación automática de huecos compatibles con una nueva intervención.
+
+Tras seleccionar el procedimiento y la fecha deseada, el sistema consulta el catálogo estadístico generado a partir del histórico quirúrgico y calcula la duración prevista de la cirugía. Posteriormente analiza la agenda existente e identifica los huecos compatibles.
+
+La Figura @fig-manual-propuestas muestra un ejemplo de las propuestas generadas.
+
+<!--
+![Propuestas automáticas de planificación. Fuente: elaboración propia.](img/FiguraD3.png){#fig-manual-propuestas width=95%}
+-->
+
+Cada propuesta incluye información sobre:
+
+- quirófano recomendado;
+- hora de inicio;
+- hora estimada de finalización;
+- duración necesaria;
+- tiempo disponible;
+- holgura restante;
+- coincidencia con el quirófano habitual del procedimiento.
+
+Esta información permite al usuario seleccionar la alternativa que mejor se adapta a las necesidades organizativas del bloque quirúrgico.
+
+---
+
+### Gestión de planificaciones
+
+Una vez seleccionada una propuesta, MeneQuiro incorpora automáticamente la intervención a la agenda diaria.
+
+Las intervenciones añadidas aparecen diferenciadas visualmente respecto al histórico original, facilitando al usuario la identificación de las planificaciones realizadas durante la sesión.
+
+La Figura @fig-manual-planificacion muestra un ejemplo de agenda tras incorporar una nueva cirugía.
+
+<!--
+![Agenda tras añadir una nueva planificación. Fuente: elaboración propia.](img/FiguraD4.png){#fig-manual-planificacion width=95%}
+-->
+
+En cualquier momento el usuario puede eliminar una planificación simulada o confirmar la intervención como realizada.
+
+---
+
+### Confirmación de cirugías realizadas
+
+Tras finalizar una intervención, MeneQuiro permite registrar la cirugía como realizada.
+
+Durante este proceso es posible incorporar observaciones adicionales y almacenar la información en la base de datos local.
+
+Las intervenciones confirmadas cambian automáticamente su representación gráfica dentro de la agenda, permitiendo distinguirlas de aquellas que permanecen únicamente planificadas.
+
+La Figura @fig-manual-confirmacion muestra esta funcionalidad.
+
+<!--
+![Confirmación de una cirugía realizada. Fuente: elaboración propia.](img/FiguraD5.png){#fig-manual-confirmacion width=95%}
+-->
+
+---
+
+### Consulta del análisis estadístico
+
+El módulo de análisis estadístico proporciona información obtenida a partir del histórico quirúrgico utilizado durante el proyecto.
+
+Entre los indicadores disponibles destacan:
+
+- duración media de procedimientos;
+- mediana;
+- desviación estándar;
+- número de intervenciones;
+- ocupación por quirófano;
+- distribución temporal de la actividad.
+
+La Figura @fig-manual-estadisticas muestra una de las pantallas de análisis implementadas.
+
+<!--
+![Módulo de análisis estadístico. Fuente: elaboración propia.](img/FiguraD6.png){#fig-manual-estadisticas width=95%}
+-->
+
+---
+
+### Exportación de resultados
+
+Finalmente, MeneQuiro permite exportar la planificación generada en distintos formatos.
+
+Actualmente se encuentran implementadas las siguientes opciones:
+
+- PDF.
+- Excel.
+- CSV.
+
+La exportación facilita tanto la distribución de la planificación diaria como su almacenamiento para posteriores consultas.
+
+La Figura @fig-manual-exportacion muestra un ejemplo del documento PDF generado automáticamente por la aplicación.
+
+<!--
+![Exportación automática de la planificación en formato PDF. Fuente: elaboración propia.](img/FiguraD7.png){#fig-manual-exportacion width=95%}
+-->
+
+## Recomendaciones de uso
+
+Para garantizar un funcionamiento correcto de la aplicación se recomienda:
+
+- utilizar siempre históricos quirúrgicos previamente normalizados;
+- verificar la información mostrada antes de confirmar nuevas planificaciones;
+- realizar copias periódicas de la base de datos SQLite;
+- mantener actualizado el entorno Python y las dependencias del proyecto;
+- utilizar resoluciones de pantalla iguales o superiores a 1920×1080 píxeles para visualizar correctamente la agenda quirúrgica.
+
+Siguiendo estas recomendaciones, MeneQuiro puede utilizarse como una herramienta de apoyo fiable durante el proceso de planificación quirúrgica y análisis de la actividad del bloque quirúrgico.

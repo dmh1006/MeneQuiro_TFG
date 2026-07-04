@@ -1,32 +1,101 @@
-```{=latex}
-%% ══════════════════════════════════════════════════════
-%%  APÉNDICE A – Plan de Proyecto
-%% ══════════════════════════════════════════════════════
+```{=latex} 
+%%  ── APÉNDICE A – Plan de Proyecto ─────────────────────────────────── 
 \apendice{Plan de Proyecto}
-
-\section{Introducción}
-
-En este apartado se describe de forma breve el propósito general del proyecto, su contexto y el alcance del trabajo realizado, indicando qué problema se aborda y qué se pretende conseguir con el TFG.
-
-
-\section{Metodología de ingeniería del software}
-Si procede.
-Se debe describir la metodología seguida durante el desarrollo del proyecto. En caso de existir desarrollo software, se indicará la metodología utilizada (por ejemplo, cascada, ágil o experimental)
-En cada apartado de los apéndices (A hasta el G) se deberá indicar que tarea o fase de la metodología utilizada se está realizando, o bien en este nuevo apéndice deberá quedar reflejado con detalle las tareas y fases que se han ido realizando.
-Si el TFG no contiene  todo el ciclo de vida de la metodología utilizada, deberá indicarse las fases y tareas que han quedado pendientes.
-Si el TFG no está centrado el desarrollo software, pero puede servir para un posterior desarrollo software, se deberá indicar qué metodología de desarrollo se recomienda y argumentar los motivos.
-
-
-\section{Planificación temporal}
-
-Se presentará la planificación temporal del proyecto, preferiblemente mediante un cronograma o diagrama de Gantt, donde se reflejen las principales tareas, fases y su duración aproximada.
-
-\subsection{Planificación económica}
-
-\subsection{Viabilidad legal}
-
-Si corresponde, incluir aquí el documento de aprovación por parte de la Comisión de Bioética.
-
-Ojo \footnote{Los anexos deben de tener su propia bibliografía, eso es tan fácil como utilizar referencias igual que en la memoria \cite{bortolot2005}}
 ```
+### Introducción
+
+El presente apéndice recoge el plan de proyecto seguido durante el desarrollo de **MeneQuiro**, una herramienta informática de apoyo a la planificación quirúrgica basada en el análisis estadístico de actividad histórica del bloque quirúrgico.
+
+El proyecto se desarrolló en el contexto de las prácticas curriculares realizadas en el Servicio de Cirugía General y Digestiva del Hospital Universitario de Burgos. Durante este periodo se identificó la necesidad de disponer de una herramienta capaz de asistir al personal responsable de la planificación de intervenciones quirúrgicas, facilitando la consulta de la agenda, el análisis de procedimientos, la recomendación de huecos disponibles y la gestión de planificaciones.
+
+El alcance del proyecto incluye el análisis del problema, la preparación del conjunto de datos, la construcción de un catálogo quirúrgico, el desarrollo del algoritmo de recomendación, la implementación de la aplicación MeneQuiro, la validación funcional del sistema y la elaboración de la memoria y anexos.
+
+
+
+### Metodología de ingeniería del software
+El desarrollo de MeneQuiro se realizó siguiendo una metodología incremental basada en prototipos, enfoque especialmente adecuado cuando los requisitos pueden evolucionar durante el desarrollo y se necesita validar progresivamente versiones funcionales del sistema [@pressman2010; @sommerville2016].
+
+El proceso seguido no consistió en una implementación cerrada desde el inicio, sino en la construcción de versiones sucesivas de la herramienta. Cada versión incorporaba nuevas funcionalidades, que eran revisadas y corregidas antes de pasar a la siguiente fase.
+
+Las fases principales de la metodología empleada se resumen en la @tbl-fases-metodologia.
+
+| Fase | Descripción | Resultado obtenido |
+|---|---|---|
+| Análisis del problema | Estudio del proceso de planificación quirúrgica y detección de necesidades | Definición del alcance del proyecto |
+| Preparación de datos | Limpieza, transformación y normalización del histórico quirúrgico | Dataset estructurado y explotable |
+| Estudio estadístico | Cálculo de duraciones, medianas, desviaciones y uso de quirófanos | Catálogo estadístico de procedimientos |
+| Desarrollo del algoritmo | Implementación de la búsqueda y recomendación de huecos | Motor de recomendación funcional |
+| Implementación de la aplicación | Desarrollo de la interfaz y módulos principales | Aplicación MeneQuiro operativa |
+| Persistencia y exportación | Integración de SQLite y exportaciones en diferentes formatos | Registro y salida de información |
+| Validación funcional | Pruebas de uso, corrección de errores y revisión de resultados | Versión final estable |
+| Documentación | Redacción de memoria, anexos y repositorio | Documentación completa del TFG |
+
+: Fases principales de la metodología de desarrollo seguida {#tbl-fases-metodologia}
+
+Como se observa en la @tbl-fases-metodologia, el desarrollo se organizó de forma progresiva, permitiendo que cada bloque funcional se apoyara en los resultados obtenidos en la fase anterior. Esta estrategia facilitó la detección temprana de errores y permitió adaptar la herramienta a los requisitos identificados durante el proyecto.
+
+No forman parte del alcance de este Trabajo Fin de Grado algunas fases propias de una implantación hospitalaria real, como la integración directa con sistemas de información hospitalarios, la validación multicéntrica, la gestión avanzada de usuarios o el despliegue en servidores corporativos. Estas tareas quedan planteadas como posibles líneas de trabajo futuro.
+
+### Planificación temporal
+
+La planificación temporal del proyecto se estructuró entre los meses de febrero y junio de 2026. Durante este periodo se desarrollaron las fases de análisis, implementación, validación y documentación del sistema.
+
+La @tbl-planificacion-temporal recoge una síntesis de las principales tareas realizadas y su distribución temporal aproximada.
+
+| Fase | Febrero | Marzo | Abril | Mayo | Junio |
+|---|:---:|:---:|:---:|:---:|:---:|
+| Estudio del problema y contexto hospitalario | X |  |  |  |  |
+| Análisis del histórico quirúrgico | X | X |  |  |  |
+| Limpieza y normalización de datos |  | X |  |  |  |
+| Estudio estadístico y catálogo quirúrgico |  | X | X |  |  |
+| Desarrollo del algoritmo de recomendación |  |  | X |  |  |
+| Desarrollo de la aplicación MeneQuiro |  |  | X | X |  |
+| Exportaciones, base de datos y guardias |  |  |  | X |  |
+| Validación funcional y corrección de errores |  |  |  | X | X |
+| Redacción de memoria y anexos |  |  |  |  | X |
+
+: Planificación temporal aproximada del proyecto {#tbl-planificacion-temporal}
+
+La planificación reflejada en la @tbl-planificacion-temporal muestra una evolución incremental del proyecto. Las primeras semanas se dedicaron principalmente al análisis del problema y de los datos disponibles. Posteriormente, el trabajo se centró en la construcción del catálogo estadístico y el desarrollo del algoritmo de recomendación. Finalmente, durante las últimas fases se completó la aplicación, se corrigieron errores detectados durante la validación y se elaboró la documentación final.
+
+
+
+### Planificación económica
+Aunque el proyecto se ha desarrollado con fines académicos y no ha supuesto un coste económico directo para el Hospital Universitario de Burgos, se ha realizado una estimación del coste equivalente que tendría el desarrollo de una herramienta de estas características en un entorno profesional.
+
+Para ello, se han considerado las horas dedicadas a las distintas fases del proyecto, el coste/hora estimado y los recursos materiales y software empleados. La estimación económica se recoge en la @tbl-costes-proyecto.
+
+| Concepto | Horas estimadas | Coste/hora (€) | Coste estimado (€) |
+|---|---:|---:|---:|
+| Análisis del problema y estudio del entorno hospitalario | 35 | 20 | 700 |
+| Análisis, limpieza y normalización de datos | 70 | 20 | 1.400 |
+| Estudio estadístico y construcción del catálogo quirúrgico | 55 | 20 | 1.100 |
+| Desarrollo del algoritmo de recomendación | 65 | 20 | 1.300 |
+| Desarrollo de la aplicación MeneQuiro | 120 | 20 | 2.400 |
+| Implementación de exportaciones y base de datos | 35 | 20 | 700 |
+| Validación funcional y corrección de errores | 45 | 20 | 900 |
+| Elaboración de memoria y anexos | 80 | 15 | 1.200 |
+| Reuniones, revisión y seguimiento del proyecto | 25 | 20 | 500 |
+| Amortización del equipo informático | -- | -- | 500 |
+| Recursos software empleados | -- | -- | 0 |
+| **Total** | **530** | -- | **10.700** |
+
+: Estimación económica del desarrollo del proyecto {#tbl-costes-proyecto}
+
+Como se observa en la @tbl-costes-proyecto, el coste estimado del proyecto asciende a **10.700 €**. Esta cifra debe interpretarse como una valoración orientativa del trabajo realizado, no como un presupuesto cerrado de implantación hospitalaria.
+
+El coste de los recursos software se ha considerado nulo debido al uso de herramientas gratuitas o de código abierto, como Python, Pandas, Streamlit, SQLite, GitHub y Quarto [@python2026; @pandas2026; @streamlit2026; @sqlite2026; @github2026; @quarto2026].
+
+En caso de plantear una implantación real en un entorno hospitalario, sería necesario incorporar costes adicionales asociados a servidores, mantenimiento, seguridad, integración con sistemas de información hospitalarios, soporte técnico y validación en producción.
+
+### Viabilidad legal
+
+El desarrollo del proyecto se realizó utilizando información anonimizada procedente de la actividad quirúrgica del Hospital Universitario de Burgos. Durante todas las fases se respetaron los principios establecidos por el Reglamento General de Protección de Datos y la Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales [@rgpd2016; @lopdgdd2018].
+
+Los datos empleados fueron utilizados exclusivamente con fines académicos dentro del marco del presente Trabajo Fin de Grado. En ningún momento se trabajó con información que permitiera identificar directamente a pacientes, y las capturas incluidas en la memoria y anexos fueron revisadas para evitar la exposición de datos personales.
+
+Desde el punto de vista funcional, MeneQuiro no sustituye el criterio clínico ni organizativo del personal sanitario. La aplicación actúa como una herramienta de apoyo a la decisión, proporcionando información y recomendaciones basadas en el análisis estadístico, pero manteniendo siempre al profesional como responsable final de la planificación.
+
+No fue necesaria la solicitud de autorización a la Comisión de Bioética, dado que el proyecto se desarrolló sobre información previamente anonimizada y no implicó intervención sobre pacientes, modificación de tratamientos ni tratamiento de datos personales identificativos.
+
 
