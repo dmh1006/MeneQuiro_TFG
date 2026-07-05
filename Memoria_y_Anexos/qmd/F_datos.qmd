@@ -3,58 +3,53 @@
 %%  APÉNDICE F – Descripción de datos
 %% ══════════════════════════════════════════════════════
 \apendice{Descripción de adquisición y tratamiento de datos}
-
-
-\section{Descripción formal de los datos}
-
-Se describirá el tipo de datos utilizados, su formato, origen, volumen y características principales.
-Tablas, imágenes, señales, secuencias de ADN…
-    
-\section{Descripción clínica de los datos.}
-
-Descripción y explicaciones clinicas del significado o interpretación de los datos.
 ```
 
+## Descripción formal de los datos
 
-A continuación se muestra un **ejemplo de análisis exploratorio con R**
-que produce tanto código visible como tabla y figura en el PDF:
+El desarrollo de MeneQuiro se basa en un conjunto de datos anonimizado correspondiente a la actividad quirúrgica del Servicio de Cirugía General y Digestiva del Hospital Universitario de Burgos (HUBU). Los datos fueron proporcionados durante la realización de las prácticas curriculares y se utilizaron exclusivamente con fines docentes y de investigación, garantizando en todo momento la ausencia de información identificativa de los pacientes y el cumplimiento de la normativa vigente en materia de protección de datos [@rgpd2016; @lopdgdd2018].
 
-```{r datos-summary}
-#| label: tbl-resumen-datos
-#| tbl-cap: "Resumen estadístico del conjunto de datos mtcars"
+La información original procedía de hojas de cálculo utilizadas habitualmente durante la planificación quirúrgica. Estos documentos contienen el registro de la actividad asistencial diaria del bloque quirúrgico, incluyendo información temporal, organizativa y procedimental necesaria para gestionar la programación de las intervenciones.
 
-library(knitr)
-library(dplyr)
+El conjunto de datos inicial estaba formado por **286 intervenciones quirúrgicas**, distribuidas entre **8 quirófanos**, incluyendo **53 intervenciones urgentes** y **46 procedimientos suspendidos**. Tras el proceso de depuración y normalización descrito en la metodología, se obtuvo un conjunto de datos consistente empleado para el análisis estadístico y el desarrollo del algoritmo de recomendación.
 
-mtcars |>
-  select(mpg, cyl, hp, wt) |>
-  summarise(across(everything(),
-    list(media = mean, sd = sd, min = min, max = max),
-    .names = "{.col}_{.fn}"
-  )) |>
-  tidyr::pivot_longer(everything(),
-    names_to  = c("variable", "estadístico"),
-    names_sep = "_"
-  ) |>
-  tidyr::pivot_wider(names_from = estadístico, values_from = value) |>
-  mutate(across(where(is.numeric), \(x) round(x, 2))) |>
-  kable(booktabs = TRUE, format = "latex",
-        col.names = c("Variable", "Media", "SD", "Mín", "Máx"))
-```
+Las variables utilizadas pueden agruparse en cuatro categorías principales:
 
-```{r datos-figura}
-#| label: fig-correlacion
-#| fig-cap: "Relación entre peso del vehículo y consumo (mpg) en mtcars"
+- variables temporales (fecha, hora de inicio, hora de finalización y duración);
+- variables organizativas (quirófano, servicio, turno y centro);
+- variables clínicas (procedimiento, diagnóstico, tipo de caso y anestesia);
+- variables de estado (urgencia, suspensión y motivo de cancelación).
 
-library(ggplot2)
+La @tbl-anexo-datos resume las principales variables empleadas durante el desarrollo del proyecto.
 
-ggplot(mtcars, aes(x = wt, y = mpg)) +
-  geom_point(aes(color = factor(cyl)), size = 2.5) +
-  geom_smooth(method = "lm", se = TRUE, color = "grey40") +
-  labs(
-    x     = "Peso (1000 lbs)",
-    y     = "Consumo (mpg)",
-    color = "Cilindros"
-  ) +
-  theme_minimal(base_size = 11)
-```
+| Variable | Tipo | Descripción |
+|-----------|------|-------------|
+| fecha | Fecha | Día de realización de la intervención |
+| hora_inicio | Hora | Hora de comienzo registrada |
+| hora_fin | Hora | Hora de finalización registrada |
+| duracion_min | Numérica | Duración de la intervención en minutos |
+| quirofano | Categórica | Quirófano asignado |
+| servicio | Categórica | Servicio responsable |
+| procedimiento | Texto | Procedimiento registrado originalmente |
+| procedimiento_base | Texto | Procedimiento tras la normalización |
+| cirujano_principal | Texto | Cirujano responsable |
+| anestesista_principal | Texto | Anestesista responsable |
+| tipo_caso | Categórica | Clasificación de la intervención |
+| es_urgencia | Booleana | Indica si corresponde a una urgencia |
+| esta_suspendida | Booleana | Indica si la intervención fue suspendida |
+
+: Variables principales empleadas durante el desarrollo de MeneQuiro.
+
+El almacenamiento definitivo de la información utilizada por la aplicación se realiza mediante archivos CSV para el histórico depurado y una base de datos SQLite para almacenar las planificaciones y las intervenciones generadas durante la utilización de la herramienta [@sqlite2026].
+
+## Descripción clínica de los datos
+
+Desde el punto de vista clínico, el conjunto de datos representa la actividad habitual desarrollada en un bloque quirúrgico hospitalario. Cada registro corresponde a una intervención quirúrgica individual y contiene la información mínima necesaria para caracterizar su desarrollo temporal y organizativo.
+
+La variable de mayor relevancia para el funcionamiento de MeneQuiro es el procedimiento quirúrgico realizado. Tras el proceso de normalización, cada procedimiento agrupa intervenciones equivalentes que originalmente podían aparecer registradas con diferencias de nomenclatura, abreviaturas o errores tipográficos. Esta agrupación permite calcular estadísticas representativas para cada procedimiento y utilizarlas posteriormente durante la planificación.
+
+Las variables temporales permiten reconstruir la ocupación diaria de cada quirófano y calcular la duración real de las intervenciones, información utilizada para estimar la duración planificable y detectar huecos disponibles en la agenda quirúrgica.
+
+Por su parte, las variables organizativas permiten identificar el quirófano, el servicio responsable y el contexto en el que se desarrolla cada intervención, mientras que las variables de estado facilitan la identificación de urgencias y procedimientos suspendidos, situaciones especialmente relevantes durante la planificación hospitalaria.
+
+Aunque el conjunto de datos procede de un único servicio hospitalario, presenta características representativas del funcionamiento habitual de un bloque quirúrgico y resulta adecuado para el desarrollo y validación funcional de MeneQuiro.

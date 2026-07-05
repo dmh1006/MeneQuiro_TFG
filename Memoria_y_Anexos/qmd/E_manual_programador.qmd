@@ -3,22 +3,130 @@
 %%  APÉNDICE E – Manual del Desarrollador
 %% ══════════════════════════════════════════════════════
 \apendice{Manual del desarrollador / programador / investigador.} % usar el término que mejor se corresponda.
-
-\section{Estructura de directorios}
-
-Descripción de la estructura de carpetas y archivos entregados junto con el proyecto.
-
-\section{Compilación, instalación y ejecución del proyecto}
-
-En caso necesario, se detallarán los pasos técnicos para compilar, instalar y ejecutar el proyecto.
-
-\section{Pruebas del sistema}
-Esta sección puede ser opcional.
-
-Se describirán las pruebas realizadas para validar el correcto funcionamiento del sistema, tales como pruebas unitarias, funcionales o validaciones con usuarios.
-
-
-\section{Instrucciones para la modificación o mejora del proyecto.}
-
-Se proporcionarán indicaciones y recomendaciones para facilitar futuras ampliaciones o mejoras del trabajo realizado.
 ```
+
+### Estructura de directorios
+
+El proyecto se ha organizado siguiendo una estructura modular con el objetivo de separar los datos, el código fuente y la documentación generada. Esta organización facilita el mantenimiento del software y la incorporación de nuevas funcionalidades, siguiendo principios ampliamente utilizados en ingeniería del software [@bass2012; @sommerville2016].
+
+La estructura principal del proyecto es la siguiente:
+
+TFG_DARIOMENESES/
+│
+├── Data/
+│   ├── 2025.xls
+│   ├── quirofano_2025_limpio.csv
+│   ├── quirofanos_realizadas.db
+│   └── planificacion_guardias_quirófano.xlsx
+│
+├── Memoria_y_Anexos/
+│   ├── img/
+│   ├── qmd/
+│   ├── memoria.qmd
+│   ├── anexos.qmd
+│   ├── bibliografia.bib
+│   └── ...
+│
+├── Proyecto/
+│   ├── init.py
+│   ├── analisis_historico.py
+│   ├── planificador_tfg.py
+│   ├── planificador_guardias.py
+│   └── analisis_quirofano.ipynb
+│
+├── MeneQuiro.py
+├── requirements.txt
+├── README.md
+└── .gitignore
+
+Los elementos principales del proyecto son los siguientes:
+
+| Elemento | Descripción |
+|----------|-------------|
+| **Data/** | Contiene los datos históricos utilizados por la aplicación, la base de datos SQLite y los archivos auxiliares de planificación. |
+| **Memoria_y_Anexos/** | Incluye la memoria del Trabajo Fin de Grado, los anexos, las imágenes y los archivos Quarto utilizados para generar la documentación. |
+| **Proyecto/** | Carpeta destinada al desarrollo y almacenamiento de recursos auxiliares utilizados durante la implementación. |
+| **venv/** | Entorno virtual de Python con todas las dependencias necesarias para ejecutar la aplicación. |
+| **MeneQuiro.py** | Archivo principal de la aplicación, donde se implementan la interfaz, el análisis estadístico y el algoritmo de recomendación. |
+| **requirements.txt** | Relación de dependencias necesarias para reproducir el entorno de ejecución. |
+| **README.md** | Documento con información general sobre el proyecto. |
+
+
+### Compilación, instalación y ejecución del proyecto
+
+MeneQuiro ha sido desarrollado utilizando Python como lenguaje principal de programación y Streamlit como framework para la construcción de la interfaz web [@python2026; @streamlit2026].
+
+Se recomienda ejecutar el proyecto dentro de un entorno virtual para garantizar la compatibilidad entre las distintas bibliotecas empleadas durante el desarrollo.
+
+En primer lugar debe crearse el entorno virtual:
+
+```bash
+python -m venv venv
+```
+
+Después se activa:
+
+```bash
+venv\Scripts\activate
+```
+
+Posteriormente se instalan todas las dependencias mediante:
+
+```bash
+pip install -r requirements.txt
+```
+
+Las principales bibliotecas utilizadas son:
+
+Streamlit
+Pandas
+NumPy
+Plotly
+OpenPyXL
+SQLite
+ReportLab
+
+[@streamlit2026; @pandas2026; @numpy2026; @plotly2026; @sqlite2026]
+
+Finalmente la aplicación se ejecuta mediante:
+
+```bash
+python -m streamlit run MeneQuiro.py
+```
+
+### Pruebas del sistema 
+
+Durante el desarrollo se realizaron pruebas funcionales de forma incremental conforme se incorporaban nuevas funcionalidades al sistema, siguiendo una estrategia de validación continua ampliamente utilizada en ingeniería del software [@myers2011].
+
+Las principales pruebas realizadas fueron:
+
+- importación del histórico quirúrgico;
+- limpieza y normalización automática de procedimientos;
+- generación del catálogo estadístico;
+- cálculo de la duración planificable;
+- identificación automática de huecos;
+- detección de solapamientos;
+- incorporación de cirugías simuladas;
+- persistencia mediante SQLite;
+- exportación de resultados en formato CSV, Excel y PDF;
+- funcionamiento del planificador de guardias.
+
+Tras cada modificación relevante también se comprobó que las funcionalidades previamente implementadas continuaran funcionando correctamente, evitando la aparición de errores derivados de nuevas incorporaciones.
+
+Las pruebas se realizaron utilizando datos anonimizados procedentes del Hospital Universitario de Burgos, permitiendo validar el comportamiento de la aplicación en un entorno representativo de la práctica clínica.
+
+### Instrucciones para la modificación o mejora del proyecto.
+
+La arquitectura desarrollada permite incorporar nuevas funcionalidades con un impacto reducido sobre el resto del sistema, gracias a la separación entre procesamiento de datos, lógica de planificación, persistencia e interfaz de usuario [@bass2012].
+
+Las principales líneas de ampliación son:
+
+- incorporar nuevos indicadores estadísticos al catálogo quirúrgico;
+- modificar la función de recomendación de huecos;
+- añadir nuevos procedimientos al proceso de normalización;
+- sustituir SQLite por un sistema gestor de bases de datos como PostgreSQL;
+- incorporar autenticación de usuarios;
+- desplegar la aplicación en un servidor institucional;
+- integrar nuevos modelos predictivos para la estimación de la duración quirúrgica.
+
+Se recomienda mantener actualizado el archivo `requirements.txt` y utilizar Git como sistema de control de versiones para facilitar el mantenimiento y la evolución del proyecto [@chacon2014].

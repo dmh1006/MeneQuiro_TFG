@@ -2,36 +2,34 @@
 %% ══════════════════════════════════════════════════════
 %%  APÉNDICE I – Registro de interacciones con sistemas de IA
 %% ══════════════════════════════════════════════════════
-
 \apendice{Registro de interacciones con sistemas de IA}
-
-\section{Registro de interacciones con sistemas de IA}
-
-Este anexo tiene como objetivo garantizar la transparencia en el uso de
-herramientas de inteligencia artificial generativa durante la realización
-del Trabajo de Fin de Grado. En él se deberá incluir un registro
-ordenado de los \textit{prompts}, solicitudes, o peticiones formuladas por el estudiante en las interacciones con sistemas de IA que hayan sido más significativas en relación al desarrollo del TFG. Asimismo se incluirán bien las respuestas generadas directamente por los sistemas de IA, o bien se reflejará la importancia que ha tenido esa interacción en el desarrollo del trabajo ( código, texto, enfoque...) de esas interacciones significativas.
-
-El propósito de este anexo no es penalizar el uso de inteligencia artificial,
-sino documentarlo de forma clara, permitiendo al tribunal evaluar el alcance,
-la finalidad y el impacto real de dichas herramientas en el proceso de
-aprendizaje y en los resultados obtenidos. El uso de IA debe entenderse como
-una herramienta de apoyo, nunca como un sustituto del razonamiento,
-la toma de decisiones técnicas o la autoría del trabajo.
-
-Para cada interacción relevante con sistemas de IA, se deberá indicar, al
-menos, la siguiente información:
-\begin{itemize}
-    \item Herramienta o modelo de IA utilizado.
-    \item Fecha aproximada de uso.
-    \item Prompt/petición/solicitud/forma de uso realizada por el estudiante.
-    \item Respuesta completa generada por la IA (opcional)
-    \item Uso posterior de dicha respuesta en el TFG (orientación conceptual,
-    mejora de redacción, generación de ideas, apoyo técnico, generación de código, etc.).
-\end{itemize}
-
-Este anexo podrá estructurarse en forma de tablas o listados numerados, y
-solo deberá incluir aquellas interacciones que hayan tenido una influencia
-significativa en el desarrollo del trabajo. 
 ```
 
+## Registro de interacciones con sistemas de IA
+
+Durante el desarrollo del Trabajo Fin de Grado se utilizó ChatGPT como herramienta de apoyo puntual en tareas de orientación técnica, revisión de código, diseño visual de la aplicación y mejora de la redacción de algunos apartados de la memoria. Su uso tuvo siempre un carácter auxiliar: las decisiones técnicas, la selección final de funcionalidades, la implementación definitiva, la validación de resultados y la redacción final fueron revisadas y adaptadas por el autor del trabajo.
+
+La @tbl-ia-interacciones recoge las interacciones más relevantes realizadas durante el proyecto.
+
+| Nº | Herramienta | Fecha aproximada | Prompt o solicitud realizada | Uso posterior en el TFG |
+|---:|---|---|---|---|
+| 1 | ChatGPT | Marzo-abril 2026 | “Ayúdame a estructurar una aplicación en Streamlit para visualizar una agenda quirúrgica diaria por quirófanos a partir de un histórico de intervenciones.” | Sirvió como apoyo inicial para organizar la interfaz de la aplicación y definir una estructura de pestañas. La implementación final fue adaptada al formato real de los datos del HUBU. |
+| 2 | ChatGPT | Abril 2026 | “Tengo un Excel con intervenciones quirúrgicas; quiero calcular duración, quirófano, procedimiento y construir una agenda visual.” | Se utilizaron orientaciones generales sobre tratamiento de datos con Pandas. El código final fue modificado y ajustado manualmente a las columnas reales del histórico quirúrgico. |
+| 3 | ChatGPT | Abril-mayo 2026 | “Ayúdame a pensar un algoritmo que proponga huecos libres para una nueva cirugía sin solaparse con las ya existentes.” | La interacción ayudó a definir la lógica general de búsqueda de huecos, comprobación de solapamientos y ordenación de propuestas. La fórmula final de duración planificable y los criterios de puntuación fueron revisados y adaptados durante el desarrollo. |
+| 4 | ChatGPT | Mayo 2026 | “Quiero mejorar la visualización de la agenda quirúrgica para que sea más clara, con colores distintos para intervenciones históricas, planificadas y realizadas.” | Se empleó como apoyo para mejorar la representación visual de la planificación en la aplicación. Las decisiones finales de colores, leyenda y disposición fueron ajustadas según las necesidades del proyecto. |
+| 5 | ChatGPT | Mayo 2026 | “Ayúdame a añadir persistencia para que las cirugías planificadas no desaparezcan al actualizar la página.” | Se obtuvo orientación sobre el uso de almacenamiento local y SQLite. La integración definitiva se realizó comprobando manualmente que las planificaciones quedaran registradas correctamente. |
+| 6 | ChatGPT | Mayo-junio 2026 | “Necesito exportar la planificación quirúrgica en Excel y PDF con una tabla entendible para personal sanitario.” | La IA ayudó a plantear la estructura de los informes exportables. El diseño final de las columnas, nombres de campos y formato fue decidido por el autor. |
+| 7 | ChatGPT | Junio 2026 | “Ayúdame a desarrollar un módulo de planificación de guardias para repartir fines de semana y festivos de forma equilibrada durante nueve meses.” | Sirvió para ordenar las restricciones del problema y plantear una lógica inicial de reparto. La versión final fue ajustada a las reglas concretas indicadas durante las prácticas. |
+| 8 | ChatGPT | Junio 2026 | “Revisa este apartado de metodología y ayúdame a explicarlo con un tono académico, pero sin inventar resultados.” | Se utilizó como apoyo de redacción para mejorar la claridad de la memoria. Todos los textos fueron revisados, modificados y adaptados por el autor antes de incorporarlos. |
+| 9 | ChatGPT | Junio-julio 2026 | “Ayúdame a corregir los comentarios del tutor sobre el algoritmo, especialmente explicar cómo se calcula la duración planificable y cómo se ordenan las propuestas.” | La interacción ayudó a reformular la explicación técnica del algoritmo. La descripción final se ajustó al funcionamiento real implementado en el código. |
+| 10 | ChatGPT | Julio 2026 | “Ayúdame a revisar la bibliografía, detectar referencias duplicadas y proponer dónde citar cada fuente.” | Se utilizó como apoyo para organizar referencias y mejorar la coherencia de las citas. La selección final de fuentes fue revisada por el autor antes de su inclusión. |
+| 11 | ChatGPT | Julio 2026 | “Resume la introducción, conclusiones y líneas futuras para reducir extensión sin perder contenido importante.” | Se empleó como apoyo para sintetizar apartados de la memoria. La versión definitiva fue revisada y adaptada para mantener coherencia con el resto del documento. |
+| 12 | ChatGPT | Julio 2026 | “Ayúdame a redactar el anexo de sostenibilidad curricular relacionándolo con MeneQuiro y los ODS.” | La IA sirvió para orientar la reflexión inicial. El contenido final fue revisado para ajustarlo al enfoque personal del proyecto y a la sostenibilidad aplicada a la Ingeniería de la Salud. |
+
+: Registro de interacciones significativas con sistemas de inteligencia artificial generativa. {#tbl-ia-interacciones}
+
+Las respuestas generadas por la inteligencia artificial no fueron incorporadas de forma automática al Trabajo Fin de Grado. En todos los casos se utilizaron como orientación, propuesta inicial o apoyo para resolver dudas concretas. Posteriormente, el contenido fue contrastado con el funcionamiento real del proyecto, corregido cuando fue necesario y adaptado al contexto específico de MeneQuiro.
+
+El uso de ChatGPT resultó especialmente útil en tres ámbitos. En primer lugar, como apoyo técnico durante el desarrollo de la aplicación, ayudando a plantear alternativas para la visualización de la agenda quirúrgica, la gestión de planificaciones simuladas y la exportación de resultados. En segundo lugar, como herramienta de revisión y mejora de la memoria, facilitando la organización de algunos apartados y la redacción de explicaciones técnicas más claras. En tercer lugar, como apoyo bibliográfico, ayudando a detectar referencias incompletas o duplicadas y a localizar apartados donde era necesario reforzar la fundamentación teórica.
+
+No obstante, el uso de esta herramienta no sustituyó el trabajo propio realizado durante el proyecto. La comprensión del problema, el análisis de los datos, la adaptación del código al histórico quirúrgico real, la toma de decisiones de diseño, la validación funcional de la aplicación y la elaboración definitiva de la memoria fueron responsabilidad del autor. Por tanto, la inteligencia artificial generativa se empleó como un recurso complementario de apoyo, manteniendo siempre la autoría, supervisión crítica y responsabilidad final sobre el Trabajo Fin de Grado.

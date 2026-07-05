@@ -3,12 +3,22 @@
 %%  APÉNDICE H – Sostenibilidad curricular
 %% ══════════════════════════════════════════════════════
 \apendice{Anexo de sostenibilización curricular}
-
-\section{Introducción}
-Este anexo incluirá una reflexión personal del alumnado sobre los aspectos de la sostenibilidad que se abordan en el trabajo.
-Se pueden incluir tantas subsecciones como sean necesarias con la intención de explicar las competencias de sostenibilidad adquiridas durante el alumnado y aplicadas al Trabajo de Fin de Grado.
-
-Más información en el documento de la CRUE \url{https://www.crue.org/wp-content/uploads/2020/02/Directrices_Sosteniblidad_Crue2012.pdf}.
-
-Este anexo tendrá una extensión comprendida entre 600 y 800 palabras.
 ```
+
+# Introducción
+
+La sostenibilidad constituye un concepto transversal que trasciende el ámbito medioambiental e incorpora también dimensiones sociales, económicas e institucionales. En el contexto de la Ingeniería de la Salud, desarrollar soluciones tecnológicas sostenibles implica diseñar herramientas capaces de mejorar la eficiencia de los sistemas sanitarios, optimizar el uso de los recursos disponibles y contribuir a una atención de mayor calidad sin comprometer la capacidad futura del sistema sanitario para responder a las necesidades de la población [@crue2012; @onu2015].
+
+El desarrollo de MeneQuiro ha permitido aplicar esta visión de la sostenibilidad mediante el diseño de una herramienta orientada a optimizar la planificación quirúrgica utilizando información ya disponible en el hospital. En lugar de requerir nuevas infraestructuras o procesos adicionales de recogida de datos, la aplicación reutiliza el histórico de actividad quirúrgica para generar conocimiento útil que facilite la toma de decisiones. Este enfoque favorece un uso más eficiente de la información existente y contribuye a mejorar la organización del bloque quirúrgico.
+
+Desde el punto de vista social, el proyecto se relaciona directamente con el Objetivo de Desarrollo Sostenible 3 (Salud y bienestar), al proponer una herramienta destinada a apoyar la gestión de los recursos hospitalarios y facilitar la planificación de la actividad asistencial. Una planificación más organizada puede favorecer un mejor aprovechamiento de los quirófanos, reducir incidencias derivadas de la programación y mejorar la disponibilidad de recursos para la atención de los pacientes, aunque estos aspectos requerirían una validación clínica específica.
+
+Asimismo, MeneQuiro contribuye al Objetivo de Desarrollo Sostenible 9 (Industria, innovación e infraestructura) mediante el desarrollo de una solución tecnológica basada en el análisis de datos y el apoyo a la decisión. El proyecto demuestra cómo la Ingeniería de la Salud puede transformar información generada de forma rutinaria en herramientas capaces de aportar valor a la gestión hospitalaria mediante técnicas de análisis de datos y desarrollo de software.
+
+Desde la perspectiva económica, la sostenibilidad también está presente en la optimización del uso de recursos sanitarios especialmente costosos, como los quirófanos. Aunque el trabajo no cuantifica el ahorro económico derivado de la utilización de la herramienta, una planificación más eficiente podría contribuir a mejorar la utilización de estos recursos y facilitar la organización del trabajo del personal responsable de la programación.
+
+El proyecto también guarda relación con el Objetivo de Desarrollo Sostenible 12 (Producción y consumo responsables), ya que promueve un uso más eficiente de los recursos disponibles mediante el aprovechamiento de datos históricos para apoyar nuevas decisiones de planificación. En lugar de depender exclusivamente de estimaciones subjetivas, la herramienta utiliza información previamente registrada para fundamentar las recomendaciones generadas.
+
+Durante el desarrollo del Trabajo Fin de Grado también se han adquirido competencias relacionadas con el tratamiento responsable de la información sanitaria. Todos los datos empleados fueron previamente anonimizados, garantizando la confidencialidad de los pacientes y respetando los principios éticos asociados al manejo de información clínica. Este aspecto constituye un requisito esencial en cualquier proyecto de Ingeniería de la Salud basado en datos asistenciales.
+
+Finalmente, la realización de este trabajo ha permitido comprender que la sostenibilidad en ingeniería no depende únicamente del impacto ambiental de una tecnología, sino también de su capacidad para mejorar los procesos existentes, favorecer una utilización más eficiente de los recursos y generar soluciones útiles para la sociedad. Desde esta perspectiva, MeneQuiro representa una aplicación práctica de los conocimientos adquiridos durante el Grado en Ingeniería de la Salud y pone de manifiesto el potencial que ofrece el análisis de datos para desarrollar herramientas de apoyo a la gestión sanitaria alineadas con los principios de sostenibilidad promovidos por la Agenda 2030.

@@ -66,7 +66,7 @@ knitr:
 \noindent Expone/n:
 
 \noindent Que el/la alumno/a D. \nombre, con DNI \dni, ha realizado el Trabajo
-final de Grado en Ingeniería de la Salud titulado \textit{título del trabajo}.
+final de Grado en Ingeniería de la Salud titulado \textit{MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos}.
 
 \noindent Y que dicho trabajo ha sido realizado por el/la alumno/a bajo la
 dirección del/los que suscribe/n.
@@ -96,7 +96,8 @@ dirección del/los que suscribe/n.
 ```
 
 ```{=latex}
-% Resumen / Abstract
+%% ── Resumen / Abstract ────────────────────────────────
+``````
 \frontmatter
 
 \pagestyle{chapterfirst}

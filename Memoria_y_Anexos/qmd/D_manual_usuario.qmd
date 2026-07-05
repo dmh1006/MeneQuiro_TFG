@@ -50,6 +50,12 @@ Todas las bibliotecas utilizadas son de distribución gratuita y código abierto
 
 ### Instalación y puesta en marcha
 
+#### En un entorno de red:
+
+Basta con desplegar la aplicacción con extension web https://menequirotfg.streamlit.app/
+
+#### En un entorno local:
+
 La instalación de MeneQuiro puede realizarse siguiendo una secuencia sencilla de pasos.
 
 #### Paso 1. Descargar el proyecto
@@ -131,9 +137,9 @@ En ella se representan gráficamente todas las intervenciones programadas para l
 
 La Figura @fig-manual-agenda muestra el aspecto general de esta pantalla.
 
-<!--
-![Agenda quirúrgica diaria de MeneQuiro. Fuente: elaboración propia.](img/FiguraD2.png){#fig-manual-agenda width=95%}
--->
+
+![Agenda quirúrgica diaria de MeneQuiro. Fuente: elaboración propia.](img/AgendaMeneQuiro.png){#fig-manual-agenda width=95%}
+
 
 Desde esta vista el usuario puede consultar:
 
@@ -153,9 +159,8 @@ Tras seleccionar el procedimiento y la fecha deseada, el sistema consulta el cat
 
 La Figura @fig-manual-propuestas muestra un ejemplo de las propuestas generadas.
 
-<!--
-![Propuestas automáticas de planificación. Fuente: elaboración propia.](img/FiguraD3.png){#fig-manual-propuestas width=95%}
--->
+
+![Propuestas automáticas de planificación. Fuente: elaboración propia.](img/ModuloSeleccion.png){#fig-manual-propuestas width=95%}
 
 Cada propuesta incluye información sobre:
 
@@ -179,9 +184,9 @@ Las intervenciones añadidas aparecen diferenciadas visualmente respecto al hist
 
 La Figura @fig-manual-planificacion muestra un ejemplo de agenda tras incorporar una nueva cirugía.
 
-<!--
-![Agenda tras añadir una nueva planificación. Fuente: elaboración propia.](img/FiguraD4.png){#fig-manual-planificacion width=95%}
--->
+
+![Agenda tras añadir una nueva planificación. Fuente: elaboración propia.](img/Planificacion.png){#fig-manual-planificacion width=95%}
+
 
 En cualquier momento el usuario puede eliminar una planificación simulada o confirmar la intervención como realizada.
 
@@ -197,15 +202,15 @@ Las intervenciones confirmadas cambian automáticamente su representación gráf
 
 La Figura @fig-manual-confirmacion muestra esta funcionalidad.
 
-<!--
-![Confirmación de una cirugía realizada. Fuente: elaboración propia.](img/FiguraD5.png){#fig-manual-confirmacion width=95%}
--->
+
+![Confirmación de una cirugía realizada. Fuente: elaboración propia.](img/ConfirmarCirugia.png){#fig-manual-confirmacion width=95%}
+
 
 ---
 
-### Consulta del análisis estadístico
+### Consulta del análisis histórico
 
-El módulo de análisis estadístico proporciona información obtenida a partir del histórico quirúrgico utilizado durante el proyecto.
+El módulo de análisis histórico proporciona información obtenida a partir del histórico quirúrgico utilizado durante el proyecto.
 
 Entre los indicadores disponibles destacan:
 
@@ -218,9 +223,8 @@ Entre los indicadores disponibles destacan:
 
 La Figura @fig-manual-estadisticas muestra una de las pantallas de análisis implementadas.
 
-<!--
-![Módulo de análisis estadístico. Fuente: elaboración propia.](img/FiguraD6.png){#fig-manual-estadisticas width=95%}
--->
+
+![Módulo de análisis de datos históricos. Fuente: elaboración propia.](img/EstadisticasQuirofano.png){#fig-manual-estadisticas width=95%}
 
 ---
 
@@ -238,9 +242,9 @@ La exportación facilita tanto la distribución de la planificación diaria como
 
 La Figura @fig-manual-exportacion muestra un ejemplo del documento PDF generado automáticamente por la aplicación.
 
-<!--
-![Exportación automática de la planificación en formato PDF. Fuente: elaboración propia.](img/FiguraD7.png){#fig-manual-exportacion width=95%}
--->
+
+![Exportación automática de la planificación en formato PDF. Fuente: elaboración propia.](img/PlanificacionPDF.png){#fig-manual-exportacion width=95%}
+
 
 ## Recomendaciones de uso
 
