@@ -2,42 +2,26 @@
 %% ══════════════════════════════════════════════════════
 %%  APÉNDICE E – Manual del Desarrollador
 %% ══════════════════════════════════════════════════════
-\apendice{Manual del desarrollador / programador / investigador.} % usar el término que mejor se corresponda.
+\apendice{Manual del desarrollador / programador / investigador.}
 ```
 
 ### Estructura de directorios
 
 El proyecto se ha organizado siguiendo una estructura modular con el objetivo de separar los datos, el código fuente y la documentación generada. Esta organización facilita el mantenimiento del software y la incorporación de nuevas funcionalidades, siguiendo principios ampliamente utilizados en ingeniería del software [@bass2012; @sommerville2016].
 
-La estructura principal del proyecto es la siguiente:
+La estructura principal del proyecto se resume en la @tbl-estructura-proyecto.
 
-TFG_DARIOMENESES/
-│
-├── Data/
-│   ├── 2025.xls
-│   ├── quirofano_2025_limpio.csv
-│   ├── quirofanos_realizadas.db
-│   └── planificacion_guardias_quirófano.xlsx
-│
-├── Memoria_y_Anexos/
-│   ├── img/
-│   ├── qmd/
-│   ├── memoria.qmd
-│   ├── anexos.qmd
-│   ├── bibliografia.bib
-│   └── ...
-│
-├── Proyecto/
-│   ├── init.py
-│   ├── analisis_historico.py
-│   ├── planificador_tfg.py
-│   ├── planificador_guardias.py
-│   └── analisis_quirofano.ipynb
-│
-├── MeneQuiro.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+| Ruta | Contenido principal |
+|------|----------------------|
+| **Data/** | `2025.xls`, `quirofano_2025_limpio.csv`, `quirofanos_realizadas.db`, `planificacion_guardias_quirófano.xlsx` |
+| **Memoria_y_Anexos/** | Carpeta `img`, documentos Quarto (`qmd`), memoria, anexos y bibliografía |
+| **Proyecto/** | `__init__.py`, `analisis_historico.py`, `planificador_tfg.py`, `planificador_guardias.py`, `analisis_quirofano.ipynb` |
+| **MeneQuiro.py** | Aplicación principal |
+| **requirements.txt** | Dependencias del proyecto |
+| **README.md** | Documentación básica |
+| **.gitignore** | Exclusión de archivos del control de versiones |
+
+: Estructura general del proyecto entregado. {#tbl-estructura-proyecto}
 
 Los elementos principales del proyecto son los siguientes:
 
@@ -50,7 +34,6 @@ Los elementos principales del proyecto son los siguientes:
 | **MeneQuiro.py** | Archivo principal de la aplicación, donde se implementan la interfaz, el análisis estadístico y el algoritmo de recomendación. |
 | **requirements.txt** | Relación de dependencias necesarias para reproducir el entorno de ejecución. |
 | **README.md** | Documento con información general sobre el proyecto. |
-
 
 ### Compilación, instalación y ejecución del proyecto
 
@@ -78,13 +61,13 @@ pip install -r requirements.txt
 
 Las principales bibliotecas utilizadas son:
 
-Streamlit
-Pandas
-NumPy
-Plotly
-OpenPyXL
-SQLite
-ReportLab
+- Streamlit
+- Pandas
+- NumPy
+- Plotly
+- OpenPyXL
+- SQLite
+- ReportLab
 
 [@streamlit2026; @pandas2026; @numpy2026; @plotly2026; @sqlite2026]
 
@@ -94,7 +77,7 @@ Finalmente la aplicación se ejecuta mediante:
 python -m streamlit run MeneQuiro.py
 ```
 
-### Pruebas del sistema 
+### Pruebas del sistema
 
 Durante el desarrollo se realizaron pruebas funcionales de forma incremental conforme se incorporaban nuevas funcionalidades al sistema, siguiendo una estrategia de validación continua ampliamente utilizada en ingeniería del software [@myers2011].
 
@@ -115,7 +98,7 @@ Tras cada modificación relevante también se comprobó que las funcionalidades 
 
 Las pruebas se realizaron utilizando datos anonimizados procedentes del Hospital Universitario de Burgos, permitiendo validar el comportamiento de la aplicación en un entorno representativo de la práctica clínica.
 
-### Instrucciones para la modificación o mejora del proyecto.
+### Instrucciones para la modificación o mejora del proyecto
 
 La arquitectura desarrollada permite incorporar nuevas funcionalidades con un impacto reducido sobre el resto del sistema, gracias a la separación entre procesamiento de datos, lógica de planificación, persistencia e interfaz de usuario [@bass2012].
 
