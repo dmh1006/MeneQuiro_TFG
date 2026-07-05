@@ -38,7 +38,7 @@ La @tbl-anexo-datos resume las principales variables empleadas durante el desarr
 | es_urgencia | Booleana | Indica si corresponde a una urgencia |
 | esta_suspendida | Booleana | Indica si la intervención fue suspendida |
 
-: Variables principales empleadas durante el desarrollo de MeneQuiro.
+: Variables principales empleadas durante el desarrollo de MeneQuiro {#tbl-anexo-datos}.
 
 El almacenamiento definitivo de la información utilizada por la aplicación se realiza mediante archivos CSV para el histórico depurado y una base de datos SQLite para almacenar las planificaciones y las intervenciones generadas durante la utilización de la herramienta [@sqlite2026].
 

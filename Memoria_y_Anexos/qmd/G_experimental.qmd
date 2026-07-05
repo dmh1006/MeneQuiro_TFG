@@ -41,7 +41,7 @@ La @tbl-parametros resume los principales parámetros utilizados.
 | Agenda utilizada | Histórica + simulaciones |
 | Ordenación de propuestas | Quirófano habitual → menor holgura → inicio más temprano |
 
-: Parámetros utilizados por el algoritmo de recomendación.
+: Parámetros utilizados por el algoritmo de recomendación. {#tbl-parametros}
 
 La estimación de la duración planificable se diseñó para obtener una aproximación conservadora sin sobredimensionar innecesariamente la duración de las intervenciones. Para ello se empleó la mediana histórica como estimador principal, complementada con tiempos operativos fijos y un margen proporcional a la desviación típica observada, siguiendo recomendaciones habituales para el análisis de datos con variabilidad y valores extremos [@james2021; @montgomery2020].
 

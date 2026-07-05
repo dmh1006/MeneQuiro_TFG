@@ -67,22 +67,22 @@ Para ello, se han considerado las horas dedicadas a las distintas fases del proy
 
 | Concepto | Horas estimadas | Coste/hora (€) | Coste estimado (€) |
 |---|---:|---:|---:|
-| Análisis del problema y estudio del entorno hospitalario | 35 | 20 | 700 |
-| Análisis, limpieza y normalización de datos | 70 | 20 | 1.400 |
-| Estudio estadístico y construcción del catálogo quirúrgico | 55 | 20 | 1.100 |
-| Desarrollo del algoritmo de recomendación | 65 | 20 | 1.300 |
-| Desarrollo de la aplicación MeneQuiro | 120 | 20 | 2.400 |
-| Implementación de exportaciones y base de datos | 35 | 20 | 700 |
-| Validación funcional y corrección de errores | 45 | 20 | 900 |
-| Elaboración de memoria y anexos | 80 | 15 | 1.200 |
-| Reuniones, revisión y seguimiento del proyecto | 25 | 20 | 500 |
-| Amortización del equipo informático | -- | -- | 500 |
+| Análisis del problema y estudio del entorno hospitalario | 35 | 0 | 0 |
+| Análisis, limpieza y normalización de datos | 70 | 0 | 0 |
+| Estudio estadístico y construcción del catálogo quirúrgico | 55 | 0 | 0 |
+| Desarrollo del algoritmo de recomendación | 65 | 0 | 0 |
+| Desarrollo de la aplicación MeneQuiro | 120 | 0 | 0 |
+| Implementación de exportaciones y base de datos | 35 | 0 | 0 |
+| Validación funcional y corrección de errores | 45 | 0 | 0 |
+| Elaboración de memoria y anexos | 80 | 0 | 0 |
+| Reuniones, revisión y seguimiento del proyecto | 25 | 0 | 0 |
+| Amortización del equipo informático | -- | -- | 0 |
 | Recursos software empleados | -- | -- | 0 |
-| **Total** | **530** | -- | **10.700** |
+| **Total** | **530** | -- | **0** |
 
 : Estimación económica del desarrollo del proyecto {#tbl-costes-proyecto}
 
-Como se observa en la @tbl-costes-proyecto, el coste estimado del proyecto asciende a **10.700 €**. Esta cifra debe interpretarse como una valoración orientativa del trabajo realizado, no como un presupuesto cerrado de implantación hospitalaria.
+Como se observa en la @tbl-costes-proyecto, el coste estimado del proyecto es de un total de **0 €**. 
 
 El coste de los recursos software se ha considerado nulo debido al uso de herramientas gratuitas o de código abierto, como Python, Pandas, Streamlit, SQLite, GitHub y Quarto [@python2026; @pandas2026; @streamlit2026; @sqlite2026; @github2026; @quarto2026].
 
