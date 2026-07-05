@@ -60,8 +60,8 @@ knitr:
 
 \noindent\includegraphics[width=\textwidth]{CabeceraEPS.png}\vspace{1cm}
 
-\noindent D. \nombreTutor, profesor/a del departamento de ~, área de ~.
-\noindent D. \nombreTutorb, profesor/a del departamento de ~, área de ~.
+\noindent D. \nombreTutor, profesor/a del departamento de INGENIERIA, área de ELECTROMECANICA.
+\noindent D. \nombreTutorb, profesor/a del departamento de INGENIERIA, área de ELECTROMECANICA.
 
 \noindent Expone/n:
 
@@ -96,43 +96,39 @@ dirección del/los que suscribe/n.
 ```
 
 ```{=latex}
-%% ── Resumen / Abstract ────────────────────────────────
+% Resumen / Abstract
 \frontmatter
 
 \pagestyle{chapterfirst}
 
 \renewcommand*\abstractname{Resumen}
 \begin{abstract}
-La planificación quirúrgica constituye una de las tareas organizativas más complejas dentro de la gestión hospitalaria, debido a la necesidad de coordinar recursos humanos, salas de quirófano, tiempos de intervención, disponibilidad del personal sanitario, urgencias, cancelaciones y restricciones propias de la actividad asistencial. En muchos entornos hospitalarios, esta planificación continúa apoyándose en herramientas manuales o semiautomáticas, como hojas de cálculo, lo que puede dificultar la explotación sistemática de los datos históricos y limitar la capacidad de anticipación ante modificaciones de la agenda quirúrgica.
+La planificación quirúrgica es un proceso complejo que requiere coordinar recursos, tiempos y restricciones asistenciales. Este Trabajo Fin de Grado presenta \textbf{MeneQuiro}, una herramienta web desarrollada para apoyar este proceso mediante el análisis de datos históricos de intervenciones quirúrgicas.
 
-Este Trabajo Fin de Grado presenta el diseño, desarrollo y validación funcional de \textbf{MeneQuiro}, una aplicación web inteligente orientada al apoyo de la planificación quirúrgica. La herramienta ha sido desarrollada en el contexto de las prácticas realizadas en el Hospital Universitario de Burgos y se fundamenta en el análisis de datos históricos de intervenciones quirúrgicas. A partir de esta información, el sistema construye un catálogo quirúrgico, estima duraciones planificables por procedimiento, identifica huecos disponibles en la agenda diaria, propone automáticamente alternativas de programación y permite simular nuevas intervenciones sin modificar el histórico original.
+La aplicación, desarrollada durante las prácticas realizadas en el Hospital Universitario de Burgos, construye un catálogo estadístico de procedimientos, estima la duración planificable de las intervenciones y recomienda automáticamente huecos compatibles dentro de la agenda quirúrgica. Además, incorpora funcionalidades para la visualización de la planificación, el análisis histórico, la simulación de nuevas intervenciones, la exportación de información y la planificación de guardias.
 
-El sistema se ha implementado mediante Python y Streamlit, incorporando bibliotecas de análisis y visualización de datos como Pandas y Plotly, así como una base de datos SQLite para almacenar intervenciones planificadas y realizadas. Además, la aplicación incluye módulos complementarios para el análisis histórico de procedimientos, la visualización de la ocupación de quirófanos, la exportación de planificación en distintos formatos y la generación de guardias hospitalarias.
-
-Los resultados obtenidos muestran que MeneQuiro permite transformar un proceso de planificación principalmente manual en un flujo digital, visual e interactivo, capaz de integrar información histórica, recomendaciones automáticas y registro operativo. Aunque se trata de un prototipo académico, el desarrollo realizado demuestra la viabilidad técnica de una herramienta de apoyo a la decisión quirúrgica y establece una base sólida para futuras ampliaciones orientadas a entornos hospitalarios reales, como la migración a bases de datos centralizadas, el acceso multiusuario o la incorporación de modelos predictivos más avanzados.
+MeneQuiro ha sido implementado utilizando Python, Streamlit y SQLite. Los resultados obtenidos demuestran la viabilidad de emplear datos históricos como apoyo a la planificación quirúrgica y proporcionan una base sólida para futuras integraciones en entornos hospitalarios reales.
 \end{abstract}
 
 \renewcommand*\abstractname{Descriptores}
 \begin{abstract}
-planificación quirúrgica, bloque quirúrgico, sistemas de apoyo a la decisión, análisis histórico de datos, optimización hospitalaria, Streamlit, Python, gestión de quirófanos, Ingeniería de la Salud, MeneQuiro
+planificación quirúrgica, sistemas de apoyo a la decisión, análisis de datos, gestión de quirófanos, Python, Streamlit.
 \end{abstract}
 
 \clearpage
 
 \renewcommand*\abstractname{Abstract}
 \begin{abstract}
-Surgical planning is one of the most complex organizational tasks in hospital management, as it requires the coordination of human resources, operating rooms, surgical times, staff availability, emergency cases, cancellations and clinical constraints. In many hospital environments, this process is still supported by manual or semi-automatic tools, such as spreadsheets, which may limit the systematic use of historical data and reduce the ability to anticipate changes in the surgical schedule.
+Surgical planning is a complex process that requires coordinating resources, operating rooms and clinical constraints. This Final Degree Project presents \textbf{MeneQuiro}, a web-based decision support tool developed from historical surgical data.
 
-This Final Degree Project presents the design, development and functional validation of \textbf{MeneQuiro}, an intelligent web application intended to support surgical planning. The tool was developed within the context of an internship at the University Hospital of Burgos and is based on the analysis of historical surgical intervention data. From this information, the system builds a surgical catalogue, estimates procedure-specific planning durations, identifies available time slots in the daily operating room schedule, automatically proposes scheduling alternatives and enables the simulation of new interventions without modifying the original historical dataset.
+The application, created during an internship at the University Hospital of Burgos, builds a statistical catalogue of surgical procedures, estimates planning durations and automatically recommends suitable operating room time slots. It also provides planning visualization, historical analysis, surgery simulation, data export and staff rostering functionalities.
 
-The system was implemented using Python and Streamlit, integrating data analysis and visualization libraries such as Pandas and Plotly, as well as a SQLite database for storing planned and completed interventions. In addition, the application includes complementary modules for historical procedure analysis, operating room occupancy visualization, planning export in different formats and hospital on-call duty scheduling.
-
-The results show that MeneQuiro transforms a mainly manual planning process into a digital, visual and interactive workflow capable of integrating historical information, automatic recommendations and operational records. Although it is an academic prototype, the developed system demonstrates the technical feasibility of a surgical decision-support tool and provides a solid basis for future extensions in real hospital environments, such as migration to centralized databases, multi-user access or the incorporation of more advanced predictive models.
+MeneQuiro was implemented using Python, Streamlit and SQLite. The results demonstrate the feasibility of using historical surgical data to support operating room planning and provide a solid basis for future deployment in real hospital environments.
 \end{abstract}
 
 \renewcommand*\abstractname{Keywords}
 \begin{abstract}
-surgical planning, operating room scheduling, surgical block, decision support system, historical data analysis, hospital optimization, Streamlit, Python, operating room management, Health Engineering, MeneQuiro
+surgical planning, decision support systems, data analysis, operating room management, Python, Streamlit.
 \end{abstract}
 
 \clearpage

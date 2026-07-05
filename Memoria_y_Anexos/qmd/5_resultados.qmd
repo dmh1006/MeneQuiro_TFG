@@ -79,7 +79,7 @@ El algoritmo genera automáticamente la planificación distribuyendo las guardia
 
 Además del reparto equitativo, el sistema incorpora las restricciones organizativas definidas por el servicio, como la asignación de dos profesionales por guardia, la continuidad entre determinadas guardias de fin de semana y los descansos posteriores establecidos tras algunas jornadas.
 
-El resultado se presenta mediante un calendario mensual exportable a Excel, permitiendo revisar fácilmente la distribución obtenida y realizar modificaciones manuales cuando resulte necesario [@ernst2004; @burke2004; @vanhoudenhoven2007].
+El resultado se presenta mediante un calendario mensual exportable a Excel, permitiendo revisar fácilmente la distribución obtenida y realizar modificaciones manuales cuando resulte necesario [@ernst2004; @burke2004; @hans2012].
 
 ![Visualizador mensual del planificador de guardias desarrollado como módulo complementario de MeneQuiro. La herramienta permite consultar la distribución automática del personal para cada jornada, diferenciando visualmente el tipo de día y mostrando la asignación de profesionales responsables de cada guardia. **Fuente:** elaboración propia.](../img/PlanificadorGuardias.png){#fig-planificador-guardias width=95%}
 

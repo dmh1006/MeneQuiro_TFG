@@ -19,7 +19,7 @@ La arquitectura general del sistema desarrollado se muestra en la @fig-figura31,
 
 ## Planificación quirúrgica y niveles de decisión
 
-La planificación quirúrgica puede analizarse en diferentes niveles temporales y organizativos, habitualmente diferenciados en niveles estratégico, táctico y operativo [@hans2008; @cardoen2010]:
+La planificación quirúrgica puede analizarse en diferentes niveles temporales y organizativos, habitualmente diferenciados en niveles estratégico, táctico y operativo [@hans2012; @cardoen2010]:
 
 - **Planificación estratégica**, relacionada con la asignación global de recursos, número de quirófanos disponibles, distribución por servicios y capacidad quirúrgica del hospital.
 - **Planificación táctica**, centrada en la organización de bloques horarios, distribución semanal o mensual de actividad y asignación de tiempos quirúrgicos por especialidad.
@@ -164,4 +164,4 @@ La @tbl-comparativa-sistemas resume de forma conceptual las principales diferenc
 
 : Comparación conceptual entre MeneQuiro y soluciones relacionadas. {#tbl-comparativa-sistemas}
 
-La comparación anterior tiene un carácter exclusivamente funcional y pretende contextualizar las principales características desarrolladas en MeneQuiro respecto a otras soluciones consultadas durante el proyecto. No constituye una evaluación experimental del rendimiento de dichas herramientas, sino un análisis comparativo de las funcionalidades descritas en la documentación científica y técnica disponible [@cardoen2010; @guerriero2011; @hans2008; @alamin2025].
+La comparación anterior tiene un carácter exclusivamente funcional y pretende contextualizar las principales características desarrolladas en MeneQuiro respecto a otras soluciones consultadas durante el proyecto. No constituye una evaluación experimental del rendimiento de dichas herramientas, sino un análisis comparativo de las funcionalidades descritas en la documentación científica y técnica disponible [@cardoen2010; @guerriero2011; @hans2012; @alamin2025].

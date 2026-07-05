@@ -98,21 +98,6 @@ Las principales tareas realizadas durante esta fase fueron:
 
 El conjunto de datos utilizado estaba formado por **286 intervenciones quirúrgicas**, distribuidas en **8 quirófanos**, incluyendo **53 intervenciones urgentes** y **46 procedimientos suspendidos**. Tras el proceso de depuración se consiguió un conjunto de datos consistente para realizar el análisis estadístico y construir el catálogo quirúrgico.
 
-La @tbl-normalizacion resume algunos ejemplos representativos del proceso de normalización realizado.
-
-| Valor original | Valor utilizado finalmente |
-|---|---|
-| COLECISTECTOMIA LAPAROSCOPICA. | Colecistectomía laparoscópica |
-| COLECISTETOMIA LAPAROSCOPICA | Colecistectomía laparoscópica |
-| COLECISTESCTOMIA LAPAOSCOPICA | Colecistectomía laparoscópica |
-| APENDICECTOMIA LPS | Apendicectomía laparoscópica |
-| APENDICECTOMIA LAPAROSCOPICA. | Apendicectomía laparoscópica |
-| HEMORROIDECTOMIA. | Hemorroidectomía |
-
-: Ejemplos de normalización realizados durante el preprocesamiento. {#tbl-normalizacion}
-
-Este proceso permitió reducir la dispersión artificial de los procedimientos, evitando que pequeñas diferencias de escritura generasen categorías estadísticas distintas. De este modo, el histórico pasó de ser un conjunto de registros administrativos a convertirse en una base de datos adecuada para el análisis estadístico y la recomendación de huecos quirúrgicos.
-
 
 ## Estudio estadístico de la actividad quirúrgica
 
@@ -128,7 +113,7 @@ El análisis se llevó a cabo utilizando técnicas de estadística descriptiva, 
 - duración mínima y máxima;
 - frecuencia de utilización por quirófano.
 
-La duración media constituye el primer indicador empleado para caracterizar cada procedimiento y se calcula mediante la expresión mostrada en la Ecuación \ref{eq:media}.
+La duración media constituye el primer indicador empleado para caracterizar cada procedimiento y se calcula mediante la expresión mostrada en la Ecuación: 
 
 $$
 \bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i
@@ -316,7 +301,7 @@ El resultado se presenta al usuario mediante una tabla interactiva, permitiendo 
 
 ## Desarrollo de la aplicación MeneQuiro
 
-## Implementación del sistema
+### Implementación del sistema
 
 La implementación de MeneQuiro se organizó siguiendo una arquitectura modular, separando las diferentes responsabilidades del sistema en componentes software independientes. Esta organización facilita el mantenimiento del código, la reutilización de funciones y la incorporación de nuevas funcionalidades [@pressman2010; @sommerville2016].
 
@@ -337,7 +322,7 @@ La separación funcional entre estos componentes permite mantener desacopladas l
 
 Durante el desarrollo se empleó Git (https://github.com/dmh1006/MeneQuiro_TFG) como sistema de control de versiones, utilizando un repositorio privado alojado en GitHub para registrar la evolución del proyecto y mantener un histórico de las distintas versiones implementadas [@chacon2014; @github2026].
 
-## Metodología de desarrollo software
+### Metodología de desarrollo software
 
 El desarrollo de MeneQuiro se llevó a cabo siguiendo una metodología incremental basada en prototipos. Esta estrategia permitió desarrollar inicialmente una versión funcional mínima e incorporar progresivamente nuevas funcionalidades conforme se identificaban nuevas necesidades durante las prácticas realizadas en el Hospital Universitario de Burgos.
 
@@ -358,7 +343,7 @@ Durante todo el desarrollo se utilizó Git como sistema de control de versiones,
 
 Esta metodología permitió mantener una evolución continua del software, incorporando mejoras sucesivas derivadas tanto del análisis de los datos como de las observaciones realizadas durante el uso de la herramienta por parte del personal sanitario.
 
-## Validación funcional del sistema
+### Validación funcional del sistema
 
 La validación del sistema se realizó mediante pruebas funcionales sobre las principales operaciones implementadas en la aplicación. El objetivo de estas pruebas fue comprobar el correcto funcionamiento de cada uno de los componentes desarrollados y verificar que las recomendaciones generadas por el algoritmo fueran coherentes con la información disponible en el histórico quirúrgico.
 
