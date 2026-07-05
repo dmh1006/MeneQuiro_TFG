@@ -3,24 +3,12 @@
 \capitulo{7}{Conclusiones}
 ```
 
-El presente Trabajo Fin de Grado ha permitido diseñar, desarrollar y validar **MeneQuiro**, una herramienta de apoyo a la planificación quirúrgica basada en el análisis estadístico de datos históricos reales. El sistema demuestra que es posible transformar la información generada durante la actividad asistencial en conocimiento útil para apoyar la planificación y la toma de decisiones dentro del bloque quirúrgico [@cardoen2010; @guerriero2011; @sutton2020].
+El desarrollo de este Trabajo Fin de Grado ha permitido comprobar la viabilidad de una herramienta de apoyo a la planificación quirúrgica basada en el análisis de datos históricos. Los objetivos planteados al inicio del proyecto se han alcanzado mediante el diseño e implementación de MeneQuiro, una aplicación capaz de asistir al planificador durante la organización de la actividad quirúrgica.
 
-El objetivo principal del proyecto se ha alcanzado mediante la construcción de un catálogo estadístico de procedimientos, el desarrollo de un algoritmo de recomendación de huecos quirúrgicos y la implementación de una aplicación interactiva que integra análisis, visualización y planificación en un único entorno de trabajo.
+La herramienta desarrollada integra en un único entorno el análisis del histórico, la estimación de la duración de los procedimientos, la recomendación automática de huecos quirúrgicos y la gestión de la planificación. De este modo, demuestra que es posible transformar la información generada por la actividad asistencial en un recurso útil para apoyar la toma de decisiones, manteniendo siempre al profesional sanitario como responsable final del proceso [@sutton2020; @cardoen2010].
 
-Uno de los aspectos más relevantes ha sido la utilización de datos reales procedentes del Hospital Universitario de Burgos, lo que ha permitido desarrollar una herramienta adaptada al funcionamiento observado en un entorno clínico real. De este modo, las recomendaciones generadas se fundamentan en el comportamiento histórico de los procedimientos, proporcionando una aproximación objetiva al proceso de planificación [@cardoen2010; @alamin2025].
+Uno de los principales aprendizajes obtenidos durante el proyecto ha sido que la calidad de los resultados depende directamente de la calidad de los datos disponibles. La depuración y normalización del histórico quirúrgico resultaron imprescindibles para construir un catálogo fiable y obtener recomendaciones coherentes, confirmando la importancia del preprocesamiento en cualquier sistema basado en datos [@james2021].
 
-Desde el punto de vista técnico, el proyecto ha permitido integrar conocimientos de análisis de datos, programación, bases de datos y desarrollo de software para construir un sistema de apoyo a la decisión basado en principios de modularidad y escalabilidad [@pressman2010; @bass2012].
+Desde el punto de vista académico, el proyecto ha permitido aplicar de forma integrada conocimientos de programación, análisis de datos, bases de datos, estadística e ingeniería del software sobre un problema real del ámbito sanitario. Además, el contacto directo con el personal del Hospital Universitario de Burgos permitió adaptar la herramienta a necesidades observadas durante la práctica clínica, aportando una visión aplicada de la Ingeniería de la Salud.
 
-Asimismo, el desarrollo puso de manifiesto la importancia de la calidad del dato. La limpieza, normalización y estructuración del histórico quirúrgico resultaron determinantes para obtener resultados consistentes, evidenciando que la fiabilidad del sistema depende directamente de la calidad de la información utilizada [@james2021; @montgomery2020].
-
-En conjunto, MeneQuiro constituye un prototipo funcional que demuestra la viabilidad de emplear datos históricos para apoyar la planificación quirúrgica mediante análisis estadístico y recomendaciones interpretables, proporcionando una base sólida para futuras líneas de investigación y desarrollo.
-
-## Aspectos relevantes
-
-El principal reto del proyecto no fue únicamente el desarrollo de la aplicación, sino comprender el funcionamiento real del bloque quirúrgico y transformar un conjunto de datos heterogéneo en información estructurada y explotable.
-
-La normalización de los procedimientos quirúrgicos resultó una etapa esencial para garantizar la calidad del catálogo estadístico y, en consecuencia, la fiabilidad de las recomendaciones generadas.
-
-Durante el desarrollo, la herramienta evolucionó de forma incremental incorporando mejoras propuestas por los tutores y el personal del hospital, como la persistencia de planificaciones, la confirmación de cirugías realizadas, la exportación de resultados y el módulo de planificación de guardias, siguiendo una metodología iterativa de desarrollo [@pressman2010; @sommerville2016].
-
-Finalmente, una de las principales decisiones de diseño fue mantener siempre al profesional sanitario como responsable último de la planificación. MeneQuiro actúa como un sistema de apoyo a la decisión, proporcionando recomendaciones fundamentadas en datos históricos sin sustituir el criterio clínico u organizativo del planificador, filosofía ampliamente aceptada en los sistemas de apoyo a la decisión clínica [@berner2007; @shortliffe2014; @sutton2020].
+En definitiva, MeneQuiro constituye un prototipo funcional que demuestra el potencial del análisis de datos para apoyar la gestión del bloque quirúrgico y establece una base sólida para futuras mejoras y desarrollos en entornos hospitalarios reales.

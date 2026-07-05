@@ -32,7 +32,22 @@ La @tbl-resultados-estadisticos resume los principales resultados generados dura
 
 Uno de los resultados más importantes del proyecto fue la generación del catálogo quirúrgico a partir del histórico de intervenciones. El catálogo se construye automáticamente cada vez que se procesa un nuevo conjunto de datos, recalculando todas las métricas estadísticas sin necesidad de intervención manual.
 
-El catálogo obtenido almacena una ficha estadística para cada procedimiento normalizado. Cada ficha incluye el número de casos históricos disponibles, la duración media, la mediana, el percentil 75, la desviación típica, el porcentaje de urgencias, los quirófanos habituales y la duración planificable utilizada posteriormente por el algoritmo de recomendación.
+Antes de construir el catálogo quirúrgico se realizó un análisis estadístico del histórico de intervenciones con el objetivo de caracterizar el comportamiento de los procedimientos más frecuentes. Para cada procedimiento se calcularon el número de casos registrados, la duración media, la mediana y la desviación típica, indicadores que posteriormente sirven de base para estimar la duración planificable utilizada por MeneQuiro. La @tbl-analisis-historico muestra un resumen de algunos de los procedimientos con mayor frecuencia en el histórico analizado.
+
+| Procedimiento | Casos | Media (min) | Mediana (min) | Desv. típica (min) |
+|---|---:|---:|---:|---:|
+| Escisión de lesión de tejido blando | 495 | 25,6 | 23,0 | 13,7 |
+| Colecistectomía laparoscópica | 264 | 113,0 | 100,0 | 47,0 |
+| Reparación de pared abdominal con prótesis | 238 | 97,7 | 65,0 | 75,5 |
+| Ligadura de hemorroides | 193 | 5,5 | 5,0 | 1,8 |
+| Hernioplastia inguinal derecha | 190 | 66,3 | 64,5 | 22,0 |
+| Hernioplastia inguinal izquierda | 141 | 68,0 | 65,0 | 21,5 |
+| Apendicectomía laparoscópica | 80 | 84,0 | 75,0 | 24,3 |
+| Tiroidectomía | 78 | 165,3 | 145,0 | 65,6 |
+| Procedimientos con protocolo incompleto | 73 | 90,2 | 65,0 | 88,5 |
+| Hernioplastia inguinal bilateral | 65 | 112,3 | 105,0 | 42,8 |
+
+: Resumen del análisis histórico realizado sobre los procedimientos quirúrgicos más frecuentes del conjunto de datos empleado. {#tbl-analisis-historico}
 
 Esta información permite que las recomendaciones no dependan de estimaciones manuales realizadas por el planificador, sino del comportamiento observado históricamente para cada procedimiento quirúrgico, siguiendo un enfoque basado en datos ampliamente utilizado en la literatura sobre planificación de quirófanos [@cardoen2010; @guerriero2011].
 
