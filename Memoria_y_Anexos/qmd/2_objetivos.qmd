@@ -3,7 +3,7 @@
 \capitulo{2}{Objetivos}
 ```
 
-El presente Trabajo Fin de Grado tiene como finalidad el diseño, desarrollo y validación de una herramienta informática orientada a asistir el proceso de planificación quirúrgica mediante el análisis de datos históricos de intervenciones realizadas. Para ello, se plantea una solución que combina técnicas de análisis de datos, gestión de bases de datos, visualización de información y apoyo a la toma de decisiones, con el objetivo de mejorar la eficiencia del proceso de planificación desarrollado en el bloque quirúrgico.
+El presente Trabajo Fin de Grado tiene como finalidad el diseño, desarrollo y validación de una herramienta informática orientada a asistir el proceso de planificación quirúrgica mediante el análisis de datos históricos de intervenciones realizadas. Para ello, se plantea una solución que combina técnicas de análisis de datos, gestión de bases de datos, visualización de información y apoyo a la toma de decisiones, con el objetivo de mejorar la eficiencia del proceso de planificación desarrollado en el bloque quirúrgico, siguiendo la línea de investigación propuesta en trabajos sobre planificación quirúrgica y sistemas de apoyo a la decisión [@cardoen2010; @guerriero2011; @sutton2020].
 
 Los objetivos del proyecto se estructuran en cuatro bloques: objetivo general, objetivos específicos, objetivos técnicos y competencias adquiridas durante el desarrollo del trabajo.
 
@@ -19,11 +19,11 @@ Para alcanzar el objetivo general se establecen los siguientes objetivos especí
 
 - Procesar y depurar la información procedente del histórico de intervenciones quirúrgicas, obteniendo un conjunto de datos consistente y adecuado para su posterior explotación.
 
-- Construir un catálogo quirúrgico basado en información histórica que permita caracterizar estadísticamente los distintos procedimientos realizados.
+- Construir un catálogo quirúrgico basado en información histórica que permita caracterizar estadísticamente los distintos procedimientos realizados, siguiendo un enfoque basado en datos empleado habitualmente en la literatura sobre planificación quirúrgica [@cardoen2010; @guerriero2011].
 
-- Desarrollar un algoritmo capaz de estimar la duración esperada de una intervención a partir del comportamiento observado en procedimientos similares.
+- Desarrollar un algoritmo capaz de estimar la duración esperada de una intervención a partir del comportamiento observado en procedimientos similares, utilizando medidas estadísticas robustas [@james2021; @montgomery2020].
 
-- Diseñar un sistema automático de recomendación de huecos quirúrgicos que proponga alternativas compatibles con la programación existente y minimice los tiempos muertos entre intervenciones.
+- Diseñar un sistema automático de recomendación de huecos quirúrgicos que proponga alternativas compatibles con la programación existente y minimice los tiempos muertos entre intervenciones, manteniendo la supervisión del planificador [@berner2007; @sutton2020].
 
 - Incorporar herramientas de simulación que permitan evaluar nuevas planificaciones sin modificar la programación histórica almacenada.
 
@@ -35,15 +35,15 @@ Para alcanzar el objetivo general se establecen los siguientes objetivos especí
 
 Desde el punto de vista del desarrollo del sistema, se plantean los siguientes objetivos técnicos:
 
-- Implementar la aplicación utilizando Python como lenguaje principal de programación.
+- Implementar la aplicación utilizando Python como lenguaje principal de programación [@python2026].
 
 - Diseñar una arquitectura modular que facilite el mantenimiento, escalabilidad y reutilización del software.
 
-- Integrar herramientas de análisis y manipulación de datos mediante las bibliotecas Pandas y NumPy.
+- Integrar herramientas de análisis y manipulación de datos mediante las bibliotecas Pandas y NumPy [@pandas2026; @numpy2026].
 
-- Emplear una base de datos SQLite para el almacenamiento de la información generada durante la utilización de la herramienta.
+- Emplear una base de datos SQLite para el almacenamiento de la información generada durante la utilización de la herramienta [@sqlite2026].
 
-- Desarrollar una interfaz gráfica interactiva mediante Streamlit que permita una utilización sencilla por parte del personal encargado de la planificación.
+- Desarrollar una interfaz gráfica interactiva mediante Streamlit que permita una utilización sencilla por parte del personal encargado de la planificación [@streamlit2026].
 
 - Implementar mecanismos de importación y exportación de información compatibles con los formatos habitualmente empleados en el entorno hospitalario.
 

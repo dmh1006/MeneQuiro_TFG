@@ -30,13 +30,13 @@ La @tbl-herramientas resume las principales tecnologías empleadas durante el de
 
 : Herramientas utilizadas durante el desarrollo de MeneQuiro {#tbl-herramientas}
 
-La elección de estas herramientas responde a criterios de accesibilidad, facilidad de integración y adecuación al tipo de problema abordado. Python permite trabajar de forma natural con datos tabulares y desarrollar algoritmos de análisis de forma flexible. Streamlit facilita la transformación del análisis en una herramienta interactiva, mientras que SQLite proporciona una solución ligera para la persistencia de datos en un prototipo académico.
+La elección de estas herramientas responde a criterios de accesibilidad, facilidad de integración y adecuación al tipo de problema abordado. Python permite trabajar de forma natural con datos tabulares y desarrollar algoritmos de análisis de forma flexible [@python2026]. Pandas y NumPy se utilizaron para el tratamiento de datos [@pandas2026; @numpy2026], Plotly para la visualización interactiva [@plotly2026], Streamlit para transformar el análisis en una aplicación web [@streamlit2026] y SQLite para la persistencia local en un prototipo académico [@sqlite2026].
 
 ## Conjunto de datos empleado
 
 El desarrollo de MeneQuiro se basa en el análisis de un histórico anonimizado de intervenciones quirúrgicas procedente del Hospital Universitario de Burgos. Este conjunto de datos contiene información relativa a la programación y realización de cirugías, incluyendo variables temporales, organizativas y clínicas necesarias para estudiar el comportamiento del bloque quirúrgico.
 
-La información original se encontraba almacenada en hojas de cálculo utilizadas en el entorno asistencial. Este formato resulta habitual en procesos de planificación manual, ya que permite registrar de forma flexible la actividad programada y realizada. Sin embargo, para su utilización dentro de un sistema de recomendación fue necesario transformar dicha información en una estructura tabular homogénea y procesable computacionalmente.
+La información original se encontraba almacenada en hojas de cálculo utilizadas en el entorno asistencial. Este formato resulta habitual en procesos de planificación manual, ya que permite registrar de forma flexible la actividad programada y realizada. Sin embargo, para su utilización dentro de un sistema de recomendación fue necesario transformar dicha información en una estructura tabular homogénea y procesable computacionalmente, siguiendo un enfoque habitual en proyectos de análisis exploratorio y preparación de datos [@james2021; @diez2019].
 
 Las variables utilizadas se agruparon en cuatro bloques principales:
 
@@ -85,7 +85,7 @@ Esta transformación permitió pasar de registros administrativos a variables cu
 
 ## Preprocesamiento de los datos
 
-Antes de realizar cualquier análisis estadístico fue necesario llevar a cabo una fase de preprocesamiento destinada a mejorar la consistencia y calidad del histórico quirúrgico. Aunque los datos procedían directamente del sistema de información hospitalario, contenían diferencias de formato, abreviaturas, errores tipográficos y denominaciones distintas para procedimientos equivalentes, lo que dificultaba su explotación estadística.
+Antes de realizar cualquier análisis estadístico fue necesario llevar a cabo una fase de preprocesamiento destinada a mejorar la consistencia y calidad del histórico quirúrgico, etapa fundamental en cualquier flujo de análisis de datos aplicado [@james2021; @hastie2009].
 
 Las principales tareas realizadas durante esta fase fueron:
 
@@ -204,7 +204,7 @@ donde:
 
 La mediana se emplea como estimador principal porque resulta menos sensible a valores atípicos que pueden aparecer en determinados procedimientos, como intervenciones especialmente complejas o complicaciones intraoperatorias. De este modo, la estimación utilizada durante la planificación representa de forma más fiel el comportamiento habitual del procedimiento [@james2021; @montgomery2020].
 
-El buffer de variabilidad no pretende cubrir cualquier desviación posible, sino incorporar un margen razonable que permita absorber parte de la incertidumbre inherente a la práctica clínica. Procedimientos con una duración históricamente estable reciben un margen reducido, mientras que aquellos con mayor dispersión disponen automáticamente de un tiempo adicional durante la planificación.
+El buffer de variabilidad no pretende cubrir cualquier desviación posible, sino incorporar un margen razonable que permita absorber parte de la incertidumbre inherente a la práctica clínica, coherente con la importancia de considerar la variabilidad temporal en la planificación quirúrgica [@cardoen2010; @denton2010].
 
 Como resultado de este proceso, cada procedimiento queda representado mediante una ficha estadística única que resume su comportamiento histórico y puede reutilizarse posteriormente durante la búsqueda automática de huecos quirúrgicos. Al construirse de forma automática a partir de datos reales, el catálogo evoluciona conforme aumenta el histórico disponible, sin necesidad de modificar manualmente los parámetros de planificación [@cardoen2010; @guerriero2011].
 
@@ -335,7 +335,7 @@ Los principales componentes desarrollados son:
 
 La separación funcional entre estos componentes permite mantener desacopladas las tareas de análisis de datos, lógica de planificación, persistencia de información e interacción con el usuario, favoreciendo la mantenibilidad y escalabilidad del sistema [@bass2012].
 
-Durante el desarrollo se empleó Git (https://github.com/dmh1006/MeneQuiro_TFG) como sistema de control de versiones, utilizando un repositorio privado alojado en GitHub para registrar la evolución del proyecto y mantener un histórico de las distintas versiones implementadas [@git2025; @github2026].
+Durante el desarrollo se empleó Git (https://github.com/dmh1006/MeneQuiro_TFG) como sistema de control de versiones, utilizando un repositorio privado alojado en GitHub para registrar la evolución del proyecto y mantener un histórico de las distintas versiones implementadas [@chacon2014; @github2026].
 
 ## Metodología de desarrollo software
 
@@ -370,7 +370,7 @@ Las pruebas realizadas incluyeron:
 - detección automática de solapamientos;
 - incorporación de nuevas intervenciones simuladas;
 - actualización dinámica de la agenda diaria;
-- exportación de resultados en formato CSV, Excel y PDF;
+- exportación de resultados en formato CSV, Excel y PDF mediante bibliotecas específicas para tratamiento tabular y generación documental [@openpyxl2026; @reportlab2026];
 - persistencia de la información mediante SQLite.
 
 Las pruebas permitieron verificar que las recomendaciones propuestas cumplen las restricciones temporales definidas y que todas las intervenciones incorporadas mantienen una planificación consistente, sin producir conflictos horarios dentro de un mismo quirófano.

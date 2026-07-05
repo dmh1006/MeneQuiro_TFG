@@ -3,7 +3,7 @@
 \capitulo{3}{Conceptos teóricos}
 ```
 
-Este capítulo presenta los fundamentos teóricos necesarios para comprender el desarrollo de MeneQuiro. El trabajo se sitúa en la intersección entre la gestión hospitalaria, el análisis estadístico de datos reales, la planificación de recursos quirúrgicos y los sistemas de apoyo a la decisión. Por ello, antes de describir la metodología seguida, resulta necesario contextualizar el problema desde una perspectiva clínica, organizativa y técnica.
+Este capítulo presenta los fundamentos teóricos necesarios para comprender el desarrollo de MeneQuiro. El trabajo se sitúa en la intersección entre la gestión hospitalaria, el análisis de datos reales, la planificación de recursos quirúrgicos y los sistemas de apoyo a la decisión. Por ello, antes de describir la metodología seguida, resulta necesario contextualizar el problema desde una perspectiva clínica, organizativa y técnica.
 
 ## Organización del bloque quirúrgico
 
@@ -19,7 +19,7 @@ La arquitectura general del sistema desarrollado se muestra en la @fig-figura31,
 
 ## Planificación quirúrgica y niveles de decisión
 
-La planificación quirúrgica puede analizarse en diferentes niveles temporales y organizativos:
+La planificación quirúrgica puede analizarse en diferentes niveles temporales y organizativos, habitualmente diferenciados en niveles estratégico, táctico y operativo [@hans2008; @cardoen2010]:
 
 - **Planificación estratégica**, relacionada con la asignación global de recursos, número de quirófanos disponibles, distribución por servicios y capacidad quirúrgica del hospital.
 - **Planificación táctica**, centrada en la organización de bloques horarios, distribución semanal o mensual de actividad y asignación de tiempos quirúrgicos por especialidad.
@@ -33,11 +33,11 @@ El flujo general del proceso de planificación quirúrgica se representa en la @
 
 ![Flujo general del proceso de planificación quirúrgica implementado en MeneQuiro. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.2.png){#fig-figura32 width=95%}
 
-## Importancia del análisis estadístico de datos reales
+## Importancia del análisis de datos reales
 
 Uno de los elementos diferenciales de este Trabajo Fin de Grado es el uso de datos históricos reales procedentes de la actividad quirúrgica. El sistema desarrollado no se basa en datos simulados ni en ejemplos artificiales, sino en registros generados durante la práctica asistencial real. Esto aporta un valor añadido importante, ya que permite caracterizar el comportamiento de los procedimientos quirúrgicos a partir de la experiencia acumulada del propio hospital.
 
-El análisis estadístico de estos datos permite transformar registros administrativos e históricos en información útil para la planificación. Entre las variables más relevantes se encuentran la fecha de intervención, el quirófano utilizado, la hora de inicio, la hora de finalización, la duración, el procedimiento realizado, el equipo quirúrgico, el tipo de intervención y el estado final de la cirugía.
+El análisis de estos datos permite transformar registros administrativos e históricos en información útil para la planificación, siguiendo principios habituales del análisis exploratorio de datos [@james2021; @montgomery2020].
 
 A partir de estas variables es posible calcular indicadores como:
 
@@ -50,7 +50,7 @@ A partir de estas variables es posible calcular indicadores como:
 - frecuencia de procedimientos;
 - porcentaje de urgencias o cancelaciones.
 
-La duración quirúrgica es una variable especialmente relevante. En la práctica, dos intervenciones con el mismo nombre pueden presentar duraciones diferentes debido a la variabilidad clínica y organizativa. Por ello, el uso de medidas estadísticas como la media, la mediana y la desviación típica permite representar mejor el comportamiento real de cada procedimiento que una estimación fija introducida manualmente.
+La duración quirúrgica es una variable especialmente relevante, ya que su variabilidad constituye uno de los factores más importantes en la programación de quirófanos [@cardoen2010; @denton2010].La duración quirúrgica es una variable especialmente relevante. En la práctica, dos intervenciones con el mismo nombre pueden presentar duraciones diferentes debido a la variabilidad clínica y organizativa. Por ello, el uso de medidas estadísticas como la media, la mediana y la desviación típica permite representar mejor el comportamiento real de cada procedimiento que una estimación fija introducida manualmente.
 
 En MeneQuiro, el estudio estadístico de los datos reales constituye la base del catálogo quirúrgico. Este catálogo no es una simple lista de procedimientos, sino una estructura derivada del histórico que resume el comportamiento observado de cada tipo de intervención. De este modo, la herramienta puede estimar la duración planificable de una nueva cirugía a partir de información empírica procedente de intervenciones realizadas previamente.
 
@@ -60,7 +60,7 @@ El funcionamiento del algoritmo de recomendación automática de huecos quirúrg
 
 ## Sistemas de apoyo a la decisión
 
-Los sistemas de apoyo a la decisión clínica, conocidos como CDSS por sus siglas en inglés, son herramientas diseñadas para proporcionar información, recomendaciones o alertas que ayuden a los profesionales sanitarios durante un proceso de toma de decisiones [@sutton2020]. En un sentido amplio, estos sistemas no reemplazan al profesional, sino que organizan, procesan y presentan información relevante para facilitar una decisión más informada.
+Los sistemas de apoyo a la decisión clínica, conocidos como CDSS por sus siglas en inglés, son herramientas diseñadas para proporcionar información, recomendaciones o alertas que ayuden a los profesionales sanitarios durante un proceso de toma de decisiones [@berner2007; @shortliffe2014; @kawamoto2005; @sutton2020]. En un sentido amplio, estos sistemas no reemplazan al profesional, sino que organizan, procesan y presentan información relevante para facilitar una decisión más informada.
 
 En el contexto de este proyecto, MeneQuiro puede considerarse un sistema de apoyo a la decisión aplicado a la planificación quirúrgica. Su objetivo no es decidir de forma autónoma qué cirugía debe realizarse, sino proporcionar al planificador una serie de alternativas razonadas a partir de los datos históricos y de la agenda existente. El usuario puede revisar las propuestas, valorar su conveniencia y seleccionar la opción que considere más adecuada.
 
@@ -94,7 +94,7 @@ También resulta relevante estudiar la variabilidad de los procedimientos. Un pr
 
 ## Tratamiento de datos hospitalarios
 
-El uso de datos procedentes de un entorno hospitalario requiere una fase previa de limpieza, depuración y normalización. En la práctica, los datos históricos pueden contener valores ausentes, nombres de procedimientos escritos de forma diferente, abreviaturas, errores ortográficos, registros incompletos o formatos heterogéneos de fecha y hora.
+El uso de datos procedentes de un entorno hospitalario requiere una fase previa de limpieza, depuración y normalización, ya que la calidad del dato condiciona directamente la validez del análisis posterior [@james2021; @montgomery2020].
 
 En este proyecto, el preprocesamiento de datos ha sido una fase fundamental, ya que la calidad de las recomendaciones depende directamente de la calidad del histórico utilizado. Entre las tareas realizadas se incluyen:
 
@@ -104,9 +104,9 @@ En este proyecto, el preprocesamiento de datos ha sido una fase fundamental, ya 
 - normalización de nombres de procedimientos;
 - agrupación de variantes equivalentes;
 - identificación de cirugías urgentes, suspendidas o planificadas;
-- preparación de variables derivadas para el análisis estadístico.
+- preparación de variables derivadas para el análisis.
 
-Durante el proceso de depuración se detectaron múltiples variantes ortográficas, abreviaturas y errores tipográficos que impedían realizar un análisis estadístico consistente. La normalización permitió agrupar procedimientos equivalentes bajo una única denominación, reduciendo la dispersión artificial del catálogo quirúrgico.
+Durante el proceso de depuración se detectaron múltiples variantes ortográficas, abreviaturas y errores tipográficos que impedían realizar un análisis de los datos consistente. La normalización permitió agrupar procedimientos equivalentes bajo una única denominación, reduciendo la dispersión artificial del catálogo quirúrgico.
 
 La @tbl-normalizacion-procedimientos muestra algunos ejemplos representativos del proceso de normalización aplicado.
 
@@ -127,34 +127,34 @@ Esta fase resulta especialmente importante porque los datos hospitalarios reales
 
 El desarrollo de MeneQuiro se ha realizado utilizando un conjunto de tecnologías seleccionadas por su adecuación al análisis de datos, la creación de prototipos funcionales y la generación de visualizaciones interactivas.
 
-Python se ha utilizado como lenguaje principal debido a su amplio ecosistema de bibliotecas científicas y su flexibilidad para el procesamiento de datos [@python2026]. Pandas y NumPy han permitido realizar la limpieza, transformación y análisis estadístico del histórico quirúrgico [@pandas2026; @numpy2026]. Plotly se ha empleado para generar visualizaciones interactivas, especialmente en la representación de agendas, gráficos de ocupación y análisis de procedimientos [@plotly2026].
+Python se ha utilizado como lenguaje principal debido a su amplio ecosistema de bibliotecas científicas y su flexibilidad para el procesamiento de datos [@python2026]. Pandas y NumPy han permitido realizar la limpieza, transformación y análisis de datos del histórico quirúrgico [@pandas2026; @numpy2026]. Plotly se ha empleado para generar visualizaciones interactivas, especialmente en la representación de agendas, gráficos de ocupación y análisis de procedimientos [@plotly2026].
 
 SQLite se ha utilizado como sistema de persistencia local para almacenar las intervenciones planificadas y realizadas durante el uso de la herramienta. Esta elección resulta adecuada para un prototipo académico por su sencillez, portabilidad y facilidad de integración [@sqlite2026]. No obstante, en un escenario hospitalario real sería recomendable migrar a una base de datos centralizada, como PostgreSQL o SQL Server, para permitir sincronización, concurrencia y acceso multiusuario.
 
-Streamlit se ha empleado como framework de interfaz por su capacidad para convertir scripts de análisis de datos en aplicaciones interactivas de forma rápida y mantenible [@streamlit2026]. Esta elección ha permitido centrar el desarrollo en la lógica de planificación, el análisis estadístico y la visualización de resultados, manteniendo una interfaz accesible para usuarios no técnicos.
+Streamlit se ha empleado como framework de interfaz por su capacidad para convertir scripts de análisis de datos en aplicaciones interactivas de forma rápida y mantenible [@streamlit2026]. Esta elección ha permitido centrar el desarrollo en la lógica de planificación, el análisis de datos y la visualización de resultados, manteniendo una interfaz accesible para usuarios no técnicos.
 
 
 ![Arquitectura tecnológica de MeneQuiro y relación entre fuentes de datos, procesamiento, visualización, persistencia y salidas del sistema. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.4.png){#fig-figura34 width=95%}
 
 ## Estado del arte y trabajos relacionados
 
-La planificación de quirófanos ha sido ampliamente estudiada desde el ámbito de la investigación operativa y la gestión sanitaria. Cardoen et al. realizan una revisión de la literatura sobre planificación y programación de quirófanos, destacando la diversidad de enfoques existentes en función del nivel de decisión, las restricciones consideradas, los objetivos de planificación y la incorporación de incertidumbre [@cardoen2010].
+La planificación quirúrgica constituye una de las áreas de investigación más activas dentro de la gestión hospitalaria y la investigación operativa, debido al elevado impacto que tiene sobre la utilización de recursos, la calidad asistencial y la eficiencia del bloque quirúrgico. La programación de intervenciones debe considerar simultáneamente restricciones relacionadas con la disponibilidad de quirófanos, personal sanitario, equipamiento, duración de las cirugías y aparición de intervenciones urgentes, convirtiéndose en un problema de elevada complejidad [@cardoen2010; @guerriero2011].
 
-Revisiones posteriores continúan señalando la complejidad del problema y la importancia de considerar restricciones reales del entorno hospitalario, como la disponibilidad de personal, la variabilidad de duración de los procedimientos y las limitaciones de recursos [@guerriero2011; @alamin2025]. Estos trabajos evidencian que la planificación quirúrgica no puede abordarse únicamente como un problema teórico, sino que requiere soluciones adaptadas al contexto operativo del hospital.
+Durante las dos últimas décadas se han publicado numerosas revisiones que analizan los diferentes enfoques propuestos para abordar este problema. Los trabajos de Cardoen et al. [@cardoen2010], Guerriero y Guido [@guerriero2011], Gür et al. [@gur2018], Samudra et al. [@samudra2016] y, más recientemente, Al Amin et al. [@alamin2025] muestran una evolución desde modelos clásicos de programación quirúrgica hacia sistemas capaces de integrar múltiples restricciones operativas y adaptarse a la incertidumbre presente en el entorno hospitalario.
 
-Por otra parte, los sistemas de apoyo a la decisión han adquirido una importancia creciente en el ámbito sanitario. Sutton et al. describen los CDSS como herramientas destinadas a mejorar la atención sanitaria mediante la integración de conocimiento clínico e información específica del paciente o del proceso asistencial [@sutton2020]. En esta línea, MeneQuiro aplica el concepto de apoyo a la decisión a la planificación quirúrgica, utilizando datos históricos para generar recomendaciones operativas.
+La mayor parte de estas investigaciones se basa en técnicas de optimización matemática, programación lineal entera, metaheurísticas o simulación para asignar intervenciones a bloques quirúrgicos considerando restricciones temporales, disponibilidad de recursos y variabilidad en la duración de las cirugías [@denton2010; @fei2008; @samudra2016]. Más recientemente, el interés investigador se ha desplazado hacia modelos de planificación integrada capaces de coordinar simultáneamente quirófanos, personal sanitario y otros recursos hospitalarios, especialmente en hospitales con elevada presión asistencial [@rachuba2024].
 
-En el ámbito académico también existen trabajos orientados al desarrollo de herramientas de apoyo a la planificación quirúrgica. Entre ellos destaca el Trabajo Fin de Grado desarrollado por García González [@garcia2025], en el que se plantea una aplicación destinada a la gestión de quirófanos desde una perspectiva organizativa. Aunque comparte el objetivo de mejorar la planificación quirúrgica, MeneQuiro incorpora como elemento diferenciador la construcción de un catálogo estadístico de procedimientos y un algoritmo propio de recomendación de huecos basado en el análisis del histórico de intervenciones.
+Paralelamente, los sistemas de apoyo a la decisión clínica (*Clinical Decision Support Systems*, CDSS) han adquirido una importancia creciente como herramientas destinadas a facilitar la toma de decisiones mediante la integración de conocimiento experto e información procedente de los sistemas sanitarios. Berner [@berner2007], Kawamoto et al. [@kawamoto2005], Shortliffe y Cimino [@shortliffe2014] y Sutton et al. [@sutton2020] destacan que estos sistemas no pretenden sustituir el criterio del profesional, sino proporcionar recomendaciones fundamentadas que contribuyan a mejorar la calidad y la eficiencia de los procesos asistenciales.
 
-En el ámbito comercial existen igualmente soluciones especializadas para la gestión integral del bloque quirúrgico, como Torin OR Management de Getinge [@torin2025], que integra funciones de planificación, seguimiento de la actividad, gestión de recursos y análisis de indicadores. Sin embargo, este tipo de plataformas están orientadas a implantaciones hospitalarias de mayor escala, mientras que MeneQuiro se plantea como una herramienta ligera, adaptable y centrada en la explotación del histórico quirúrgico para asistir al proceso de planificación.
+En este contexto, MeneQuiro adopta un enfoque diferente al de la mayoría de los trabajos revisados. En lugar de recurrir a modelos complejos de optimización o inteligencia artificial, la herramienta emplea técnicas de estadística descriptiva para construir un catálogo quirúrgico a partir del histórico de intervenciones y generar recomendaciones interpretables para el planificador. Esta aproximación permite desarrollar una herramienta de apoyo a la decisión basada en datos reales del hospital, fácilmente comprensible por el personal sanitario y adaptable a la práctica clínica cotidiana.
 
-La @tbl-comparativa-sistemas resume de forma conceptual la diferencia entre el trabajo desarrollado y otras soluciones académicas o comerciales consultadas durante el proyecto.
+La @tbl-comparativa-sistemas resume de forma conceptual las principales diferencias entre MeneQuiro y otras soluciones académicas o comerciales consultadas durante el desarrollo del proyecto.
 
 | Funcionalidad | Torin OR Management | TFG Univ. Valladolid | MeneQuiro |
 |---|:---:|:---:|:---:|
 | Gestión de agenda quirúrgica | Sí | Sí | Sí |
 | Visualización de planificación | Sí | Sí | Sí |
-| Análisis estadístico del histórico | Sí | Limitado | Sí |
+| Análisis de datos del histórico | Sí | Limitado | Sí |
 | Catálogo estadístico de procedimientos | No especificado | No | Sí |
 | Estimación automática de duración | Sí | No especificado | Sí |
 | Recomendación de huecos quirúrgicos | Sí | Limitado | Sí |
@@ -162,6 +162,6 @@ La @tbl-comparativa-sistemas resume de forma conceptual la diferencia entre el t
 | Exportación de resultados | Sí | Sí | Sí |
 | Planificación de guardias | No especificado | No | Sí |
 
-: Comparación conceptual entre MeneQuiro y soluciones relacionadas {#tbl-comparativa-sistemas}
+: Comparación conceptual entre MeneQuiro y soluciones relacionadas. {#tbl-comparativa-sistemas}
 
-La comparación anterior no pretende establecer una evaluación objetiva del rendimiento de las herramientas existentes, sino situar las principales funcionalidades desarrolladas en MeneQuiro respecto a otras soluciones académicas y comerciales consultadas durante el proyecto. De este modo, el presente trabajo no busca sustituir sistemas hospitalarios de gran escala, sino demostrar la viabilidad de una capa de apoyo a la decisión construida sobre datos históricos, capaz de aportar valor añadido mediante análisis estadístico, visualización y recomendación automática.
+La comparación anterior tiene un carácter exclusivamente funcional y pretende contextualizar las principales características desarrolladas en MeneQuiro respecto a otras soluciones consultadas durante el proyecto. No constituye una evaluación experimental del rendimiento de dichas herramientas, sino un análisis comparativo de las funcionalidades descritas en la documentación científica y técnica disponible [@cardoen2010; @guerriero2011; @hans2008; @alamin2025].

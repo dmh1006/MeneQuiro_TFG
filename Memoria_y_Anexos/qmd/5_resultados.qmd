@@ -3,17 +3,17 @@
 \capitulo{5}{Resultados}
 ```
 
-En este capítulo se presentan los principales resultados obtenidos tras el desarrollo de MeneQuiro (https://menequirotfg.streamlit.app/). Los resultados se organizan en función de los objetivos planteados inicialmente, mostrando tanto el análisis estadístico realizado sobre el histórico quirúrgico como las funcionalidades implementadas en la aplicación.
+En este capítulo se presentan los principales resultados obtenidos tras el desarrollo de MeneQuiro (https://menequirotfg.streamlit.app/). Los resultados se organizan en función de los objetivos planteados inicialmente, mostrando tanto el análisis de datos histórico realizado sobre el histórico quirúrgico como las funcionalidades implementadas en la aplicación.
 
-El resultado final del proyecto es una herramienta funcional capaz de importar y procesar datos quirúrgicos, construir un catálogo estadístico de procedimientos, visualizar la agenda diaria de quirófanos, proponer huecos compatibles para nuevas intervenciones, registrar planificaciones simuladas y confirmar cirugías realizadas.
+El resultado final del proyecto es una herramienta funcional capaz de importar y procesar datos quirúrgicos, construir un catálogo estadístico de procedimientos, visualizar la agenda diaria de quirófanos, proponer huecos compatibles para nuevas intervenciones, registrar planificaciones simuladas y confirmar cirugías realizadas, integrando los principios de los sistemas de apoyo a la decisión descritos en la literatura [@berner2007; @sutton2020].
 
-## Resultados del análisis estadístico
+## Resultados del análisis de datos históricos
 
 El primer resultado relevante del proyecto fue la obtención de un conjunto de datos limpio y estructurado a partir del histórico quirúrgico original. Este proceso permitió transformar información procedente de hojas de cálculo en una base de datos analizable, sobre la que se calcularon indicadores estadísticos útiles para la planificación.
 
 A partir del análisis del histórico quirúrgico se construyó un conjunto de datos estructurado compuesto por **286 intervenciones quirúrgicas**, correspondientes a **8 quirófanos**, incluyendo **53 intervenciones urgentes** y **46 procedimientos suspendidos**, que fueron descartados para el análisis operativo.
 
-Sobre este conjunto de datos se calcularon automáticamente indicadores estadísticos para cada procedimiento quirúrgico, entre ellos el número de intervenciones registradas, la duración media, la mediana, la desviación típica, el percentil 75 y los quirófanos utilizados con mayor frecuencia. Estos indicadores constituyen la base del catálogo quirúrgico empleado posteriormente por el algoritmo de recomendación.
+Sobre este conjunto de datos se calcularon automáticamente indicadores estadísticos para cada procedimiento quirúrgico, entre ellos el número de intervenciones registradas, la duración media, la mediana, la desviación típica, el percentil 75 y los quirófanos utilizados con mayor frecuencia. Este tipo de indicadores constituye la base habitual de los modelos descriptivos empleados en planificación quirúrgica [@james2021; @montgomery2020].
 
 La @tbl-resultados-estadisticos resume los principales resultados generados durante esta fase.
 
@@ -26,7 +26,7 @@ La @tbl-resultados-estadisticos resume los principales resultados generados dura
 | Uso de quirófanos | Frecuencia de utilización por sala | Priorización de quirófanos habituales |
 | Tiempos muertos | Intervalos entre cirugías consecutivas | Análisis de eficiencia operativa |
 
-: Resultados derivados del análisis estadístico del histórico quirúrgico {#tbl-resultados-estadisticos}
+: Resultados derivados del análisis de datos del histórico quirúrgico {#tbl-resultados-estadisticos}
 
 ## Catálogo quirúrgico obtenido
 
@@ -34,15 +34,14 @@ Uno de los resultados más importantes del proyecto fue la generación del catá
 
 El catálogo obtenido almacena una ficha estadística para cada procedimiento normalizado. Cada ficha incluye el número de casos históricos disponibles, la duración media, la mediana, el percentil 75, la desviación típica, el porcentaje de urgencias, los quirófanos habituales y la duración planificable utilizada posteriormente por el algoritmo de recomendación.
 
-Esta información permite que las recomendaciones no dependan de estimaciones manuales realizadas por el planificador, sino del comportamiento observado históricamente para cada procedimiento quirúrgico.
+Esta información permite que las recomendaciones no dependan de estimaciones manuales realizadas por el planificador, sino del comportamiento observado históricamente para cada procedimiento quirúrgico, siguiendo un enfoque basado en datos ampliamente utilizado en la literatura sobre planificación de quirófanos [@cardoen2010; @guerriero2011].
 
 
 ## Agenda quirúrgica interactiva
 
 Otro resultado fundamental del proyecto fue el desarrollo de una agenda diaria interactiva organizada por quirófanos. Esta vista permite representar visualmente las intervenciones programadas a lo largo de la jornada, facilitando la identificación rápida de ocupación, huecos disponibles y posibles conflictos de planificación.
 
-La agenda distingue entre intervenciones históricas, intervenciones planificadas y cirugías ya confirmadas como realizadas. Esta diferenciación visual permite al usuario comprender rápidamente el estado de la planificación.
-
+La agenda distingue entre intervenciones históricas, intervenciones planificadas y cirugías ya confirmadas como realizadas. Esta diferenciación visual facilita la interpretación del estado de la planificación y favorece la toma de decisiones por parte del usuario [@sutton2020].
 
 ![Agenda quirúrgica interactiva desarrollada en MeneQuiro. La aplicación representa gráficamente la ocupación de cada quirófano mediante una línea temporal, diferenciando las intervenciones históricas, planificadas y realizadas para facilitar el proceso de planificación quirúrgica. **Fuente:** elaboración propia.](../img/Planificacion.png){#fig-agenda-menequiro width=95%}
 
@@ -52,7 +51,7 @@ El resultado más característico de MeneQuiro es el sistema de recomendación a
 
 Las propuestas generadas se muestran al usuario en forma de tabla, incluyendo el quirófano recomendado, la hora de inicio, la hora estimada de finalización, la duración necesaria, la duración disponible y la holgura restante.
 
-Este resultado permite pasar de una búsqueda manual de espacios libres a un sistema asistido por datos, en el que el usuario mantiene la decisión final pero dispone de alternativas generadas automáticamente.
+Este resultado permite pasar de una búsqueda manual de espacios libres a un sistema asistido por datos, manteniendo siempre la decisión final en manos del planificador, conforme al paradigma de los sistemas de apoyo a la decisión [@berner2007; @shortliffe2014].
 
 ![Propuestas automáticas de planificación generadas por MeneQuiro para una nueva intervención quirúrgica. Cada alternativa incorpora información temporal y operativa que facilita la selección del hueco más adecuado por parte del usuario. **Fuente:** elaboración propia.](../img/PropuestaHueco.png){#fig-propuestas-hueco width=90%}
 
@@ -62,11 +61,11 @@ La aplicación permite añadir intervenciones planificadas a la agenda y conserv
 
 Además, una intervención planificada puede confirmarse posteriormente como realizada. En ese momento, el sistema registra la información correspondiente, incluyendo los tiempos reales y las observaciones introducidas por el usuario.
 
-Esta funcionalidad permite simular escenarios de planificación y, al mismo tiempo, registrar la evolución de dichas planificaciones dentro de la propia herramienta.
+Esta funcionalidad permite simular escenarios de planificación y registrar posteriormente la actividad realizada, facilitando el seguimiento del proceso quirúrgico.
 
 ## Exportación de resultados
 
-MeneQuiro incorpora opciones de exportación destinadas a facilitar el uso de la información generada fuera de la aplicación. La herramienta permite exportar datos en formatos habituales como Excel, CSV y PDF, facilitando su utilización por parte del personal sanitario o administrativo.
+MeneQuiro incorpora opciones de exportación destinadas a facilitar el uso de la información generada fuera de la aplicación. La herramienta permite exportar datos en formatos habituales como Excel, CSV y PDF, empleando bibliotecas específicas para la generación de documentos y hojas de cálculo [@openpyxl2026; @reportlab2026].
 
 Esta funcionalidad resulta especialmente útil para generar informes, compartir planificaciones o conservar registros de la actividad planificada.
 
@@ -80,7 +79,7 @@ El algoritmo genera automáticamente la planificación distribuyendo las guardia
 
 Además del reparto equitativo, el sistema incorpora las restricciones organizativas definidas por el servicio, como la asignación de dos profesionales por guardia, la continuidad entre determinadas guardias de fin de semana y los descansos posteriores establecidos tras algunas jornadas.
 
-El resultado se presenta mediante un calendario mensual exportable a Excel, permitiendo revisar fácilmente la distribución obtenida y realizar modificaciones manuales cuando resulte necesario.[@ernst2004; @burke2004]
+El resultado se presenta mediante un calendario mensual exportable a Excel, permitiendo revisar fácilmente la distribución obtenida y realizar modificaciones manuales cuando resulte necesario [@ernst2004; @burke2004; @vanhoudenhoven2007].
 
 ![Visualizador mensual del planificador de guardias desarrollado como módulo complementario de MeneQuiro. La herramienta permite consultar la distribución automática del personal para cada jornada, diferenciando visualmente el tipo de día y mostrando la asignación de profesionales responsables de cada guardia. **Fuente:** elaboración propia.](../img/PlanificadorGuardias.png){#fig-planificador-guardias width=95%}
 
@@ -103,4 +102,4 @@ La @tbl-objetivos-resultados muestra la relación entre los objetivos definidos 
 
 : Relación entre objetivos planteados y resultados obtenidos {#tbl-objetivos-resultados}
 
-En conjunto, los resultados obtenidos muestran que MeneQuiro cumple los objetivos principales definidos al inicio del proyecto. La herramienta permite transformar datos históricos quirúrgicos en información útil para la planificación, integrando análisis estadístico, visualización interactiva y recomendación automática de huecos dentro de una aplicación funcional.
+En conjunto, los resultados obtenidos muestran que MeneQuiro cumple los objetivos principales definidos al inicio del proyecto. La herramienta permite transformar datos históricos quirúrgicos en información útil para la planificación, integrando análisis estadístico, visualización interactiva y recomendación automática dentro de una aplicación funcional, en línea con las propuestas descritas en la literatura sobre planificación quirúrgica y sistemas de apoyo a la decisión [@cardoen2010; @guerriero2011; @sutton2020].
