@@ -5,7 +5,7 @@
 \apendice{Anexo de sostenibilización curricular}
 ```
 
-## Desarrollo sostenible y Objetivos de Desarrollo Sostenible
+### Desarrollo sostenible y Objetivos de Desarrollo Sostenible
 
 La sostenibilidad constituye un concepto transversal que trasciende el ámbito medioambiental e incorpora también dimensiones sociales, económicas e institucionales. En el contexto de la Ingeniería de la Salud, desarrollar soluciones tecnológicas sostenibles implica diseñar herramientas capaces de mejorar la eficiencia de los sistemas sanitarios, optimizar el uso de los recursos disponibles y contribuir a una atención de mayor calidad sin comprometer la capacidad futura del sistema sanitario para responder a las necesidades de la población [@crue2012; @onu2015].
 

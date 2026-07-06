@@ -3,7 +3,7 @@
 #  anexos.qmd  –  Documentación Técnica (Anexos) TFG GIS UBU
 #  Universidad de Burgos · Escuela Politécnica Superior
 # ============================================================
-title: "MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos "
+title: "MeneQuiro: Sistema de planificación quirúrgica basado en análisis histórico de intervenciones."
 author: "Darío Meneses Hernandez "
  
 format:
@@ -36,7 +36,7 @@ knitr:
 
 ```{=latex}
 %% ── Portada anexos ──────────────────────────────────────────
-\title{MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos}
+\title{MeneQuiro: Sistema de planificación quirúrgica basado en análisis histórico de intervenciones.}
 \author{\nombre}
 \date{\today}
 

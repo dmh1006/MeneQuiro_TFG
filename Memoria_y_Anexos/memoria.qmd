@@ -46,7 +46,7 @@ knitr:
 
 ```{=latex}
 %% -- Datos de portada (editar aquí) -------------------------
-\title{MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos}
+\title{MeneQuiro: Sistema de planificación quirúrgica basado en análisis histórico de intervenciones.}
 \author{\nombre}
 \date{\today}
 
@@ -60,13 +60,13 @@ knitr:
 
 \noindent\includegraphics[width=\textwidth]{CabeceraEPS.png}\vspace{1cm}
 
-\noindent D. \nombreTutor, profesor/a del departamento de INGENIERIA, área de ELECTROMECANICA.
-\noindent D. \nombreTutorb, profesor/a del departamento de INGENIERIA, área de ELECTROMECANICA.
+\noindent D. \nombreTutor, profesor/a del departamento de Digitalización, área de Ingeniería de Sistemas.
+\noindent D. \nombreTutorb, profesor/a del departamento de  y Digitalización, área de Ingeniería de Sistemas.
 
 \noindent Expone/n:
 
 \noindent Que el/la alumno/a D. \nombre, con DNI \dni, ha realizado el Trabajo
-final de Grado en Ingeniería de la Salud titulado \textit{MeneQuiro: Sistema inteligente para la planificación quirúrgica basado en el análisis histórico de intervenciones y la recomendación automática de huecos}.
+final de Grado en Ingeniería de la Salud titulado \textit{MeneQuiro: Sistema de planificación quirúrgica basado en análisis histórico de intervenciones.}.
 
 \noindent Y que dicho trabajo ha sido realizado por el/la alumno/a bajo la
 dirección del/los que suscribe/n.
@@ -96,7 +96,7 @@ dirección del/los que suscribe/n.
 ```
 
 ```{=latex}
-%%  Resumen / Abstract 
+%% ── Resumen / Abstract ──────────────────────────────── 
 \frontmatter
 
 \pagestyle{chapterfirst}
@@ -147,7 +147,7 @@ surgical planning, decision support systems, data analysis, operating room manag
 \mainmatter
 
 \pagestyle{mipc}
-
+```
 {{< include qmd/1_introduccion.qmd >}}
 {{< include qmd/2_objetivos.qmd >}}
 {{< include qmd/3_teoricos.qmd >}}

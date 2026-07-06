@@ -15,7 +15,7 @@ La planificación quirúrgica tiene como objetivo asignar intervenciones a quir�
 
 La arquitectura general del sistema desarrollado se muestra en la @fig-figura31, donde se representan los principales módulos funcionales de MeneQuiro y el flujo de información entre ellos.
 
-![Arquitectura general de MeneQuiro y relación entre sus principales módulos funcionales. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.1.png){#fig-figura31 width=95%}
+![Arquitectura general de MeneQuiro y relación entre sus principales módulos funcionales. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.1.png){#fig-figura31 width=70%}
 
 ## Planificación quirúrgica y niveles de decisión
 
@@ -31,7 +31,7 @@ La planificación quirúrgica no debe interpretarse únicamente como un problema
 
 El flujo general del proceso de planificación quirúrgica se representa en la @fig-figura32, mostrando las diferentes etapas necesarias para la programación y ejecución de una intervención quirúrgica.
 
-![Flujo general del proceso de planificación quirúrgica implementado en MeneQuiro. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.2.png){#fig-figura32 width=95%}
+![Flujo general del proceso de planificación quirúrgica implementado en MeneQuiro. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.2.png){#fig-figura32 width=70%}
 
 ## Importancia del análisis de datos reales
 
@@ -56,7 +56,7 @@ En MeneQuiro, el estudio estadístico de los datos reales constituye la base del
 
 El funcionamiento del algoritmo de recomendación automática de huecos quirúrgicos basado en datos históricos reales se resume en la @fig-figura33, donde se ilustra el proceso seguido para generar propuestas de planificación compatibles con la agenda existente.
 
-![Esquema del algoritmo de recomendación automática de huecos quirúrgicos basado en datos históricos reales. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.3.png){#fig-figura33 width=95%}
+![Esquema del algoritmo de recomendación automática de huecos quirúrgicos basado en datos históricos reales. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.3.png){#fig-figura33 width=70%}
 
 ## Sistemas de apoyo a la decisión
 
@@ -134,7 +134,7 @@ SQLite se ha utilizado como sistema de persistencia local para almacenar las int
 Streamlit se ha empleado como framework de interfaz por su capacidad para convertir scripts de análisis de datos en aplicaciones interactivas de forma rápida y mantenible [@streamlit2026]. Esta elección ha permitido centrar el desarrollo en la lógica de planificación, el análisis de datos y la visualización de resultados, manteniendo una interfaz accesible para usuarios no técnicos.
 
 
-![Arquitectura tecnológica de MeneQuiro y relación entre fuentes de datos, procesamiento, visualización, persistencia y salidas del sistema. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.4.png){#fig-figura34 width=95%}
+![Arquitectura tecnológica de MeneQuiro y relación entre fuentes de datos, procesamiento, visualización, persistencia y salidas del sistema. Fuente: elaboración propia mediante inteligencia artificial generativa (OpenAI ChatGPT), revisada, validada y adaptada por el autor.](../img/Figura3.4.png){#fig-figura34 width=70%}
 
 ## Estado del arte y trabajos relacionados
 
@@ -149,6 +149,7 @@ Paralelamente, los sistemas de apoyo a la decisión clínica (*Clinical Decision
 En este contexto, MeneQuiro adopta un enfoque diferente al de la mayoría de los trabajos revisados. En lugar de recurrir a modelos complejos de optimización o inteligencia artificial, la herramienta emplea técnicas de estadística descriptiva para construir un catálogo quirúrgico a partir del histórico de intervenciones y generar recomendaciones interpretables para el planificador. Esta aproximación permite desarrollar una herramienta de apoyo a la decisión basada en datos reales del hospital, fácilmente comprensible por el personal sanitario y adaptable a la práctica clínica cotidiana.
 
 La @tbl-comparativa-sistemas resume de forma conceptual las principales diferencias entre MeneQuiro y otras soluciones académicas o comerciales consultadas durante el desarrollo del proyecto.
+
 
 | Funcionalidad | Torin OR Management | TFG Univ. Valladolid | MeneQuiro |
 |---|:---:|:---:|:---:|

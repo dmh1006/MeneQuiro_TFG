@@ -137,7 +137,7 @@ Asimismo, se calculó la mediana como medida robusta de tendencia central, espec
 
 El análisis conjunto de estos indicadores permitió identificar procedimientos altamente estables, así como otros cuya duración presenta una elevada variabilidad y requiere una mayor precaución durante la planificación.
 
-![Módulo de análisis estadístico de MeneQuiro. La aplicación muestra indicadores relacionados con la actividad quirúrgica, incluyendo utilización de quirófanos, distribución de procedimientos y métricas descriptivas. Aunque la interfaz representa principalmente valores medios, el catálogo estadístico interno también incorpora la desviación típica de cada procedimiento, utilizada posteriormente durante la estimación de la duración planificable. Fuente: elaboración propia.](../img/Estudioestadistico.png){width=95%}
+![Módulo de análisis estadístico de MeneQuiro. La aplicación muestra indicadores relacionados con la actividad quirúrgica, incluyendo utilización de quirófanos, distribución de procedimientos y métricas descriptivas. Aunque la interfaz representa principalmente valores medios, el catálogo estadístico interno también incorpora la desviación típica de cada procedimiento, utilizada posteriormente durante la estimación de la duración planificable. Fuente: elaboración propia.](../img/Estudioestadistico.png){width=70%}
 
 Como resultado del estudio estadístico se obtuvo un catálogo quirúrgico estructurado que resume el comportamiento histórico de cada procedimiento. Este catálogo constituye la principal fuente de información empleada posteriormente por el algoritmo de recomendación de huecos.
 

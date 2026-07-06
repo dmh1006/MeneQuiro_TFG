@@ -5,7 +5,7 @@
 \apendice{Estudio experimental}
 ```
 
-## Cuaderno de trabajo
+### Cuaderno de trabajo
 
 El desarrollo de MeneQuiro se llevó a cabo de forma incremental, incorporando nuevas funcionalidades conforme se identificaban necesidades durante las prácticas realizadas en el Hospital Universitario de Burgos. Cada modificación fue validada antes de incorporarse a la versión principal del proyecto, manteniendo el código bajo control de versiones mediante Git [@git2025].
 
@@ -26,7 +26,7 @@ Durante el proceso también se descartaron distintas aproximaciones que no ofrec
 
 La versión final incorpora una estimación basada en la mediana histórica, un margen asociado a la variabilidad observada y la comprobación de solapamientos antes de aceptar cualquier nueva planificación.
 
-## Configuración y parametrización de las técnicas
+### Configuración y parametrización de las técnicas
 
 El algoritmo desarrollado emplea una serie de parámetros definidos durante el proceso experimental con el objetivo de obtener recomendaciones coherentes con el funcionamiento observado en el bloque quirúrgico.
 
@@ -47,7 +47,7 @@ La estimación de la duración planificable se diseñó para obtener una aproxim
 
 La ordenación de las recomendaciones prioriza los quirófanos donde históricamente se realiza con mayor frecuencia cada procedimiento. Cuando existen varias alternativas equivalentes, se favorecen aquellas con menor holgura disponible para mejorar el aprovechamiento de la agenda.
 
-## Detalle de resultados
+### Detalle de resultados
 
 La validación funcional confirmó el correcto comportamiento de todos los módulos principales desarrollados.
 

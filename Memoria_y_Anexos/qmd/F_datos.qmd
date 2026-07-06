@@ -5,7 +5,7 @@
 \apendice{Descripción de adquisición y tratamiento de datos}
 ```
 
-## Descripción formal de los datos
+### Descripción formal de los datos
 
 El desarrollo de MeneQuiro se basa en un conjunto de datos anonimizado correspondiente a la actividad quirúrgica del Servicio de Cirugía General y Digestiva del Hospital Universitario de Burgos (HUBU). Los datos fueron proporcionados durante la realización de las prácticas curriculares y se utilizaron exclusivamente con fines docentes y de investigación, garantizando en todo momento la ausencia de información identificativa de los pacientes y el cumplimiento de la normativa vigente en materia de protección de datos [@rgpd2016; @lopdgdd2018].
 
@@ -42,7 +42,7 @@ La @tbl-anexo-datos resume las principales variables empleadas durante el desarr
 
 El almacenamiento definitivo de la información utilizada por la aplicación se realiza mediante archivos CSV para el histórico depurado y una base de datos SQLite para almacenar las planificaciones y las intervenciones generadas durante la utilización de la herramienta [@sqlite2026].
 
-## Descripción clínica de los datos
+### Descripción clínica de los datos
 
 Desde el punto de vista clínico, el conjunto de datos representa la actividad habitual desarrollada en un bloque quirúrgico hospitalario. Cada registro corresponde a una intervención quirúrgica individual y contiene la información mínima necesaria para caracterizar su desarrollo temporal y organizativo.
 

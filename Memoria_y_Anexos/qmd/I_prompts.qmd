@@ -5,7 +5,7 @@
 \apendice{Registro de interacciones con sistemas de IA}
 ```
 
-## Registro de interacciones con sistemas de IA
+### Registro de interacciones con sistemas de IA
 
 Durante el desarrollo del Trabajo Fin de Grado se utilizó ChatGPT como herramienta de apoyo puntual en tareas de orientación técnica, revisión de código, diseño visual de la aplicación y mejora de la redacción de algunos apartados de la memoria. Su uso tuvo siempre un carácter auxiliar: las decisiones técnicas, la selección final de funcionalidades, la implementación definitiva, la validación de resultados y la redacción final fueron revisadas y adaptadas por el autor del trabajo.
 
