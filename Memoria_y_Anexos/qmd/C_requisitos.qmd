@@ -68,7 +68,7 @@ La Figura @fig-casos-uso representa los principales actores y funcionalidades im
 
 La Figura @fig-casos-uso muestra el diagrama de casos de uso de MeneQuiro. En él se representan las principales funcionalidades implementadas en la aplicación y la interacción del planificador quirúrgico con cada una de ellas. El diagrama resume el alcance funcional del sistema y constituye la base para los casos de uso descritos en las siguientes secciones.
 
-![Diagrama de casos de uso de MeneQuiro. Se representan las principales funcionalidades disponibles para el planificador quirúrgico y las relaciones existentes entre ellas. **Fuente:** elaboración propia.](img/EsquemaPlanificacionQuirurgica.png){#fig-casos-uso width=95%}
+![Diagrama de casos de uso de MeneQuiro. Se representan las principales funcionalidades disponibles para el planificador quirúrgico y las relaciones existentes entre ellas. **Fuente:** elaboración propia.](img/EsquemaPlanificacionQuirurgica.png){#fig-casos-uso width=70%}
 
 ### Explicación de los casos de uso
 
@@ -132,7 +132,7 @@ A continuación se describen los principales casos de uso implementados en MeneQ
 
 : Caso de uso CU-3. Incorporación de una nueva planificación {#tbl-cu3}
 
-### CU-4. Confirmar cirugía realizada
+#### CU-4. Confirmar cirugía realizada
 
 | Campo | Descripción |
 |---|---|
@@ -152,7 +152,7 @@ A continuación se describen los principales casos de uso implementados en MeneQ
 
 ---
 
-### CU-5. Exportar planificación
+#### CU-5. Exportar planificación
 
 | Campo | Descripción |
 |---|---|
@@ -172,7 +172,7 @@ A continuación se describen los principales casos de uso implementados en MeneQ
 
 ---
 
-### CU-6. Planificar guardias
+#### CU-6. Planificar guardias
 
 | Campo | Descripción |
 |---|---|
@@ -192,7 +192,7 @@ A continuación se describen los principales casos de uso implementados en MeneQ
 
 ---
 
-## Prototipos de interfaz
+### Prototipos de interfaz
 
 Con el objetivo de facilitar la interacción entre el usuario y el sistema, MeneQuiro incorpora una interfaz gráfica desarrollada mediante Streamlit, priorizando la sencillez de uso y la accesibilidad para personal sanitario sin conocimientos de programación [@streamlit2026].
 

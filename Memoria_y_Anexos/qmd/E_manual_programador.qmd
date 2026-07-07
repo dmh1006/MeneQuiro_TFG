@@ -2,7 +2,7 @@
 %% ══════════════════════════════════════════════════════
 %%  APÉNDICE E – Manual del Desarrollador
 %% ══════════════════════════════════════════════════════
-\apendice{Manual del desarrollador / programador / investigador.}
+\apendice{Manual del programador}
 ```
 
 ### Estructura de directorios
@@ -71,11 +71,35 @@ Las principales bibliotecas utilizadas son:
 
 [@streamlit2026; @pandas2026; @numpy2026; @plotly2026; @sqlite2026]
 
-Finalmente la aplicación se ejecuta mediante:
+Finalmente la aplicación se ejecuta de dos maneras diferentes, dependiendo de si se desea utilizar en un entorno de red o en un entorno local:
+
+#### En un entorno de red:
+
+Basta con desplegar la aplicacción con extension web https://menequirotfg.streamlit.app/
+
+#### En un entorno local:
+
 
 ```bash
 python -m streamlit run MeneQuiro.py
 ```
+
+Una vez iniciado el servidor, la aplicación quedará accesible desde el navegador mediante una dirección similar a:
+
+```text
+http://localhost:8501
+```
+
+La Figura @fig-inicio-streamlit muestra el proceso general de puesta en marcha de la aplicación.
+
+
+![Proceso de ejecución de MeneQuiro mediante Streamlit. Fuente: elaboración propia.](img/CorrerApp.png){#fig-inicio-streamlit width=95%} 
+
+![Pantalla de inicio de MeneQuiro tras ejecución en terminal de comandos. Fuente: elaboración propia.](img/Ini.png){#fig-inicio width=95%}
+
+
+Durante la primera ejecución, la aplicación crea automáticamente la base de datos SQLite necesaria para almacenar las planificaciones simuladas y las intervenciones confirmadas como realizadas. En ejecuciones posteriores dicha base de datos se reutiliza automáticamente, manteniendo toda la información registrada previamente.
+
 
 ### Pruebas del sistema
 

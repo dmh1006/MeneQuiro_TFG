@@ -41,6 +41,10 @@ Como se observa en la @tbl-bloques-arquitectura, cada componente cumple una func
 
 La arquitectura del sistema parte de un histórico quirúrgico en formato tabular. Este histórico se procesa mediante funciones de limpieza y normalización, generando un conjunto de datos estructurado sobre el que se calcula el catálogo estadístico de procedimientos. A partir de dicho catálogo, el algoritmo de recomendación estima la duración de nuevas intervenciones y analiza la agenda disponible para proponer huecos compatibles.
 
+![Diagrama UML de componentes de MeneQuiro. Fuente: elaboración propia mediante PlantUML.](img/diagrama_componentes_menequiro.png){ width=85% }
+
+Diagrama elaborado mediante la herramienta **PlantUML**, utilizada para representar la arquitectura software y la relación entre los principales componentes del sistema [@plantuml2026].
+
 ### Componentes funcionales
 
 Desde el punto de vista funcional, MeneQuiro se compone de diferentes módulos integrados dentro de una única aplicación. La @tbl-componentes-funcionales recoge los principales componentes desarrollados.
@@ -60,6 +64,22 @@ Desde el punto de vista funcional, MeneQuiro se compone de diferentes módulos i
 : Componentes funcionales implementados en MeneQuiro {#tbl-componentes-funcionales}
 
 El diseño modular de estos componentes permite que cada funcionalidad tenga una responsabilidad concreta. Por ejemplo, el módulo de recomendación no modifica directamente el histórico original, sino que trabaja sobre una agenda combinada formada por las intervenciones existentes y las simulaciones añadidas por el usuario.
+
+La relación entre los principales componentes de MeneQuiro se representa en la Figura B.X.
+
+![Diagrama de flujo de interacción funcional de MeneQuiro. Fuente: elaboración propia mediante PlantUML.](img/flujoInteraccion.png){ width=85% }
+
+Diagrama realizado con **PlantUML**, una herramienta de código abierto para la creación de diagramas UML a partir de descripciones textuales, utilizada para representar la arquitectura funcional del sistema desarrollado [@plantuml2025].
+
+### Diseño lógico del sistema
+
+El diseño lógico de MeneQuiro puede representarse mediante un diagrama de clases simplificado, en el que se muestran las principales entidades utilizadas por la aplicación y la relación existente entre ellas. Este diagrama no pretende representar todas las funciones internas del código, sino ofrecer una visión conceptual de los elementos más relevantes del sistema.
+
+Las clases principales son `Procedimiento`, `Cirugia`, `Agenda`, `RecomendadorHuecos`, `BaseDatos`, `Exportador` y `PlanificadorGuardias`. Cada una de ellas representa una responsabilidad concreta dentro de la aplicación: caracterización estadística de procedimientos, gestión de intervenciones, construcción de la agenda, generación de recomendaciones, persistencia, exportación y planificación de guardias.
+
+![Diagrama de clases simplificado de MeneQuiro. Fuente: elaboración propia mediante PlantUML.](img/diagrama_clases_menequiro.png){ width=85% }
+
+Diagrama elaborado mediante **PlantUML**, representando de forma simplificada las principales entidades lógicas del sistema y sus relaciones funcionales [@plantuml2026].
 
 ### Diseño de la capa de datos
 
@@ -85,6 +105,14 @@ La @tbl-datos-sistema resume los principales conjuntos de datos utilizados por M
 
 SQLite fue seleccionada como sistema de persistencia local por su sencillez, portabilidad y facilidad de integración con Python [@sqlite2026]. Esta decisión resulta adecuada para un prototipo académico, aunque una implantación hospitalaria real requeriría migrar hacia una base de datos centralizada.
 
+La relación entre las distintas estructuras de información utilizadas por MeneQuiro se muestra en la Figura B.X.
+
+![Relación entre las fuentes de información utilizadas por MeneQuiro. Fuente: elaboración propia con lucid.app.](img/esquema_datos_menequiro.png){ width=80% } 
+
+Esquema realizado con la aplicacion lucid.app, que permite crear diagramas de flujo y esquemas de arquitectura de forma sencilla y colaborativa [@lucidchart2025].
+
+En este esquema puede observarse cómo el histórico quirúrgico constituye la base para generar el catálogo estadístico y alimentar el algoritmo de recomendación. Las planificaciones creadas por el usuario y las cirugías confirmadas se almacenan de forma independiente en la base de datos SQLite, preservando en todo momento la integridad del histórico original.
+
 ### Diseño de la lógica de planificación
 
 La lógica de planificación se basa en la combinación de dos elementos: el catálogo estadístico de procedimientos y la agenda diaria disponible. El catálogo proporciona una duración estimada para el procedimiento seleccionado, mientras que la agenda permite identificar huecos disponibles en cada quirófano.
@@ -101,6 +129,11 @@ El proceso seguido puede resumirse en las siguientes etapas:
 8. Se muestran las alternativas al usuario.
 
 Esta lógica permite que MeneQuiro funcione como un sistema de apoyo a la decisión, ya que genera propuestas automáticamente pero mantiene al usuario como responsable final de la selección.
+
+![Diagrama de flujo del algoritmo Fuente: elaboración propia mediante PlantUML.](img/diagrama_flujo_recomendacion.png){ width=60% }
+
+Esquema realizado con la aplicacion lucid.app, que permite crear diagramas de flujo y esquemas de arquitectura de forma sencilla y colaborativa [@lucidchart2025].
+
 
 ### Diseño de la interfaz
 
@@ -148,3 +181,13 @@ El diseño de MeneQuiro se ha guiado por los siguientes principios:
 - posibilidad de ampliación futura.
 
 Estos criterios permiten que el sistema sea comprensible, modificable y adaptable a nuevas necesidades. Aunque MeneQuiro se ha desarrollado como prototipo académico, su arquitectura proporciona una base sólida para futuras mejoras, como la integración con bases de datos centralizadas, la gestión de usuarios o la incorporación de modelos predictivos más avanzados.
+
+### Decisiones de diseño adoptadas
+
+Durante el desarrollo se adoptaron las siguientes decisiones técnicas:
+
+• mantener separado el histórico original de las simulaciones;
+• utilizar SQLite por su sencillez para un prototipo;
+• emplear Streamlit para reducir el tiempo de desarrollo;
+• utilizar la mediana como estimador de duración para reducir el efecto de valores extremos;
+• mantener siempre al usuario como responsable de la decisión final.

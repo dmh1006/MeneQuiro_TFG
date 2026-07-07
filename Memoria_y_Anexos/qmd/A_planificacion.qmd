@@ -63,28 +63,55 @@ La planificación reflejada en la @tbl-planificacion-temporal muestra una evoluc
 ### Planificación económica
 Aunque el proyecto se ha desarrollado con fines académicos y no ha supuesto un coste económico directo para el Hospital Universitario de Burgos, se ha realizado una estimación del coste equivalente que tendría el desarrollo de una herramienta de estas características en un entorno profesional.
 
-Para ello, se han considerado las horas dedicadas a las distintas fases del proyecto, el coste/hora estimado y los recursos materiales y software empleados. La estimación económica se recoge en la @tbl-costes-proyecto.
+La estimación económica del proyecto se ha realizado considerando el coste que supondría desarrollar MeneQuiro en un entorno profesional.
+
+Como referencia se ha tomado el coste de un ingeniero de desarrollo software junior. El coste horario se ha obtenido a partir del salario bruto, al que se han añadido los costes empresariales obligatorios asociados a la contratación, como las cotizaciones a la Seguridad Social, desempleo, Fondo de Garantía Salarial (FOGASA), formación profesional y otros costes indirectos de empresa. Asimismo, se ha considerado la amortización proporcional del equipo informático empleado durante el desarrollo.
+
+La @tbl-coste-hora muestra el cálculo del coste horario utilizado.
+
+| Concepto | Coste |
+|-----------|------:|
+| Salario bruto estimado | 24,00 €/h |
+| Seguridad Social empresa | 6,20 €/h |
+| Desempleo | 0,45 €/h |
+| FOGASA | 0,05 €/h |
+| Formación profesional | 0,10 €/h |
+| Otros costes indirectos (gestión, suministros, etc.) | 1,20 €/h |
+| **Coste horario total** | **32,00 €/h** |
+
+: Desglose del coste horario empleado para la estimación económica. {#tbl-coste-hora}
+
+A partir de este coste horario se obtiene la estimación económica mostrada en la @tbl-coste-proyecto.
 
 | Concepto | Horas estimadas | Coste/hora (€) | Coste estimado (€) |
-|---|---:|---:|---:|
-| Análisis del problema y estudio del entorno hospitalario | 35 | 0 | 0 |
-| Análisis, limpieza y normalización de datos | 70 | 0 | 0 |
-| Estudio estadístico y construcción del catálogo quirúrgico | 55 | 0 | 0 |
-| Desarrollo del algoritmo de recomendación | 65 | 0 | 0 |
-| Desarrollo de la aplicación MeneQuiro | 120 | 0 | 0 |
-| Implementación de exportaciones y base de datos | 35 | 0 | 0 |
-| Validación funcional y corrección de errores | 45 | 0 | 0 |
-| Elaboración de memoria y anexos | 80 | 0 | 0 |
-| Reuniones, revisión y seguimiento del proyecto | 25 | 0 | 0 |
-| Amortización del equipo informático | -- | -- | 0 |
-| Recursos software empleados | -- | -- | 0 |
-| **Total** | **530** | -- | **0** |
+|-----------|----------------:|---------------:|-------------------:|
+| Análisis del problema y estudio del entorno | 35 | 32 | 1.120 |
+| Análisis, limpieza y normalización de datos | 70 | 32 | 2.240 |
+| Estudio estadístico y construcción del catálogo | 55 | 32 | 1.760 |
+| Desarrollo del algoritmo de recomendación | 65 | 32 | 2.080 |
+| Desarrollo de la aplicación MeneQuiro | 120 | 32 | 3.840 |
+| Validación y pruebas funcionales | 40 | 32 | 1.280 |
+| Redacción de la memoria y anexos | 90 | 32 | 2.880 |
+| **Total desarrollo** | **475** | | **15.200** |
 
-: Estimación económica del desarrollo del proyecto {#tbl-costes-proyecto}
+: Estimación económica del desarrollo del proyecto. {#tbl-coste-proyecto}
 
-Como se observa en la @tbl-costes-proyecto, el coste estimado del proyecto es de un total de **0 €**. 
+Además del coste de desarrollo se han considerado los costes derivados del equipamiento empleado.
 
-El coste de los recursos software se ha considerado nulo debido al uso de herramientas gratuitas o de código abierto, como Python, Pandas, Streamlit, SQLite, GitHub y Quarto [@python2026; @pandas2026; @streamlit2026; @sqlite2026; @github2026; @quarto2026].
+| Concepto | Coste (€) |
+|-----------|----------:|
+| Amortización del ordenador portátil | 250 |
+| Consumo eléctrico | 45 |
+| Conexión a Internet | 60 |
+| Material de oficina e impresión | 40 |
+| **Total costes indirectos** | **395** |
+
+: Costes indirectos asociados al desarrollo del proyecto. {#tbl-costes-indirectos}
+
+Considerando tanto el coste de desarrollo como los costes indirectos, el coste total estimado del proyecto asciende a **15.595 €**.
+
+No se ha considerado coste de licencias software, ya que todas las herramientas utilizadas (Python, Streamlit, Pandas, NumPy, Plotly, SQLite, Git y Quarto) son gratuitas o de código abierto [@python2026; @streamlit2026; @pandas2026; @numpy2026; @plotly2026; @sqlite2026; @git2025].
+
 
 En caso de plantear una implantación real en un entorno hospitalario, sería necesario incorporar costes adicionales asociados a servidores, mantenimiento, seguridad, integración con sistemas de información hospitalarios, soporte técnico y validación en producción.
 
@@ -98,4 +125,18 @@ Desde el punto de vista funcional, MeneQuiro no sustituye el criterio clínico n
 
 No fue necesaria la solicitud de autorización a la Comisión de Bioética, dado que el proyecto se desarrolló sobre información previamente anonimizada y no implicó intervención sobre pacientes, modificación de tratamientos ni tratamiento de datos personales identificativos.
 
+### Condiciones de uso de la herramienta
+
+MeneQuiro se ha desarrollado como un prototipo académico de apoyo a la planificación quirúrgica, por lo que su utilización debe entenderse como una herramienta auxiliar y no como un sistema clínico validado para su uso asistencial autónomo.
+
+El uso de la aplicación queda condicionado a las siguientes consideraciones:
+
+- La herramienta no sustituye el criterio clínico ni organizativo del personal sanitario.
+- Las recomendaciones generadas deben ser revisadas y aceptadas por el profesional responsable de la planificación.
+- Los datos utilizados por la aplicación deben estar previamente anonimizados o seudonimizados, evitando la introducción de información personal identificativa.
+- El sistema no debe emplearse para tomar decisiones clínicas sobre pacientes, sino únicamente como apoyo organizativo a la planificación de recursos.
+- La aplicación ha sido desarrollada con fines docentes y de investigación dentro del contexto del Trabajo Fin de Grado.
+- Cualquier uso en un entorno hospitalario real requeriría una validación previa, revisión por parte de los responsables del centro y adaptación a la normativa interna de seguridad, protección de datos e integración con sistemas corporativos.
+
+El código desarrollado no se plantea como una herramienta de libre distribución general, sino como un prototipo académico entregado junto con la documentación del proyecto. Su reutilización, modificación o ampliación deberá realizarse respetando las condiciones establecidas por la Universidad de Burgos, el Hospital Universitario de Burgos y la normativa vigente en materia de protección de datos [@rgpd2016; @lopdgdd2018].
 
