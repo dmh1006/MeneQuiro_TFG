@@ -14,7 +14,7 @@ La estructura principal del proyecto se resume en la @tbl-estructura-proyecto.
 | Ruta | Contenido principal |
 |------|----------------------|
 | **Data/** | `2025.xls`, `quirofano_2025_limpio.csv`, `quirofanos_realizadas.db`, `planificacion_guardias_quirófano.xlsx` |
-| **Memoria_y_Anexos/** | Carpeta `img`, documentos Quarto (`qmd`), memoria, anexos y bibliografía |
+| **Memoria** | Carpeta `img`, documentos Quarto (`qmd`), memoria, anexos y bibliografía |
 | **Proyecto/** | `__init__.py`, `analisis_historico.py`, `planificador_tfg.py`, `planificador_guardias.py`, `analisis_quirofano.ipynb` |
 | **MeneQuiro.py** | Aplicación principal |
 | **requirements.txt** | Dependencias del proyecto |

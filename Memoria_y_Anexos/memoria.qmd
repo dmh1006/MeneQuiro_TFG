@@ -60,8 +60,9 @@ knitr:
 
 \noindent\includegraphics[width=\textwidth]{CabeceraEPS.png}\vspace{1cm}
 
-\noindent D. \nombreTutor, profesor/a del departamento de Digitalización, área de Ingeniería de Sistemas.
-\noindent D. \nombreTutorb, profesor/a del departamento de  y Digitalización, área de Ingeniería de Sistemas.
+\noindent D. \nombreTutor, profesor/a del departamento de Digitalización, área de Ingeniería de Sistemas y Automática.
+\noindent D. \nombreTutorb, profesor/a del departamento de 
+Digitalización, área de Ingeniería de Sistemas y Automática.
 
 \noindent Expone/n:
 
